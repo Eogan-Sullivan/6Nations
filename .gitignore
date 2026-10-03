@@ -1,0 +1,18 @@
+node_modules/
+dist/
+coverage/
+.env
+.env.*
+!.env.example
+*.log
+.expo/
+.cache/
+frontend/test-results/
+frontend/playwright-report/
+.DS_Store
+backend/supabase/.temp/
+
+# Keep planning, agent instructions, and documentation Markdown private.
+/Plan.md
+/AGENTS.md
+/documentation/**/*.md

@@ -1,0 +1,17 @@
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "strict": true,
+    "types": ["node", "react"],
+    "noUncheckedIndexedAccess": true,
+    "noEmit": true
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "nativewind-env.d.ts",
+    "app.config.ts",
+    "tests/**/*.ts",
+    "playwright.config.ts"
+  ]
+}

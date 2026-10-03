@@ -1,0 +1,410 @@
+- generic [ref=f1e1]:
+  - generic [ref=f1e11]:
+    - generic [ref=f1e12]:
+      - generic [ref=f1e13]:
+        - button "Open Tournament Hub" [ref=f1e14] [cursor=pointer]:
+          - generic [ref=f1e15]: MENU
+        - generic [ref=f1e16]:
+          - generic "6Nations logo" [ref=f1e17]:
+            - img "6Nations logo" [ref=f1e19]
+          - generic [ref=f1e20]:
+            - generic [ref=f1e21]: 6Nations
+            - generic [ref=f1e22]: SIX NATIONS FANTASY · 2027
+      - generic [ref=f1e23]:
+        - button "Open Tactical Desk" [ref=f1e24] [cursor=pointer]:
+          - generic [ref=f1e25]: TACTICAL DESK
+          - generic [ref=f1e26]: CHECK SQUAD
+        - generic [ref=f1e27]: ROUND 01 · DEMO
+        - generic [ref=f1e28]: LOCKOUT · 2D 14H
+        - generic [ref=f1e29]: Alex’s XV
+        - button "Lock starting fifteen" [ref=f1e30] [cursor=pointer]:
+          - generic [ref=f1e31]: LOCK XV
+    - generic "Primary navigation" [ref=f1e32]:
+      - generic [ref=f1e33]: MY SQUAD
+      - generic [ref=f1e35]: MATCHES
+      - generic [ref=f1e37]: LEAGUES
+      - generic [ref=f1e39]: STATS
+    - generic [ref=f1e41]:
+      - generic [ref=f1e42]:
+        - generic [ref=f1e43]: 2027 SEASON / SAMPLE ROUND 01
+        - heading "Your squad. Your call." [level=1] [ref=f1e44]: My Squad
+        - generic [ref=f1e45]: Build your starting XV, pick your leaders, and make every credit count.
+      - generic [ref=f1e47]:
+        - generic [ref=f1e48]: YOUR FIRST XV STARTS HERE
+        - generic [ref=f1e49]: Synthetic players. Local saves. No account needed.
+    - generic [ref=f1e51]:
+      - generic [ref=f1e52]:
+        - generic [ref=f1e53]: BUDGET REMAINING
+        - generic [ref=f1e54]: 100.0 cr
+        - generic [ref=f1e56]: 0.0 / 100.0 credits spent
+      - generic [ref=f1e58]:
+        - generic [ref=f1e59]: SQUAD SELECTED
+        - generic [ref=f1e60]: 0 / 18
+        - generic [ref=f1e61]: 0/15 starters · 0/3 reserves
+      - generic [ref=f1e63]:
+        - generic [ref=f1e64]: CAPTAINCY
+        - generic [ref=f1e65]: C Choose your captain
+        - generic [ref=f1e66]: VC · Choose your vice-captain
+    - generic [ref=f1e68]:
+      - generic [ref=f1e69]:
+        - generic [ref=f1e70]:
+          - generic [ref=f1e71]:
+            - generic [ref=f1e72]: My squad
+            - generic [ref=f1e73]: Tap a slot to select or replace a player.
+          - generic [ref=f1e75]:
+            - button "Pitch" [ref=f1e76] [cursor=pointer]
+            - button "List" [ref=f1e78] [cursor=pointer]
+        - generic [ref=f1e80]:
+          - generic [ref=f1e81]: STARTING XV
+          - generic [ref=f1e82]:
+            - 'button "Edit 13 · Outside back: empty" [ref=f1e83] [cursor=pointer]':
+              - generic [ref=f1e84]: "13"
+              - generic [ref=f1e86]: + Select player
+              - generic [ref=f1e87]: Outside back
+            - 'button "Edit 14 · Outside back: empty" [ref=f1e89] [cursor=pointer]':
+              - generic [ref=f1e90]: "14"
+              - generic [ref=f1e92]: + Select player
+              - generic [ref=f1e93]: Outside back
+            - 'button "Edit 15 · Outside back: empty" [ref=f1e95] [cursor=pointer]':
+              - generic [ref=f1e96]: "15"
+              - generic [ref=f1e98]: + Select player
+              - generic [ref=f1e99]: Outside back
+          - generic [ref=f1e101]:
+            - 'button "Edit 11 · Centre: empty" [ref=f1e102] [cursor=pointer]':
+              - generic [ref=f1e103]: "11"
+              - generic [ref=f1e105]: + Select player
+              - generic [ref=f1e106]: Centre
+            - 'button "Edit 12 · Centre: empty" [ref=f1e108] [cursor=pointer]':
+              - generic [ref=f1e109]: "12"
+              - generic [ref=f1e111]: + Select player
+              - generic [ref=f1e112]: Centre
+          - generic [ref=f1e114]:
+            - 'button "Edit 9 · Scrum-half: empty" [ref=f1e115] [cursor=pointer]':
+              - generic [ref=f1e116]: "09"
+              - generic [ref=f1e118]: + Select player
+              - generic [ref=f1e119]: Scrum-half
+            - 'button "Edit 10 · Fly-half: empty" [ref=f1e121] [cursor=pointer]':
+              - generic [ref=f1e122]: "10"
+              - generic [ref=f1e124]: + Select player
+              - generic [ref=f1e125]: Fly-half
+          - generic [ref=f1e127]:
+            - 'button "Edit 6 · Back row: empty" [ref=f1e128] [cursor=pointer]':
+              - generic [ref=f1e129]: "06"
+              - generic [ref=f1e131]: + Select player
+              - generic [ref=f1e132]: Back row
+            - 'button "Edit 7 · Back row: empty" [ref=f1e134] [cursor=pointer]':
+              - generic [ref=f1e135]: "07"
+              - generic [ref=f1e137]: + Select player
+              - generic [ref=f1e138]: Back row
+            - 'button "Edit 8 · Back row: empty" [ref=f1e140] [cursor=pointer]':
+              - generic [ref=f1e141]: "08"
+              - generic [ref=f1e143]: + Select player
+              - generic [ref=f1e144]: Back row
+          - generic [ref=f1e146]:
+            - 'button "Edit 4 · Lock: empty" [ref=f1e147] [cursor=pointer]':
+              - generic [ref=f1e148]: "04"
+              - generic [ref=f1e150]: + Select player
+              - generic [ref=f1e151]: Lock
+            - 'button "Edit 5 · Lock: empty" [ref=f1e153] [cursor=pointer]':
+              - generic [ref=f1e154]: "05"
+              - generic [ref=f1e156]: + Select player
+              - generic [ref=f1e157]: Lock
+          - generic [ref=f1e159]:
+            - 'button "Edit 1 · Prop: empty" [ref=f1e160] [cursor=pointer]':
+              - generic [ref=f1e161]: "01"
+              - generic [ref=f1e163]: + Select player
+              - generic [ref=f1e164]: Prop
+            - 'button "Edit 2 · Hooker: empty" [ref=f1e166] [cursor=pointer]':
+              - generic [ref=f1e167]: "02"
+              - generic [ref=f1e169]: + Select player
+              - generic [ref=f1e170]: Hooker
+            - 'button "Edit 3 · Prop: empty" [ref=f1e172] [cursor=pointer]':
+              - generic [ref=f1e173]: "03"
+              - generic [ref=f1e175]: + Select player
+              - generic [ref=f1e176]: Prop
+        - generic [ref=f1e178]:
+          - generic [ref=f1e179]: The bench
+          - generic [ref=f1e180]: Reserves are used in priority order, matching position.
+        - generic [ref=f1e182]:
+          - generic [ref=f1e183]:
+            - 'button "Edit Reserve 1: empty" [ref=f1e184] [cursor=pointer]':
+              - generic [ref=f1e185]: R1
+              - generic [ref=f1e187]: + Select player
+              - generic [ref=f1e188]: Any position
+            - generic [ref=f1e190]:
+              - button "Move reserve 1 earlier" [disabled]:
+                - generic [ref=f1e191]: ←
+              - button "Move reserve 1 later" [ref=f1e192] [cursor=pointer]:
+                - generic [ref=f1e193]: →
+          - generic [ref=f1e194]:
+            - 'button "Edit Reserve 2: empty" [ref=f1e195] [cursor=pointer]':
+              - generic [ref=f1e196]: R2
+              - generic [ref=f1e198]: + Select player
+              - generic [ref=f1e199]: Any position
+            - generic [ref=f1e201]:
+              - button "Move reserve 2 earlier" [ref=f1e202] [cursor=pointer]:
+                - generic [ref=f1e203]: ←
+              - button "Move reserve 2 later" [ref=f1e204] [cursor=pointer]:
+                - generic [ref=f1e205]: →
+          - generic [ref=f1e206]:
+            - 'button "Edit Reserve 3: empty" [ref=f1e207] [cursor=pointer]':
+              - generic [ref=f1e208]: R3
+              - generic [ref=f1e210]: + Select player
+              - generic [ref=f1e211]: Any position
+            - generic [ref=f1e213]:
+              - button "Move reserve 3 earlier" [ref=f1e214] [cursor=pointer]:
+                - generic [ref=f1e215]: ←
+              - button "Move reserve 3 later" [disabled]:
+                - generic [ref=f1e216]: →
+        - generic [ref=f1e217]:
+          - generic [ref=f1e218]: MAXIMUM FOUR PER NATION · ALL 18 PLAYERS
+          - generic [ref=f1e219]:
+            - generic [ref=f1e220]:
+              - generic [ref=f1e221]: IRE
+              - generic [ref=f1e222]: 0/4
+            - generic [ref=f1e223]:
+              - generic [ref=f1e224]: FRA
+              - generic [ref=f1e225]: 0/4
+            - generic [ref=f1e226]:
+              - generic [ref=f1e227]: ENG
+              - generic [ref=f1e228]: 0/4
+            - generic [ref=f1e229]:
+              - generic [ref=f1e230]: SCO
+              - generic [ref=f1e231]: 0/4
+            - generic [ref=f1e232]:
+              - generic [ref=f1e233]: WAL
+              - generic [ref=f1e234]: 0/4
+            - generic [ref=f1e235]:
+              - generic [ref=f1e236]: ITA
+              - generic [ref=f1e237]: 0/4
+        - generic [ref=f1e238]:
+          - generic [ref=f1e239]: Draft restored on this device
+          - generic [ref=f1e240]: Your draft stays in this browser or on this device.
+        - generic [ref=f1e242]:
+          - button "Review squad" [ref=f1e243] [cursor=pointer]:
+            - generic [ref=f1e244]: Review squad →
+          - generic [ref=f1e245]:
+            - button "Load example squad" [ref=f1e246] [cursor=pointer]
+            - button "Clear draft" [ref=f1e248] [cursor=pointer]
+      - generic [ref=f1e250]:
+        - generic [ref=f1e251]: BUILD YOUR TEAM
+        - generic [ref=f1e252]: Player pool
+        - generic [ref=f1e253]: Fixed season prices · all names and data are fictional.
+        - generic [ref=f1e255]:
+          - generic [ref=f1e256]: SELECTING FOR 1 · PROP
+          - generic [ref=f1e257]: Choose a prop for this starter slot.
+        - textbox "Search players" [ref=f1e259]:
+          - /placeholder: Search player, nation or position…
+        - generic [ref=f1e260]: POSITION
+        - generic [ref=f1e261]:
+          - 'button "Filter position: All" [ref=f1e262] [cursor=pointer]':
+            - generic [ref=f1e263]: All
+          - 'button "Filter position: Prop" [ref=f1e264] [cursor=pointer]':
+            - generic [ref=f1e265]: Prop
+          - 'button "Filter position: Hooker" [ref=f1e266] [cursor=pointer]':
+            - generic [ref=f1e267]: Hooker
+          - 'button "Filter position: Lock" [ref=f1e268] [cursor=pointer]':
+            - generic [ref=f1e269]: Lock
+          - 'button "Filter position: Back row" [ref=f1e270] [cursor=pointer]':
+            - generic [ref=f1e271]: Back row
+          - 'button "Filter position: Scrum-half" [ref=f1e272] [cursor=pointer]':
+            - generic [ref=f1e273]: Scrum-half
+          - 'button "Filter position: Fly-half" [ref=f1e274] [cursor=pointer]':
+            - generic [ref=f1e275]: Fly-half
+          - 'button "Filter position: Centre" [ref=f1e276] [cursor=pointer]':
+            - generic [ref=f1e277]: Centre
+          - 'button "Filter position: Outside back" [ref=f1e278] [cursor=pointer]':
+            - generic [ref=f1e279]: Outside back
+        - generic [ref=f1e280]: NATION
+        - generic [ref=f1e281]:
+          - 'button "Filter nation: All" [ref=f1e282] [cursor=pointer]':
+            - generic [ref=f1e283]: All
+          - 'button "Filter nation: Ireland" [ref=f1e284] [cursor=pointer]':
+            - generic [ref=f1e285]: IRE
+          - 'button "Filter nation: France" [ref=f1e286] [cursor=pointer]':
+            - generic [ref=f1e287]: FRA
+          - 'button "Filter nation: England" [ref=f1e288] [cursor=pointer]':
+            - generic [ref=f1e289]: ENG
+          - 'button "Filter nation: Scotland" [ref=f1e290] [cursor=pointer]':
+            - generic [ref=f1e291]: SCO
+          - 'button "Filter nation: Wales" [ref=f1e292] [cursor=pointer]':
+            - generic [ref=f1e293]: WAL
+          - 'button "Filter nation: Italy" [ref=f1e294] [cursor=pointer]':
+            - generic [ref=f1e295]: ITA
+        - generic [ref=f1e296]:
+          - generic [ref=f1e297]: 12 players
+          - generic [ref=f1e299]: PRICE / CREDITS
+        - generic [ref=f1e301]:
+          - generic [ref=f1e302]: "01"
+          - button "View Finn Byrne, Prop, Ireland" [ref=f1e305] [cursor=pointer]:
+            - generic [ref=f1e306]: Finn Byrne ↗
+            - generic [ref=f1e307]:
+              - generic [ref=f1e308]: IRE
+              - generic [ref=f1e309]: Prop
+          - generic [ref=f1e310]:
+            - generic [ref=f1e311]: "4.3"
+            - button "Select Finn Byrne, Prop, Ireland" [ref=f1e312] [cursor=pointer]:
+              - generic [ref=f1e313]: +
+        - generic [ref=f1e314]:
+          - generic [ref=f1e315]: "02"
+          - button "View Louis Moreau, Prop, France" [ref=f1e318] [cursor=pointer]:
+            - generic [ref=f1e319]: Louis Moreau ↗
+            - generic [ref=f1e320]:
+              - generic [ref=f1e321]: FRA
+              - generic [ref=f1e322]: Prop
+          - generic [ref=f1e323]:
+            - generic [ref=f1e324]: "4.6"
+            - button "Select Louis Moreau, Prop, France" [ref=f1e325] [cursor=pointer]:
+              - generic [ref=f1e326]: +
+        - generic [ref=f1e327]:
+          - generic [ref=f1e328]: "03"
+          - button "View Oliver Bennett, Prop, England" [ref=f1e331] [cursor=pointer]:
+            - generic [ref=f1e332]: Oliver Bennett ↗
+            - generic [ref=f1e333]:
+              - generic [ref=f1e334]: ENG
+              - generic [ref=f1e335]: Prop
+          - generic [ref=f1e336]:
+            - generic [ref=f1e337]: "4.9"
+            - button "Select Oliver Bennett, Prop, England" [ref=f1e338] [cursor=pointer]:
+              - generic [ref=f1e339]: +
+        - generic [ref=f1e340]:
+          - generic [ref=f1e341]: "04"
+          - button "View Callum Fraser, Prop, Scotland" [ref=f1e344] [cursor=pointer]:
+            - generic [ref=f1e345]: Callum Fraser ↗
+            - generic [ref=f1e346]:
+              - generic [ref=f1e347]: SCO
+              - generic [ref=f1e348]: Prop
+          - generic [ref=f1e349]:
+            - generic [ref=f1e350]: "5.2"
+            - button "Select Callum Fraser, Prop, Scotland" [ref=f1e351] [cursor=pointer]:
+              - generic [ref=f1e352]: +
+        - generic [ref=f1e353]:
+          - generic [ref=f1e354]: "05"
+          - button "View Dylan Morgan, Prop, Wales" [ref=f1e357] [cursor=pointer]:
+            - generic [ref=f1e358]: Dylan Morgan ↗
+            - generic [ref=f1e359]:
+              - generic [ref=f1e360]: WAL
+              - generic [ref=f1e361]: Prop
+          - generic [ref=f1e362]:
+            - generic [ref=f1e363]: "5.5"
+            - button "Select Dylan Morgan, Prop, Wales" [ref=f1e364] [cursor=pointer]:
+              - generic [ref=f1e365]: +
+        - generic [ref=f1e366]:
+          - generic [ref=f1e367]: "06"
+          - button "View Matteo Rossi, Prop, Italy" [ref=f1e370] [cursor=pointer]:
+            - generic [ref=f1e371]: Matteo Rossi ↗
+            - generic [ref=f1e372]:
+              - generic [ref=f1e373]: ITA
+              - generic [ref=f1e374]: Prop
+          - generic [ref=f1e375]:
+            - generic [ref=f1e376]: "5.8"
+            - button "Select Matteo Rossi, Prop, Italy" [ref=f1e377] [cursor=pointer]:
+              - generic [ref=f1e378]: +
+        - generic [ref=f1e379]:
+          - generic [ref=f1e380]: "49"
+          - button "View Rory Bennett, Prop, Ireland" [ref=f1e383] [cursor=pointer]:
+            - generic [ref=f1e384]: Rory Bennett ↗
+            - generic [ref=f1e385]:
+              - generic [ref=f1e386]: IRE
+              - generic [ref=f1e387]: Prop
+          - generic [ref=f1e388]:
+            - generic [ref=f1e389]: "8.0"
+            - button "Select Rory Bennett, Prop, Ireland" [ref=f1e390] [cursor=pointer]:
+              - generic [ref=f1e391]: +
+        - generic [ref=f1e392]:
+          - generic [ref=f1e393]: "50"
+          - button "View Hugo Fraser, Prop, France" [ref=f1e396] [cursor=pointer]:
+            - generic [ref=f1e397]: Hugo Fraser ↗
+            - generic [ref=f1e398]:
+              - generic [ref=f1e399]: FRA
+              - generic [ref=f1e400]: Prop
+          - generic [ref=f1e401]:
+            - generic [ref=f1e402]: "8.1"
+            - button "Select Hugo Fraser, Prop, France" [ref=f1e403] [cursor=pointer]:
+              - generic [ref=f1e404]: +
+        - generic [ref=f1e405]:
+          - generic [ref=f1e406]: "51"
+          - button "View Theo Morgan, Prop, England" [ref=f1e409] [cursor=pointer]:
+            - generic [ref=f1e410]: Theo Morgan ↗
+            - generic [ref=f1e411]:
+              - generic [ref=f1e412]: ENG
+              - generic [ref=f1e413]: Prop
+          - generic [ref=f1e414]:
+            - generic [ref=f1e415]: "8.2"
+            - button "Select Theo Morgan, Prop, England" [ref=f1e416] [cursor=pointer]:
+              - generic [ref=f1e417]: +
+        - generic [ref=f1e418]:
+          - generic [ref=f1e419]: "52"
+          - button "View Angus Rossi, Prop, Scotland" [ref=f1e422] [cursor=pointer]:
+            - generic [ref=f1e423]: Angus Rossi ↗
+            - generic [ref=f1e424]:
+              - generic [ref=f1e425]: SCO
+              - generic [ref=f1e426]: Prop
+          - generic [ref=f1e427]:
+            - generic [ref=f1e428]: "8.3"
+            - button "Select Angus Rossi, Prop, Scotland" [ref=f1e429] [cursor=pointer]:
+              - generic [ref=f1e430]: +
+        - generic [ref=f1e431]:
+          - generic [ref=f1e432]: "53"
+          - button "View Rhys Byrne, Prop, Wales" [ref=f1e435] [cursor=pointer]:
+            - generic [ref=f1e436]: Rhys Byrne ↗
+            - generic [ref=f1e437]:
+              - generic [ref=f1e438]: WAL
+              - generic [ref=f1e439]: Prop
+          - generic [ref=f1e440]:
+            - generic [ref=f1e441]: "8.4"
+            - button "Select Rhys Byrne, Prop, Wales" [ref=f1e442] [cursor=pointer]:
+              - generic [ref=f1e443]: +
+        - generic [ref=f1e444]:
+          - generic [ref=f1e445]: "54"
+          - button "View Luca Moreau, Prop, Italy" [ref=f1e448] [cursor=pointer]:
+            - generic [ref=f1e449]: Luca Moreau ↗
+            - generic [ref=f1e450]:
+              - generic [ref=f1e451]: ITA
+              - generic [ref=f1e452]: Prop
+          - generic [ref=f1e453]:
+            - generic [ref=f1e454]: "8.5"
+            - button "Select Luca Moreau, Prop, Italy" [ref=f1e455] [cursor=pointer]:
+              - generic [ref=f1e456]: +
+        - generic [ref=f1e457]:
+          - generic [ref=f1e458]: THE CAPTAIN’S EDGE
+          - generic [ref=f1e459]: Your captain earns double points. If they don’t participate, your playing vice-captain takes over. Reserves never inherit captaincy.
+    - generic [ref=f1e461]:
+      - generic [ref=f1e462]: 6Nations / INDEPENDENT FANTASY RUGBY
+      - generic [ref=f1e463]: Demo only · No official tournament affiliation · No real squad submission
+  - dialog [ref=f1e513]:
+    - generic [ref=f1e516]:
+      - generic [ref=f1e517]:
+        - generic [ref=f1e518]:
+          - generic [ref=f1e519]: TACTICAL INTELLIGENCE
+          - generic [ref=f1e520]: Captaincy & roster compliance
+        - button "Close Tactical Desk" [active] [ref=f1e522] [cursor=pointer]:
+          - generic [ref=f1e523]: Close
+      - generic [ref=f1e524]:
+        - generic [ref=f1e525]: CAPTAINCY
+        - generic [ref=f1e526]: No captain selected
+        - generic [ref=f1e527]: C · 2.0× multiplier · scoring data unavailable in demo
+        - generic [ref=f1e528]: VC · No vice-captain selected
+      - generic [ref=f1e529]:
+        - generic [ref=f1e530]:
+          - generic [ref=f1e531]: Squad size
+          - generic [ref=f1e532]: 0 / 18
+        - generic [ref=f1e533]:
+          - generic [ref=f1e534]: Salary cap
+          - generic [ref=f1e535]: 0.0 / 100.0 cr
+        - generic [ref=f1e536]:
+          - generic [ref=f1e537]: Nation limit
+          - generic [ref=f1e538]: Compliant
+        - generic [ref=f1e539]:
+          - generic [ref=f1e540]: Leadership
+          - generic [ref=f1e541]: Incomplete
+      - generic [ref=f1e542]: NATION DISTRIBUTION
+      - generic [ref=f1e543]:
+        - generic [ref=f1e544]: IRE 0/4
+        - generic [ref=f1e545]: FRA 0/4
+        - generic [ref=f1e546]: ENG 0/4
+        - generic [ref=f1e547]: SCO 0/4
+        - generic [ref=f1e548]: WAL 0/4
+        - generic [ref=f1e549]: ITA 0/4
+      - button "Transfer Market · coming soon" [disabled]:
+        - generic [ref=f1e550]: 2 free transfers · coming soon

@@ -1,0 +1,53 @@
+services:
+  api:
+    image: ${BACKEND_IMAGE:-six-nations-backend:local}
+    pull_policy: never
+    build: &backend-build
+      context: ..
+      dockerfile: backend/Dockerfile
+    command: ['node', 'backend/dist/entrypoints/api.js']
+    environment:
+      NODE_ENV: ${NODE_ENV:-production}
+      HOST: 0.0.0.0
+      PORT: 3000
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      CORS_ORIGINS: ${CORS_ORIGINS:-}
+      SUPABASE_URL: ${SUPABASE_URL:?Set SUPABASE_URL}
+      SUPABASE_PUBLISHABLE_KEY: ${SUPABASE_PUBLISHABLE_KEY:?Set SUPABASE_PUBLISHABLE_KEY}
+    ports: ['127.0.0.1:3000:3000']
+    restart: unless-stopped
+    init: true
+    read_only: true
+    tmpfs: ['/tmp:size=16m,mode=1777']
+    security_opt: ['no-new-privileges:true']
+    cap_drop: ['ALL']
+    mem_limit: 512m
+    cpus: 1
+    stop_grace_period: 30s
+  worker:
+    image: ${BACKEND_IMAGE:-six-nations-backend:local}
+    pull_policy: never
+    build: *backend-build
+    command: ['node', 'backend/dist/entrypoints/worker.js']
+    env_file: .env
+    restart: unless-stopped
+    init: true
+    read_only: true
+    tmpfs: ['/tmp:size=32m,mode=1777']
+    security_opt: ['no-new-privileges:true']
+    cap_drop: ['ALL']
+    mem_limit: 512m
+    cpus: 1
+    stop_grace_period: 180s
+    healthcheck:
+      test:
+        [
+          'CMD',
+          'node',
+          '-e',
+          "const fs=require('node:fs');try{process.exit(Date.now()-Number(fs.readFileSync('/tmp/worker-heartbeat','utf8'))<180000?0:1)}catch{process.exit(1)}",
+        ]
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 3

@@ -1,0 +1,518 @@
+- generic [ref=e11] [box=0,0,390,4585]:
+  - generic [ref=e12] [box=16,0,358,127]:
+    - generic [ref=e13] [box=16,14,293,42]:
+      - button "Open Tournament Hub" [ref=e14] [cursor=pointer] [box=16,15,56,40]:
+        - generic [ref=e15] [box=27,29,34,12]: MENU
+      - generic [ref=e16] [box=84,14,224,42]:
+        - generic "6Nations logo" [ref=e17] [box=84,14,42,42]:
+          - img "6Nations logo" [ref=e19] [box=84,14,42,42]
+        - generic [ref=e20] [box=138,17,170,36]:
+          - generic [ref=e21] [box=138,17,170,25]: 6Nations
+          - generic [ref=e22] [box=138,42,170,11]: SIX NATIONS FANTASY · 2027
+    - generic [ref=e23] [box=16,72,738,40]:
+      - button "Open Tactical Desk" [ref=e24] [cursor=pointer] [box=16,73,104,38]:
+        - generic [ref=e25] [box=26,80,84,11]: TACTICAL DESK
+        - generic [ref=e26] [box=26,94,84,10]: CHECK SQUAD
+      - generic [ref=e27] [box=136,77,187,30]: ROUND 01 · LIVE PREVIEW
+      - generic [ref=e28] [box=339,87,95,11]: LOCKOUT · 2D 14H
+      - generic [ref=e29] [box=450,87,128,11]: ● SYNC READY · RANK —
+      - generic [ref=e30] [box=594,84,64,17]: Alex’s XV
+      - button "Lock starting fifteen" [ref=e31] [cursor=pointer] [box=674,72,79,40]:
+        - generic [ref=e32] [box=688,86,51,12]: LOCK XV
+  - generic "Primary navigation" [ref=e33] [box=16,127,358,57]:
+    - generic [ref=e34] [cursor=pointer] [box=16,137,88,36]: MY SQUAD
+    - generic [ref=e36] [cursor=pointer] [box=108,137,86,36]: MATCHES
+    - generic [ref=e38] [cursor=pointer] [box=198,137,86,36]: LEAGUES
+    - generic [ref=e40] [cursor=pointer] [box=288,137,86,36]: STATS
+  - generic [ref=e42] [box=16,184,358,277]:
+    - generic [ref=e43] [box=16,214,358,128]:
+      - generic [ref=e44] [box=16,214,358,14]: 2027 SEASON / SAMPLE ROUND 01
+      - heading "Your squad. Your call." [level=1] [ref=e45] [box=16,238,358,48]: My Squad
+      - generic [ref=e46] [box=16,298,358,44]: Build your starting XV, pick your leaders, and make every credit count.
+    - generic [ref=e48] [box=16,366,280,65]:
+      - generic [ref=e49] [box=16,366,280,17]: YOUR FIRST XV STARTS HERE
+      - generic [ref=e50] [box=16,387,280,44]: Round 01 command centre · live-ready scoring and account sync surface.
+  - generic [ref=e52] [box=16,461,358,407]:
+    - generic [ref=e53] [box=16,461,358,139]:
+      - generic [ref=e54] [box=33,478,324,12]: BUDGET REMAINING
+      - generic [ref=e55] [box=33,498,324,43]: 100.0 cr
+      - generic [ref=e57] [box=33,561,324,22]: 0.0 / 100.0 credits spent
+    - generic [ref=e59] [box=16,610,358,127]:
+      - generic [ref=e60] [box=33,627,324,12]: SQUAD SELECTED
+      - generic [ref=e61] [box=33,647,324,43]: 0 / 18
+      - generic [ref=e62] [box=33,698,324,22]: 0/15 starters · 0/3 reserves
+    - generic [ref=e64] [box=16,747,358,121]:
+      - generic [ref=e65] [box=33,764,324,12]: CAPTAINCY
+      - generic [ref=e66] [box=33,792,324,23]: C Choose your captain
+      - generic [ref=e67] [box=33,829,324,22]: VC · Choose your vice-captain
+  - generic [ref=e69] [box=16,898,358,3542]:
+    - generic [ref=e70] [box=16,898,358,1641]:
+      - generic [ref=e71] [box=16,898,358,106]:
+        - generic [ref=e72] [box=16,898,255,58]:
+          - generic [ref=e73] [box=16,898,255,32]: My squad
+          - generic [ref=e74] [box=16,934,255,22]: Tap a slot to select or replace a player.
+        - generic [ref=e76] [box=16,968,112,36]:
+          - button "Pitch" [ref=e77] [cursor=pointer] [box=16,968,58,36]
+          - button "List" [ref=e79] [cursor=pointer] [box=80,968,48,36]
+      - generic [ref=e81] [box=16,1020,358,900]:
+        - generic [ref=e82] [box=29,1045,332,16]:
+          - generic [ref=e83] [box=33,1045,89,12]: STARTING XV
+          - generic [ref=e84] [box=301,1048,56,11]: ATTACK →
+        - generic [box=22,1183,54,665]:
+          - generic [box=45,1238,9,54]: BACK THREE
+          - generic [box=45,1405,9,54]: BACK ROW
+          - generic [box=45,1571,9,54]: SECOND ROW
+          - generic [box=45,1737,9,54]: FRONT ROW
+        - generic [ref=e85] [box=29,1071,332,131]:
+          - 'button "Outside back: empty" [ref=e87] [cursor=pointer] [box=29,1071,106,131]':
+            - generic [ref=e88] [box=38,1080,88,16]: Outside back
+            - generic [ref=e94] [box=39,1104,86,70]:
+              - generic [ref=e95] [box=69,1112,25,31]: —
+              - generic [ref=e96] [box=46,1143,72,10]: SELECT PLAYER
+              - generic [ref=e97] [box=56,1156,51,10]: OPEN SLOT
+            - generic [ref=e98] [box=38,1182,88,11]:
+              - generic [ref=e99] [box=38,1182,33,11]:
+                - generic [ref=e101] [box=48,1182,10,11]: —
+                - generic [ref=e102] [box=62,1182,9,11]: —
+              - generic [ref=e103] [box=82,1183,44,10]: AWAITING
+          - 'button "Outside back: empty" [ref=e105] [cursor=pointer] [box=142,1071,106,131]':
+            - generic [ref=e106] [box=151,1080,88,16]: Outside back
+            - generic [ref=e112] [box=152,1104,86,70]:
+              - generic [ref=e113] [box=182,1112,25,31]: —
+              - generic [ref=e114] [box=159,1143,72,10]: SELECT PLAYER
+              - generic [ref=e115] [box=169,1156,51,10]: OPEN SLOT
+            - generic [ref=e116] [box=151,1182,88,11]:
+              - generic [ref=e117] [box=151,1182,33,11]:
+                - generic [ref=e119] [box=161,1182,10,11]: —
+                - generic [ref=e120] [box=175,1182,9,11]: —
+              - generic [ref=e121] [box=195,1183,44,10]: AWAITING
+          - 'button "Outside back: empty" [ref=e123] [cursor=pointer] [box=255,1071,106,131]':
+            - generic [ref=e124] [box=264,1080,88,16]: Outside back
+            - generic [ref=e130] [box=265,1104,86,70]:
+              - generic [ref=e131] [box=295,1112,25,31]: —
+              - generic [ref=e132] [box=272,1143,72,10]: SELECT PLAYER
+              - generic [ref=e133] [box=282,1156,51,10]: OPEN SLOT
+            - generic [ref=e134] [box=264,1182,88,11]:
+              - generic [ref=e135] [box=264,1182,33,11]:
+                - generic [ref=e137] [box=274,1182,10,11]: —
+                - generic [ref=e138] [box=288,1182,9,11]: —
+              - generic [ref=e139] [box=308,1183,44,10]: AWAITING
+        - generic [ref=e140] [box=29,1212,332,131]:
+          - 'button "Centre: empty" [ref=e142] [cursor=pointer] [box=29,1212,163,131]':
+            - generic [ref=e143] [box=38,1221,145,16]: Centre
+            - generic [ref=e149] [box=39,1245,143,70]:
+              - generic [ref=e150] [box=98,1253,25,31]: —
+              - generic [ref=e151] [box=73,1284,75,10]: SELECT PLAYER
+              - generic [ref=e152] [box=85,1297,51,10]: OPEN SLOT
+            - generic [ref=e153] [box=38,1323,145,11]:
+              - generic [ref=e154] [box=38,1323,33,11]:
+                - generic [ref=e156] [box=48,1323,10,11]: —
+                - generic [ref=e157] [box=62,1323,9,11]: —
+              - generic [ref=e158] [box=139,1324,44,10]: AWAITING
+          - 'button "Centre: empty" [ref=e160] [cursor=pointer] [box=199,1212,163,131]':
+            - generic [ref=e161] [box=208,1221,145,16]: Centre
+            - generic [ref=e167] [box=209,1245,143,70]:
+              - generic [ref=e168] [box=267,1253,25,31]: —
+              - generic [ref=e169] [box=242,1284,75,10]: SELECT PLAYER
+              - generic [ref=e170] [box=254,1297,51,10]: OPEN SLOT
+            - generic [ref=e171] [box=208,1323,145,11]:
+              - generic [ref=e172] [box=208,1323,33,11]:
+                - generic [ref=e174] [box=218,1323,10,11]: —
+                - generic [ref=e175] [box=231,1323,9,11]: —
+              - generic [ref=e176] [box=308,1324,44,10]: AWAITING
+        - generic [ref=e177] [box=29,1353,332,131]:
+          - 'button "Scrum-half: empty" [ref=e179] [cursor=pointer] [box=29,1353,163,131]':
+            - generic [ref=e180] [box=38,1362,145,16]: Scrum-half
+            - generic [ref=e186] [box=39,1386,143,70]:
+              - generic [ref=e187] [box=98,1394,25,31]: —
+              - generic [ref=e188] [box=73,1425,75,10]: SELECT PLAYER
+              - generic [ref=e189] [box=85,1438,51,10]: OPEN SLOT
+            - generic [ref=e190] [box=38,1464,145,11]:
+              - generic [ref=e191] [box=38,1464,33,11]:
+                - generic [ref=e193] [box=48,1464,10,11]: —
+                - generic [ref=e194] [box=62,1464,9,11]: —
+              - generic [ref=e195] [box=139,1465,44,10]: AWAITING
+          - 'button "Fly-half: empty" [ref=e197] [cursor=pointer] [box=199,1353,163,131]':
+            - generic [ref=e198] [box=208,1362,145,16]: Fly-half
+            - generic [ref=e204] [box=209,1386,143,70]:
+              - generic [ref=e205] [box=267,1394,25,31]: —
+              - generic [ref=e206] [box=242,1425,75,10]: SELECT PLAYER
+              - generic [ref=e207] [box=254,1438,51,10]: OPEN SLOT
+            - generic [ref=e208] [box=208,1464,145,11]:
+              - generic [ref=e209] [box=208,1464,33,11]:
+                - generic [ref=e211] [box=218,1464,10,11]: —
+                - generic [ref=e212] [box=231,1464,9,11]: —
+              - generic [ref=e213] [box=308,1465,44,10]: AWAITING
+        - generic [ref=e214] [box=29,1494,332,131]:
+          - 'button "Back row: empty" [ref=e216] [cursor=pointer] [box=29,1494,106,131]':
+            - generic [ref=e217] [box=38,1503,88,16]: Back row
+            - generic [ref=e223] [box=39,1527,86,70]:
+              - generic [ref=e224] [box=69,1535,25,31]: —
+              - generic [ref=e225] [box=46,1566,72,10]: SELECT PLAYER
+              - generic [ref=e226] [box=56,1579,51,10]: OPEN SLOT
+            - generic [ref=e227] [box=38,1605,88,11]:
+              - generic [ref=e228] [box=38,1605,33,11]:
+                - generic [ref=e230] [box=48,1605,10,11]: —
+                - generic [ref=e231] [box=62,1605,9,11]: —
+              - generic [ref=e232] [box=82,1606,44,10]: AWAITING
+          - 'button "Back row: empty" [ref=e234] [cursor=pointer] [box=142,1494,106,131]':
+            - generic [ref=e235] [box=151,1503,88,16]: Back row
+            - generic [ref=e241] [box=152,1527,86,70]:
+              - generic [ref=e242] [box=182,1535,25,31]: —
+              - generic [ref=e243] [box=159,1566,72,10]: SELECT PLAYER
+              - generic [ref=e244] [box=169,1579,51,10]: OPEN SLOT
+            - generic [ref=e245] [box=151,1605,88,11]:
+              - generic [ref=e246] [box=151,1605,33,11]:
+                - generic [ref=e248] [box=161,1605,10,11]: —
+                - generic [ref=e249] [box=175,1605,9,11]: —
+              - generic [ref=e250] [box=195,1606,44,10]: AWAITING
+          - 'button "Back row: empty" [ref=e252] [cursor=pointer] [box=255,1494,106,131]':
+            - generic [ref=e253] [box=264,1503,88,16]: Back row
+            - generic [ref=e259] [box=265,1527,86,70]:
+              - generic [ref=e260] [box=295,1535,25,31]: —
+              - generic [ref=e261] [box=272,1566,72,10]: SELECT PLAYER
+              - generic [ref=e262] [box=282,1579,51,10]: OPEN SLOT
+            - generic [ref=e263] [box=264,1605,88,11]:
+              - generic [ref=e264] [box=264,1605,33,11]:
+                - generic [ref=e266] [box=274,1605,10,11]: —
+                - generic [ref=e267] [box=288,1605,9,11]: —
+              - generic [ref=e268] [box=308,1606,44,10]: AWAITING
+        - generic [ref=e269] [box=29,1635,332,131]:
+          - 'button "Lock: empty" [ref=e271] [cursor=pointer] [box=29,1635,163,131]':
+            - generic [ref=e272] [box=38,1644,145,16]: Lock
+            - generic [ref=e278] [box=39,1668,143,70]:
+              - generic [ref=e279] [box=98,1676,25,31]: —
+              - generic [ref=e280] [box=73,1707,75,10]: SELECT PLAYER
+              - generic [ref=e281] [box=85,1720,51,10]: OPEN SLOT
+            - generic [ref=e282] [box=38,1746,145,11]:
+              - generic [ref=e283] [box=38,1746,33,11]:
+                - generic [ref=e285] [box=48,1746,10,11]: —
+                - generic [ref=e286] [box=62,1746,9,11]: —
+              - generic [ref=e287] [box=139,1747,44,10]: AWAITING
+          - 'button "Lock: empty" [ref=e289] [cursor=pointer] [box=199,1635,163,131]':
+            - generic [ref=e290] [box=208,1644,145,16]: Lock
+            - generic [ref=e296] [box=209,1668,143,70]:
+              - generic [ref=e297] [box=267,1676,25,31]: —
+              - generic [ref=e298] [box=242,1707,75,10]: SELECT PLAYER
+              - generic [ref=e299] [box=254,1720,51,10]: OPEN SLOT
+            - generic [ref=e300] [box=208,1746,145,11]:
+              - generic [ref=e301] [box=208,1746,33,11]:
+                - generic [ref=e303] [box=218,1746,10,11]: —
+                - generic [ref=e304] [box=231,1746,9,11]: —
+              - generic [ref=e305] [box=308,1747,44,10]: AWAITING
+        - generic [ref=e306] [box=29,1776,332,131]:
+          - 'button "Prop: empty" [ref=e308] [cursor=pointer] [box=29,1776,106,131]':
+            - generic [ref=e309] [box=38,1785,88,16]: Prop
+            - generic [ref=e315] [box=39,1809,86,70]:
+              - generic [ref=e316] [box=69,1817,25,31]: —
+              - generic [ref=e317] [box=46,1848,72,10]: SELECT PLAYER
+              - generic [ref=e318] [box=56,1861,51,10]: OPEN SLOT
+            - generic [ref=e319] [box=38,1887,88,11]:
+              - generic [ref=e320] [box=38,1887,33,11]:
+                - generic [ref=e322] [box=48,1887,10,11]: —
+                - generic [ref=e323] [box=62,1887,9,11]: —
+              - generic [ref=e324] [box=82,1888,44,10]: AWAITING
+          - 'button "Hooker: empty" [ref=e326] [cursor=pointer] [box=142,1776,106,131]':
+            - generic [ref=e327] [box=151,1785,88,16]: Hooker
+            - generic [ref=e333] [box=152,1809,86,70]:
+              - generic [ref=e334] [box=182,1817,25,31]: —
+              - generic [ref=e335] [box=159,1848,72,10]: SELECT PLAYER
+              - generic [ref=e336] [box=169,1861,51,10]: OPEN SLOT
+            - generic [ref=e337] [box=151,1887,88,11]:
+              - generic [ref=e338] [box=151,1887,33,11]:
+                - generic [ref=e340] [box=161,1887,10,11]: —
+                - generic [ref=e341] [box=175,1887,9,11]: —
+              - generic [ref=e342] [box=195,1888,44,10]: AWAITING
+          - 'button "Prop: empty" [ref=e344] [cursor=pointer] [box=255,1776,106,131]':
+            - generic [ref=e345] [box=264,1785,88,16]: Prop
+            - generic [ref=e351] [box=265,1809,86,70]:
+              - generic [ref=e352] [box=295,1817,25,31]: —
+              - generic [ref=e353] [box=272,1848,72,10]: SELECT PLAYER
+              - generic [ref=e354] [box=282,1861,51,10]: OPEN SLOT
+            - generic [ref=e355] [box=264,1887,88,11]:
+              - generic [ref=e356] [box=264,1887,33,11]:
+                - generic [ref=e358] [box=274,1887,10,11]: —
+                - generic [ref=e359] [box=288,1887,9,11]: —
+              - generic [ref=e360] [box=308,1888,44,10]: AWAITING
+      - generic [ref=e361] [box=16,1944,358,49]:
+        - generic [ref=e362] [box=16,1944,365,49]:
+          - generic [ref=e363] [box=16,1944,365,23]: The bench
+          - generic [ref=e364] [box=16,1971,365,22]: Cover in priority order · auto-substitution when eligible.
+        - generic [ref=e366] [box=393,1971,53,22]: 0/3 RESERVES
+      - generic [ref=e367] [box=16,2005,358,239]:
+        - generic [ref=e368] [box=16,2005,114,239]:
+          - 'button "RESERVE 1: empty" [ref=e370] [cursor=pointer] [box=16,2005,114,131]':
+            - generic [ref=e371] [box=25,2014,96,16]: RESERVE 1
+            - generic [ref=e377] [box=26,2038,94,70]:
+              - generic [ref=e378] [box=60,2046,25,31]: —
+              - generic [ref=e379] [box=36,2077,75,10]: SELECT PLAYER
+              - generic [ref=e380] [box=47,2090,51,10]: OPEN SLOT
+            - generic [ref=e381] [box=25,2116,96,11]:
+              - generic [ref=e382] [box=25,2116,33,11]:
+                - generic [ref=e384] [box=35,2116,10,11]: —
+                - generic [ref=e385] [box=49,2116,9,11]: —
+              - generic [ref=e386] [box=77,2117,44,10]: AWAITING
+          - generic [ref=e387] [box=16,2142,114,36]:
+            - button "Move reserve 1 earlier" [disabled] [box=-47,2142,48,36]:
+              - generic [ref=e388] [box=-29,2152,12,16]: ←
+            - button "Move reserve 1 later" [ref=e389] [cursor=pointer] [box=5,2142,48,36]:
+              - generic [ref=e390] [box=23,2152,12,16]: →
+            - button "Swap reserve 1 with selected starting player" [disabled] [box=57,2142,136,36]:
+              - generic [ref=e391] [box=70,2152,110,16]: Swap with starter
+          - generic [ref=e392] [box=16,2184,114,60]: Open cover cover · auto-substitutes when an eligible starter does not play
+        - generic [ref=e393] [box=138,2005,114,239]:
+          - 'button "RESERVE 2: empty" [ref=e395] [cursor=pointer] [box=138,2005,114,131]':
+            - generic [ref=e396] [box=147,2014,96,16]: RESERVE 2
+            - generic [ref=e402] [box=148,2038,94,70]:
+              - generic [ref=e403] [box=182,2046,25,31]: —
+              - generic [ref=e404] [box=158,2077,75,10]: SELECT PLAYER
+              - generic [ref=e405] [box=169,2090,51,10]: OPEN SLOT
+            - generic [ref=e406] [box=147,2116,96,11]:
+              - generic [ref=e407] [box=147,2116,33,11]:
+                - generic [ref=e409] [box=157,2116,10,11]: —
+                - generic [ref=e410] [box=171,2116,9,11]: —
+              - generic [ref=e411] [box=199,2117,44,10]: AWAITING
+          - generic [ref=e412] [box=138,2142,114,36]:
+            - button "Move reserve 2 earlier" [ref=e413] [cursor=pointer] [box=75,2142,48,36]:
+              - generic [ref=e414] [box=93,2152,12,16]: ←
+            - button "Move reserve 2 later" [ref=e415] [cursor=pointer] [box=127,2142,48,36]:
+              - generic [ref=e416] [box=145,2152,12,16]: →
+            - button "Swap reserve 2 with selected starting player" [disabled] [box=179,2142,136,36]:
+              - generic [ref=e417] [box=192,2152,110,16]: Swap with starter
+          - generic [ref=e418] [box=138,2184,114,60]: Open cover cover · auto-substitutes when an eligible starter does not play
+        - generic [ref=e419] [box=260,2005,114,239]:
+          - 'button "RESERVE 3: empty" [ref=e421] [cursor=pointer] [box=260,2005,114,131]':
+            - generic [ref=e422] [box=269,2014,96,16]: RESERVE 3
+            - generic [ref=e428] [box=270,2038,94,70]:
+              - generic [ref=e429] [box=304,2046,25,31]: —
+              - generic [ref=e430] [box=280,2077,75,10]: SELECT PLAYER
+              - generic [ref=e431] [box=291,2090,51,10]: OPEN SLOT
+            - generic [ref=e432] [box=269,2116,96,11]:
+              - generic [ref=e433] [box=269,2116,33,11]:
+                - generic [ref=e435] [box=279,2116,10,11]: —
+                - generic [ref=e436] [box=293,2116,9,11]: —
+              - generic [ref=e437] [box=321,2117,44,10]: AWAITING
+          - generic [ref=e438] [box=260,2142,114,36]:
+            - button "Move reserve 3 earlier" [ref=e439] [cursor=pointer] [box=197,2142,48,36]:
+              - generic [ref=e440] [box=215,2152,12,16]: ←
+            - button "Move reserve 3 later" [disabled] [box=249,2142,48,36]:
+              - generic [ref=e441] [box=267,2152,12,16]: →
+            - button "Swap reserve 3 with selected starting player" [disabled] [box=301,2142,136,36]:
+              - generic [ref=e442] [box=314,2152,110,16]: Swap with starter
+          - generic [ref=e443] [box=260,2184,114,60]: Open cover cover · auto-substitutes when an eligible starter does not play
+      - generic [ref=e444] [box=16,2264,358,106]:
+        - generic [ref=e445] [box=33,2281,324,17]: MAXIMUM FOUR PER NATION · ALL 18 PLAYERS
+        - generic [ref=e446] [box=33,2310,324,43]:
+          - generic [ref=e447] [box=33,2310,28,43]:
+            - generic [ref=e448] [box=38,2310,18,12]: IRE
+            - generic [ref=e449] [box=33,2328,28,25]: 0/4
+          - generic [ref=e450] [box=92,2310,28,43]:
+            - generic [ref=e451] [box=95,2310,23,12]: FRA
+            - generic [ref=e452] [box=92,2328,28,25]: 0/4
+          - generic [ref=e453] [box=151,2310,28,43]:
+            - generic [ref=e454] [box=153,2310,24,12]: ENG
+            - generic [ref=e455] [box=151,2328,28,25]: 0/4
+          - generic [ref=e456] [box=211,2310,28,43]:
+            - generic [ref=e457] [box=212,2310,25,12]: SCO
+            - generic [ref=e458] [box=211,2328,28,25]: 0/4
+          - generic [ref=e459] [box=270,2310,28,43]:
+            - generic [ref=e460] [box=271,2310,25,12]: WAL
+            - generic [ref=e461] [box=270,2328,28,25]: 0/4
+          - generic [ref=e462] [box=329,2310,28,43]:
+            - generic [ref=e463] [box=334,2310,19,12]: ITA
+            - generic [ref=e464] [box=329,2328,28,25]: 0/4
+      - generic [ref=e465] [box=16,2386,358,41]:
+        - generic [ref=e466] [box=16,2386,358,15]: Draft restored on this device
+        - generic [ref=e467] [box=16,2405,358,22]: Your draft stays in this browser or on this device.
+      - generic [ref=e469] [box=16,2443,358,96]:
+        - button "Review squad" [ref=e470] [cursor=pointer] [box=16,2443,358,44]:
+          - generic [ref=e471] [box=144,2457,103,16]: Review squad →
+        - generic [ref=e472] [box=16,2495,358,44]:
+          - button "Load example squad" [ref=e473] [cursor=pointer] [box=16,2495,163,44]
+          - button "Clear draft" [ref=e475] [cursor=pointer] [box=185,2495,100,44]
+    - generic [ref=e477] [box=16,2559,358,1881]:
+      - generic [ref=e478] [box=35,2578,320,14]: BUILD YOUR TEAM
+      - generic [ref=e479] [box=35,2602,320,32]: Player pool
+      - generic [ref=e480] [box=35,2638,320,44]: Fantasy price, recent form, appearances, and points feed the selection decision.
+      - generic [ref=e482] [box=35,2700,320,75]:
+        - generic [ref=e483] [box=52,2714,289,17]: SELECTING FOR 1 · PROP
+        - generic [ref=e484] [box=52,2739,289,22]: Choose a prop for this starter slot.
+      - textbox "Search players" [ref=e486] [box=35,2793,320,52]:
+        - /placeholder: Search player, nation or position…
+      - generic [ref=e487] [box=35,2863,320,12]: POSITION
+      - generic [ref=e488] [box=35,2883,320,120]:
+        - 'button "Filter position: All" [ref=e489] [cursor=pointer] [box=35,2883,48,36]':
+          - generic [ref=e490] [box=51,2893,16,16]: All
+        - 'button "Filter position: Prop" [ref=e491] [cursor=pointer] [box=89,2883,55,36]':
+          - generic [ref=e492] [box=102,2893,29,16]: Prop
+        - 'button "Filter position: Hooker" [ref=e493] [cursor=pointer] [box=150,2883,71,36]':
+          - generic [ref=e494] [box=163,2893,45,16]: Hooker
+        - 'button "Filter position: Lock" [ref=e495] [cursor=pointer] [box=228,2883,56,36]':
+          - generic [ref=e496] [box=241,2893,30,16]: Lock
+        - 'button "Filter position: Back row" [ref=e497] [cursor=pointer] [box=35,2925,84,36]':
+          - generic [ref=e498] [box=48,2935,58,16]: Back row
+        - 'button "Filter position: Scrum-half" [ref=e499] [cursor=pointer] [box=125,2925,97,36]':
+          - generic [ref=e500] [box=138,2935,71,16]: Scrum-half
+        - 'button "Filter position: Fly-half" [ref=e501] [cursor=pointer] [box=228,2925,74,36]':
+          - generic [ref=e502] [box=241,2935,48,16]: Fly-half
+        - 'button "Filter position: Centre" [ref=e503] [cursor=pointer] [box=35,2967,68,36]':
+          - generic [ref=e504] [box=48,2977,42,16]: Centre
+        - 'button "Filter position: Outside back" [ref=e505] [cursor=pointer] [box=109,2967,109,36]':
+          - generic [ref=e506] [box=122,2977,83,16]: Outside back
+      - generic [ref=e507] [box=35,3021,320,12]: NATION
+      - generic [ref=e508] [box=35,3041,320,78]:
+        - 'button "Filter nation: All" [ref=e509] [cursor=pointer] [box=35,3041,48,36]':
+          - generic [ref=e510] [box=51,3051,16,16]: All
+        - 'button "Filter nation: Ireland" [ref=e511] [cursor=pointer] [box=89,3041,48,36]':
+          - generic [ref=e512] [box=103,3051,20,16]: IRE
+        - 'button "Filter nation: France" [ref=e513] [cursor=pointer] [box=143,3041,52,36]':
+          - generic [ref=e514] [box=156,3051,26,16]: FRA
+        - 'button "Filter nation: England" [ref=e515] [cursor=pointer] [box=201,3041,53,36]':
+          - generic [ref=e516] [box=214,3051,27,16]: ENG
+        - 'button "Filter nation: Scotland" [ref=e517] [cursor=pointer] [box=260,3041,54,36]':
+          - generic [ref=e518] [box=273,3051,28,16]: SCO
+        - 'button "Filter nation: Wales" [ref=e519] [cursor=pointer] [box=35,3083,55,36]':
+          - generic [ref=e520] [box=48,3093,29,16]: WAL
+        - 'button "Filter nation: Italy" [ref=e521] [cursor=pointer] [box=96,3083,48,36]':
+          - generic [ref=e522] [box=110,3093,21,16]: ITA
+      - generic [ref=e523] [box=35,3143,320,31]:
+        - generic [ref=e524] [box=35,3143,66,22]: 12 players
+        - generic [ref=e526] [box=242,3143,113,22]: PRICE / CREDITS
+      - generic [ref=e528] [box=35,3174,320,89]:
+        - generic [ref=e529] [box=41,3195,40,46]: "01"
+        - button "View Finn Byrne, Prop, Ireland" [ref=e532] [cursor=pointer] [box=93,3194,196,48]:
+          - generic [ref=e533] [box=93,3198,196,21]: Finn Byrne ↗
+          - generic [ref=e534] [box=93,3223,196,16]:
+            - generic [ref=e535] [box=93,3223,17,11]: IRE
+            - generic [ref=e536] [box=118,3223,35,16]: Prop
+        - generic [ref=e537] [box=301,3187,48,62]:
+          - generic [ref=e538] [box=313,3187,25,20]: "4.3"
+          - button "Select Finn Byrne, Prop, Ireland" [ref=e539] [cursor=pointer] [box=301,3213,48,36]:
+            - generic [ref=e540] [box=321,3223,9,16]: +
+      - generic [ref=e541] [box=35,3263,320,89]:
+        - generic [ref=e542] [box=41,3284,40,46]: "02"
+        - button "View Louis Moreau, Prop, France" [ref=e545] [cursor=pointer] [box=93,3283,196,48]:
+          - generic [ref=e546] [box=93,3287,196,21]: Louis Moreau ↗
+          - generic [ref=e547] [box=93,3312,196,16]:
+            - generic [ref=e548] [box=93,3312,21,11]: FRA
+            - generic [ref=e549] [box=122,3312,35,16]: Prop
+        - generic [ref=e550] [box=301,3276,48,62]:
+          - generic [ref=e551] [box=313,3276,25,20]: "4.6"
+          - button "Select Louis Moreau, Prop, France" [ref=e552] [cursor=pointer] [box=301,3302,48,36]:
+            - generic [ref=e553] [box=321,3312,9,16]: +
+      - generic [ref=e554] [box=35,3352,320,89]:
+        - generic [ref=e555] [box=41,3373,40,46]: "03"
+        - button "View Oliver Bennett, Prop, England" [ref=e558] [cursor=pointer] [box=93,3372,196,48]:
+          - generic [ref=e559] [box=93,3376,196,21]: Oliver Bennett ↗
+          - generic [ref=e560] [box=93,3401,196,16]:
+            - generic [ref=e561] [box=93,3401,22,11]: ENG
+            - generic [ref=e562] [box=123,3401,35,16]: Prop
+        - generic [ref=e563] [box=301,3365,48,62]:
+          - generic [ref=e564] [box=313,3365,25,20]: "4.9"
+          - button "Select Oliver Bennett, Prop, England" [ref=e565] [cursor=pointer] [box=301,3391,48,36]:
+            - generic [ref=e566] [box=321,3401,9,16]: +
+      - generic [ref=e567] [box=35,3441,320,89]:
+        - generic [ref=e568] [box=41,3462,40,46]: "04"
+        - button "View Callum Fraser, Prop, Scotland" [ref=e571] [cursor=pointer] [box=93,3461,196,48]:
+          - generic [ref=e572] [box=93,3465,196,21]: Callum Fraser ↗
+          - generic [ref=e573] [box=93,3490,196,16]:
+            - generic [ref=e574] [box=93,3490,22,11]: SCO
+            - generic [ref=e575] [box=123,3490,35,16]: Prop
+        - generic [ref=e576] [box=301,3454,48,62]:
+          - generic [ref=e577] [box=313,3454,25,20]: "5.2"
+          - button "Select Callum Fraser, Prop, Scotland" [ref=e578] [cursor=pointer] [box=301,3480,48,36]:
+            - generic [ref=e579] [box=321,3490,9,16]: +
+      - generic [ref=e580] [box=35,3530,320,89]:
+        - generic [ref=e581] [box=41,3551,40,46]: "05"
+        - button "View Dylan Morgan, Prop, Wales" [ref=e584] [cursor=pointer] [box=93,3550,196,48]:
+          - generic [ref=e585] [box=93,3554,196,21]: Dylan Morgan ↗
+          - generic [ref=e586] [box=93,3579,196,16]:
+            - generic [ref=e587] [box=93,3579,23,11]: WAL
+            - generic [ref=e588] [box=124,3579,35,16]: Prop
+        - generic [ref=e589] [box=301,3543,48,62]:
+          - generic [ref=e590] [box=313,3543,25,20]: "5.5"
+          - button "Select Dylan Morgan, Prop, Wales" [ref=e591] [cursor=pointer] [box=301,3569,48,36]:
+            - generic [ref=e592] [box=321,3579,9,16]: +
+      - generic [ref=e593] [box=35,3619,320,89]:
+        - generic [ref=e594] [box=41,3640,40,46]: "06"
+        - button "View Matteo Rossi, Prop, Italy" [ref=e597] [cursor=pointer] [box=93,3639,196,48]:
+          - generic [ref=e598] [box=93,3643,196,21]: Matteo Rossi ↗
+          - generic [ref=e599] [box=93,3668,196,16]:
+            - generic [ref=e600] [box=93,3668,17,11]: ITA
+            - generic [ref=e601] [box=118,3668,35,16]: Prop
+        - generic [ref=e602] [box=301,3632,48,62]:
+          - generic [ref=e603] [box=313,3632,25,20]: "5.8"
+          - button "Select Matteo Rossi, Prop, Italy" [ref=e604] [cursor=pointer] [box=301,3658,48,36]:
+            - generic [ref=e605] [box=321,3668,9,16]: +
+      - generic [ref=e606] [box=35,3708,320,89]:
+        - generic [ref=e607] [box=41,3729,40,46]: "49"
+        - button "View Rory Bennett, Prop, Ireland" [ref=e610] [cursor=pointer] [box=93,3728,196,48]:
+          - generic [ref=e611] [box=93,3732,196,21]: Rory Bennett ↗
+          - generic [ref=e612] [box=93,3757,196,16]:
+            - generic [ref=e613] [box=93,3757,17,11]: IRE
+            - generic [ref=e614] [box=118,3757,35,16]: Prop
+        - generic [ref=e615] [box=301,3721,48,62]:
+          - generic [ref=e616] [box=313,3721,25,20]: "8.0"
+          - button "Select Rory Bennett, Prop, Ireland" [ref=e617] [cursor=pointer] [box=301,3747,48,36]:
+            - generic [ref=e618] [box=321,3757,9,16]: +
+      - generic [ref=e619] [box=35,3797,320,89]:
+        - generic [ref=e620] [box=41,3818,40,46]: "50"
+        - button "View Hugo Fraser, Prop, France" [ref=e623] [cursor=pointer] [box=93,3817,196,48]:
+          - generic [ref=e624] [box=93,3821,196,21]: Hugo Fraser ↗
+          - generic [ref=e625] [box=93,3846,196,16]:
+            - generic [ref=e626] [box=93,3846,21,11]: FRA
+            - generic [ref=e627] [box=122,3846,35,16]: Prop
+        - generic [ref=e628] [box=301,3810,48,62]:
+          - generic [ref=e629] [box=313,3810,25,20]: "8.1"
+          - button "Select Hugo Fraser, Prop, France" [ref=e630] [cursor=pointer] [box=301,3836,48,36]:
+            - generic [ref=e631] [box=321,3846,9,16]: +
+      - generic [ref=e632] [box=35,3886,320,89]:
+        - generic [ref=e633] [box=41,3907,40,46]: "51"
+        - button "View Theo Morgan, Prop, England" [ref=e636] [cursor=pointer] [box=93,3906,196,48]:
+          - generic [ref=e637] [box=93,3910,196,21]: Theo Morgan ↗
+          - generic [ref=e638] [box=93,3935,196,16]:
+            - generic [ref=e639] [box=93,3935,22,11]: ENG
+            - generic [ref=e640] [box=123,3935,35,16]: Prop
+        - generic [ref=e641] [box=301,3899,48,62]:
+          - generic [ref=e642] [box=313,3899,25,20]: "8.2"
+          - button "Select Theo Morgan, Prop, England" [ref=e643] [cursor=pointer] [box=301,3925,48,36]:
+            - generic [ref=e644] [box=321,3935,9,16]: +
+      - generic [ref=e645] [box=35,3975,320,89]:
+        - generic [ref=e646] [box=41,3996,40,46]: "52"
+        - button "View Angus Rossi, Prop, Scotland" [ref=e649] [cursor=pointer] [box=93,3995,196,48]:
+          - generic [ref=e650] [box=93,3999,196,21]: Angus Rossi ↗
+          - generic [ref=e651] [box=93,4024,196,16]:
+            - generic [ref=e652] [box=93,4024,22,11]: SCO
+            - generic [ref=e653] [box=123,4024,35,16]: Prop
+        - generic [ref=e654] [box=301,3988,48,62]:
+          - generic [ref=e655] [box=313,3988,25,20]: "8.3"
+          - button "Select Angus Rossi, Prop, Scotland" [ref=e656] [cursor=pointer] [box=301,4014,48,36]:
+            - generic [ref=e657] [box=321,4024,9,16]: +
+      - generic [ref=e658] [box=35,4064,320,89]:
+        - generic [ref=e659] [box=41,4085,40,46]: "53"
+        - button "View Rhys Byrne, Prop, Wales" [ref=e662] [cursor=pointer] [box=93,4084,196,48]:
+          - generic [ref=e663] [box=93,4088,196,21]: Rhys Byrne ↗
+          - generic [ref=e664] [box=93,4113,196,16]:
+            - generic [ref=e665] [box=93,4113,23,11]: WAL
+            - generic [ref=e666] [box=124,4113,35,16]: Prop
+        - generic [ref=e667] [box=301,4077,48,62]:
+          - generic [ref=e668] [box=313,4077,25,20]: "8.4"
+          - button "Select Rhys Byrne, Prop, Wales" [ref=e669] [cursor=pointer] [box=301,4103,48,36]:
+            - generic [ref=e670] [box=321,4113,9,16]: +
+      - generic [ref=e671] [box=35,4153,320,89]:
+        - generic [ref=e672] [box=41,4174,40,46]: "54"
+        - button "View Luca Moreau, Prop, Italy" [ref=e675] [cursor=pointer] [box=93,4173,196,48]:
+          - generic [ref=e676] [box=93,4177,196,21]: Luca Moreau ↗
+          - generic [ref=e677] [box=93,4202,196,16]:
+            - generic [ref=e678] [box=93,4202,17,11]: ITA
+            - generic [ref=e679] [box=118,4202,35,16]: Prop
+        - generic [ref=e680] [box=301,4166,48,62]:
+          - generic [ref=e681] [box=313,4166,25,20]: "8.5"
+          - button "Select Luca Moreau, Prop, Italy" [ref=e682] [cursor=pointer] [box=301,4192,48,36]:
+            - generic [ref=e683] [box=321,4202,9,16]: +
+      - generic [ref=e684] [box=35,4262,320,143]:
+        - generic [ref=e685] [box=51,4278,288,17]: THE CAPTAIN’S EDGE
+        - generic [ref=e686] [box=51,4301,288,88]: Your captain earns double points. If they don’t participate, your playing vice-captain takes over. Reserves never inherit captaincy.
+  - generic [ref=e688] [box=16,4476,358,85]:
+    - generic [ref=e689] [box=16,4497,358,12]: 6Nations / INDEPENDENT FANTASY RUGBY
+    - generic [ref=e690] [box=16,4517,358,44]: Demo only · No official tournament affiliation · No real squad submission

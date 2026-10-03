@@ -1,0 +1,55 @@
+\set ON_ERROR_STOP on
+begin;
+create function pg_temp.assert(v boolean,msg text) returns void language plpgsql as $$begin if not coalesce(v,false) then raise exception 'assertion failed: %',msg;end if;end$$;
+insert into public.profiles(id) values('40000000-0000-4000-8000-000000000001');
+insert into public.entries(id,user_id,season_id,display_name) values('41000000-0000-4000-8000-000000000001','40000000-0000-4000-8000-000000000001','00000000-0000-4000-8000-000000000001','Test');
+update public.rounds set locked_at=clock_timestamp() where number=1;
+update public.fixtures set status='final',full_time=clock_timestamp()-interval '121 minutes',expected_player_ids=(select jsonb_agg(id::text order by id) from public.players) where round_id='00000000-0000-4000-8000-000000000010';
+insert into public.fixtures(id,round_id,kickoff,status,full_time,expected_player_ids) select '30000000-0000-4000-8000-000000000002','00000000-0000-4000-8000-000000000010',clock_timestamp()-interval '4 hours','final',clock_timestamp()-interval '121 minutes',jsonb_agg(id::text order by id) from public.players;
+create temp table statistics as select f.id fixture_id,jsonb_agg(jsonb_build_object('fixtureId',f.id,'playerId',p.id,'position',p.position,'participated',false,'started',false,'metrics',(select jsonb_object_agg(m,'0') from unnest(array['tries','tryAssists','conversions','penaltyKicks','dropGoals','metresCarried','cleanBreaks','defendersBeaten','turnoversWon','tackles','missedTackles','yellowCards','redCards','lineoutSteals','scrumPenaltiesWon','penaltiesConceded'])m)) order by p.id) stats from public.fixtures f cross join public.players p where f.round_id='00000000-0000-4000-8000-000000000010' group by f.id;
+insert into public.observations(source,source_revision,fixture_id,observed_at,payload) select 'synthetic','first',fixture_id,clock_timestamp(),jsonb_build_object('statistics',stats) from statistics;
+insert into public.statistics_revisions(observation_id,fixture_id,statistics) select o.id,o.fixture_id,s.stats from public.observations o join statistics s on s.fixture_id=o.fixture_id where source_revision='first';
+insert into public.scheduled_jobs(id,kind,payload,due_at) values('60000000-0000-4000-8000-000000000011','score_round','{"roundId":"00000000-0000-4000-8000-000000000010"}',clock_timestamp());
+create temp table lease as select jsonb_build_object('jobId',j->>'id','leaseToken',j->>'leaseToken','workerId','publication-test') input from jsonb_array_elements(public.worker_claim_jobs('{"workerId":"publication-test","limit":1,"leaseSeconds":60}')->'data')j;
+create temp table context as select public.worker_job_context(input)->'data' data from lease;
+select pg_temp.assert(jsonb_array_length(data->'inputManifest'->'fixtures')=2,'manifest includes both fixtures') from context;
+create temp table stage_input as select input||jsonb_build_object('roundId',data->>'roundId','statisticsRevisionId',data->>'statisticsRevisionId','inputManifest',data->'inputManifest','complete',true,'results',jsonb_build_array(jsonb_build_object('entryId','41000000-0000-4000-8000-000000000001','scoreHundredths',0,'captainBonusHundredths',0,'contributingTries',0,'effectivePlayerIds','[]'::jsonb,'captainId',null)),'playerScores',(select jsonb_agg(jsonb_build_object('playerId',x->>'playerId','fixtureId',x->>'fixtureId','scoreHundredths',0,'knownScoreHundredths',0,'missingMetrics','[]'::jsonb,'participated',false,'tries',0)) from statistics s cross join lateral jsonb_array_elements(s.stats)x)) input from lease,context;
+select pg_temp.assert(public.worker_stage_run(input-'inputManifest')->'error'->>'code'='DATA_INCOMPLETE','manifest required') from stage_input;
+select pg_temp.assert(public.worker_stage_run(input||jsonb_build_object('playerScores','[]'::jsonb))->'error'->>'code'='DATA_INCOMPLETE','all roster scores required') from stage_input;
+create temp table staged as select public.worker_stage_run(input)->'data'->>'runId' run_id from stage_input;
+select pg_temp.assert(run_id is not null,'complete manifest staged') from staged;
+insert into private.admins values('40000000-0000-4000-8000-000000000001');
+select set_config('request.jwt.claims','{"sub":"40000000-0000-4000-8000-000000000001","aal":"aal2"}',false);
+create temp table approval as select public.game_command('approve_run',jsonb_build_object('requestId','50000000-0000-4000-8000-000000000101','runId',run_id,'reason','synthetic acceptance'))->'data'->>'approvalId' approval_id from staged;
+select pg_temp.assert(approval_id is not null,'approval bound') from approval;
+-- Supersede the second fixture, deliberately not the anchor fixture.
+insert into public.observations(source,source_revision,fixture_id,observed_at,payload) select 'synthetic','second','30000000-0000-4000-8000-000000000002',clock_timestamp(),jsonb_build_object('statistics',stats) from statistics where fixture_id='30000000-0000-4000-8000-000000000002';
+insert into public.statistics_revisions(observation_id,fixture_id,statistics) select id,fixture_id,payload->'statistics' from public.observations where source_revision='second';
+select pg_temp.assert(private.publish(run_id::uuid,approval_id::uuid)->'error'->>'code'='DATA_INCOMPLETE','non-anchor fixture change blocks publication') from staged,approval;
+select pg_temp.assert((select count(*) from public.publications)=0,'failed publication invisible');
+update context set data=public.worker_job_context((select input from lease))->'data';
+update stage_input set input=input||jsonb_build_object('inputManifest',(select data->'inputManifest' from context));
+update staged set run_id=public.worker_stage_run((select input from stage_input))->'data'->>'runId';
+update approval set approval_id=public.game_command('approve_run',jsonb_build_object('requestId','50000000-0000-4000-8000-000000000102','runId',(select run_id from staged),'reason','new exact manifest'))->'data'->>'approvalId';
+create temp table publication as select private.publish(run_id::uuid,approval_id::uuid) result from staged,approval;
+select pg_temp.assert(result->'data'->>'versionId' is not null,'publication succeeds') from publication;
+select pg_temp.assert((select count(*) from public.rankings)=1,'whole ranking written');
+select pg_temp.assert((select active_version_id from public.rounds where number=1)=(select (result->'data'->>'versionId')::uuid from publication),'atomic pointer');
+select pg_temp.assert(private.publish(run_id::uuid,approval_id::uuid)->'data'->>'versionId'=(select result->'data'->>'versionId' from publication),'publish idempotency') from staged,approval;
+-- A newer unapproved source revision must never replace player detail data.
+insert into public.observations(source,source_revision,fixture_id,observed_at,payload) values('synthetic','unapproved-player-detail','30000000-0000-4000-8000-000000000002',clock_timestamp(),'{"statistics":[{"fixtureId":"30000000-0000-4000-8000-000000000002","playerId":"10000000-0000-4000-8000-000000000001","position":"prop","participated":true,"started":true,"metrics":{"tries":999}}]}');
+insert into public.statistics_revisions(observation_id,fixture_id,statistics) select id,fixture_id,payload->'statistics' from public.observations where source_revision='unapproved-player-detail';
+select pg_temp.assert(not exists(select 1 from jsonb_array_elements(public.game_read('player_statistics','{"seasonId":"00000000-0000-4000-8000-000000000001","playerId":"10000000-0000-4000-8000-000000000001"}')->'data'->'items') row where row->'statistics'->'metrics'->>'tries'='999'),'unapproved source absent from player detail');
+select pg_temp.assert(jsonb_array_length(public.game_read('player_statistics','{"seasonId":"00000000-0000-4000-8000-000000000001","playerId":"10000000-0000-4000-8000-000000000001"}')->'data'->'items')=2,'published player detail covers fixture revisions');
+select pg_temp.assert(public.game_read('player_statistics','{"seasonId":"00000000-0000-4000-8000-000000000001","playerId":"10000000-0000-4000-8000-000000000001"}')->'data'->'items'->0->>'scoreHundredths'='0','player detail exposes approved score');
+-- Read path uses publication coverage rather than a hard-coded incomplete flag.
+select pg_temp.assert(public.game_read('match','{"fixtureId":"30000000-0000-4000-8000-000000000002"}')->'data'->'coverage'->>'complete'='true','published match coverage');
+select pg_temp.assert(public.game_read('standings','{"seasonId":"00000000-0000-4000-8000-000000000001","limit":1}')->'data'->>'nextCursor' like (select result->'data'->>'versionId' from publication)||':%','cursor pins publication');
+select pg_temp.assert(jsonb_array_length(public.game_read('standings',jsonb_build_object('seasonId','00000000-0000-4000-8000-000000000001','cursor',public.game_read('standings','{"seasonId":"00000000-0000-4000-8000-000000000001","limit":1}')->'data'->>'nextCursor'))->'data'->'items')=0,'cursor advances past previous entry');
+select pg_temp.assert(public.game_read('standings','{"seasonId":"00000000-0000-4000-8000-000000000001","cursor":"00000000-0000-4000-8000-000000000099:1:41000000-0000-4000-8000-000000000001"}')->'error'->>'code'='VALIDATION_ERROR','cross-season or nonexistent cursor rejected');
+insert into public.leagues(id,season_id,name,owner_id,invite_code) values('42000000-0000-4000-8000-000000000001','00000000-0000-4000-8000-000000000001','Private proof','40000000-0000-4000-8000-000000000001','ABC123');
+insert into public.memberships(league_id,entry_id) values('42000000-0000-4000-8000-000000000001','41000000-0000-4000-8000-000000000001');
+select pg_temp.assert(private.realtime_member('league:42000000-0000-4000-8000-000000000001'),'member may subscribe');
+select set_config('request.jwt.claims','{"sub":"40000000-0000-4000-8000-000000000002","aal":"aal1"}',false);
+select pg_temp.assert(not private.realtime_member('league:42000000-0000-4000-8000-000000000001'),'nonmember cannot subscribe');
+rollback;

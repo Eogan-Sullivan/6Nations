@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="web_standard" name="shell-type"/>
+<title>Six Nations Fantasy Rugby - My Squad</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Chivo:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+    @layer base {
+      html, body { margin:0; padding:0; }
+      body { overscroll-behavior: none; }
+    }
+    ::-webkit-scrollbar { display:none; }
+    .turf-grid {
+      background-image: 
+        radial-gradient(circle at 50% 18%, rgba(16, 185, 129, 0.16) 0%, transparent 65%),
+        linear-gradient(to bottom, rgba(16, 185, 129, 0.04) 50%, rgba(0, 0, 0, 0.08) 50%);
+      background-size: 100% 100%, 100% 110px;
+    }
+    .jersey-shadow {
+      filter: drop-shadow(0 14px 20px rgba(0, 0, 0, 0.65)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+    }
+    .captain-glow {
+      filter: drop-shadow(0 0 16px rgba(255, 185, 95, 0.45)) drop-shadow(0 14px 22px rgba(0, 0, 0, 0.7));
+    }
+  </style>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface-variant": "#2f353d",
+            "inverse-primary": "#006c49",
+            "primary": "#4edea3",
+            "on-surface": "#dde3ed",
+            "surface-container-highest": "#2f353d",
+            "on-primary-fixed": "#002113",
+            "on-tertiary": "#003732",
+            "on-primary": "#003824",
+            "secondary-container": "#ee9800",
+            "on-tertiary-fixed": "#00201d",
+            "on-secondary-fixed-variant": "#653e00",
+            "on-background": "#dde3ed",
+            "primary-fixed": "#6ffbbe",
+            "primary-fixed-dim": "#4edea3",
+            "secondary-fixed": "#ffddb8",
+            "surface-container": "#1a2027",
+            "secondary-fixed-dim": "#ffb95f",
+            "error-container": "#93000a",
+            "tertiary": "#6bd8cb",
+            "background": "#0e141b",
+            "on-secondary-container": "#5b3800",
+            "outline": "#86948a",
+            "primary-container": "#10b981",
+            "on-primary-fixed-variant": "#005236",
+            "surface-dim": "#0e141b",
+            "inverse-on-surface": "#2b3139",
+            "on-primary-container": "#00422b",
+            "error": "#ffb4ab",
+            "surface": "#0e141b",
+            "secondary": "#ffb95f",
+            "surface-container-high": "#252a32",
+            "on-error": "#690005",
+            "surface-container-lowest": "#090f16",
+            "on-tertiary-fixed-variant": "#005049",
+            "outline-variant": "#3c4a42",
+            "surface-container-low": "#161c23",
+            "tertiary-fixed-dim": "#6bd8cb",
+            "surface-bright": "#343a42",
+            "inverse-surface": "#dde3ed",
+            "tertiary-container": "#42b4a7",
+            "surface-tint": "#4edea3",
+            "on-error-container": "#ffdad6",
+            "on-secondary": "#472a00",
+            "on-surface-variant": "#bbcabf",
+            "on-secondary-fixed": "#2a1700",
+            "on-tertiary-container": "#00413b",
+            "tertiary-fixed": "#89f5e7"
+          },
+          borderRadius: {
+            DEFAULT: "0.125rem",
+            lg: "0.25rem",
+            xl: "0.5rem",
+            full: "0.75rem"
+          },
+          fontFamily: {
+            "headline-sm": ["Chivo", "sans-serif"],
+            "headline-md": ["Chivo", "sans-serif"],
+            "headline-lg": ["Chivo", "sans-serif"],
+            "label-sm": ["Chivo", "sans-serif"],
+            "label-md": ["Chivo", "sans-serif"],
+            "label-lg": ["Chivo", "sans-serif"],
+            "body-sm": ["Inter", "sans-serif"],
+            "body-md": ["Inter", "sans-serif"],
+            "body-lg": ["Inter", "sans-serif"]
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-surface-dim font-body-md text-on-surface antialiased min-h-screen flex flex-col selection:bg-primary-container selection:text-on-primary-container relative overflow-x-hidden">
+<!-- TOP TOURNAMENT & NAVIGATION HEADER CHROME -->
+<header class="sticky top-0 w-full z-40 bg-surface-container-lowest/90 backdrop-blur-xl border-b border-surface-container-high/80">
+<div class="max-w-[1720px] mx-auto px-4 md:px-8 h-16 flex items-center justify-between gap-4">
+<!-- Brand & Mode Title -->
+<div class="flex items-center gap-6"><button class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-container hover:bg-surface-variant text-on-surface border border-surface-variant/50 transition-all cursor-pointer group" id="nav-drawer-toggle-btn" title="Open Tournament Menu"><span class="material-symbols-outlined text-primary text-[20px] group-hover:scale-110 transition-transform">menu</span><span class="font-label-md text-xs font-bold uppercase tracking-wider text-on-surface hidden md:inline">Menu</span></button>
+<a class="flex items-center gap-3 group" href="#">
+<img alt="Six Nations Logo" class="h-9 w-9 object-contain rounded-md shadow-[0_0_14px_rgba(16,185,129,0.35)] group-hover:scale-105 transition-transform" src="https://lh3.googleusercontent.com/aida/AEtjO1U2UL-paiH1eGnZeQu0M5WdYI2-PuCc5btT1Tj1FUHweXXiCHiA93XjEk4DDC5aQR_v9_WN7T-Yl5AOXPZk-amRxX1LifHCRs5jVakVESAkwvJa0G5BKa6Lk4ezq1mW1AWYIctW8n55MSjFOA-aAms6DjkkGxWvKG55AnFi3a0ijDGDRT-Y_jYF271JDrRS3coY8xKPrXtlXouF8Qr7Dk09sTRBYds-5Xgk-s_4QLDHzg3nqbMA2E_2qxA"/>
+<div class="flex flex-col">
+<span class="font-headline-sm text-base uppercase text-on-surface font-extrabold tracking-tight leading-none">SIX NATIONS</span>
+<span class="font-label-sm text-[10px] uppercase text-primary tracking-widest font-black leading-none mt-1">FANTASY RUGBY</span>
+</div>
+</a>
+<!-- Tournament Round Status -->
+<div class="hidden sm:flex items-center gap-2.5 px-3 py-1 rounded bg-surface-container border border-surface-variant/50">
+<span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+<span class="font-label-sm text-[11px] text-secondary uppercase font-bold tracking-wider">Round 1 / 5</span>
+<span class="text-surface-variant">•</span>
+<span class="font-body-sm text-xs text-on-surface-variant font-medium">Lockout in <strong class="text-on-surface font-semibold">2d 14h 22m</strong></span>
+</div>
+</div>
+<!-- Quick Nation Limits Pills -->
+<div class="hidden lg:flex items-center gap-1.5 bg-surface-container-low px-2 py-1 rounded-md border border-surface-variant/40">
+<span class="text-[10px] font-bold uppercase text-on-surface-variant px-1.5">Max 4/Nation:</span>
+<span class="px-2 py-0.5 rounded bg-surface-container text-xs font-bold text-emerald-400 border border-emerald-500/30">IRE 4/4</span>
+<span class="px-2 py-0.5 rounded bg-surface-container text-xs font-semibold text-blue-300">FRA 3/4</span>
+<span class="px-2 py-0.5 rounded bg-surface-container text-xs font-semibold text-slate-200">ENG 3/4</span>
+<span class="px-2 py-0.5 rounded bg-surface-container text-xs font-semibold text-sky-300">SCO 2/4</span>
+<span class="px-2 py-0.5 rounded bg-surface-container text-xs font-semibold text-rose-300">WAL 2/4</span>
+<span class="px-2 py-0.5 rounded bg-surface-container text-xs font-semibold text-cyan-300">ITA 1/4</span>
+</div>
+<!-- Cap Status & Primary Actions -->
+<div class="flex items-center gap-3">
+<!-- Compact Cap Tracker -->
+<div class="flex items-center gap-3 px-3 py-1 rounded-md bg-surface-container border border-surface-variant/50">
+<div class="flex flex-col text-right">
+<span class="text-[10px] font-bold uppercase text-on-surface-variant leading-none">Cap Remaining</span>
+<div class="flex items-baseline gap-1 mt-0.5">
+<span class="font-headline-sm text-sm font-extrabold text-primary leading-none">€14.5M</span>
+<span class="text-[10px] text-on-surface-variant font-medium leading-none">/ €100.0M</span>
+</div>
+</div>
+<div class="w-14 h-1.5 rounded-full bg-surface-container-highest overflow-hidden hidden md:block">
+<div class="h-full bg-primary-container rounded-full" style="width: 85.5%;"></div>
+</div>
+</div>
+<!-- Lock XV CTA -->
+<button class="flex items-center gap-1.5 px-4 py-2 rounded-md bg-primary-container hover:bg-primary text-on-primary-container font-label-md text-xs font-black uppercase tracking-wider shadow-lg shadow-emerald-900/30 hover:shadow-emerald-700/40 transition-all cursor-pointer" id="btn-lock-squad">
+<span class="material-symbols-outlined text-[17px]">lock</span>
+<span>Lock XV</span>
+</button>
+</div>
+</div>
+</header>
+<!-- MAIN SQUAD PITCH VIEWPORT (DOMINATES 85%+ OF CANVAS) -->
+<main class="flex-1 w-full max-w-[1720px] mx-auto px-2 sm:px-6 md:px-8 py-4 flex flex-col items-center">
+<!-- PITCH CONTAINER -->
+<section class="relative w-full max-w-[1320px] rounded-3xl overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.85)] bg-[#07150f] border-2 border-emerald-950/70 turf-grid flex flex-col p-3 md:p-6 select-none transition-all">
+<!-- Ambient Floodlight & Atmospheric Sheen -->
+<div class="absolute -top-32 left-1/2 -translate-x-1/2 w-4/5 h-80 bg-primary/10 blur-[130px] pointer-events-none rounded-full"></div>
+<div class="absolute -bottom-24 left-1/2 -translate-x-1/2 w-3/5 h-64 bg-emerald-600/10 blur-[110px] pointer-events-none rounded-full"></div>
+<!-- SVG RUGBY PITCH MARKINGS OVERLAY (Crisp Tactical Vector Lines) -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none opacity-25" preserveaspectratio="none" viewbox="0 0 1000 1350">
+<!-- Touchlines & In-Goal Dead Ball Lines -->
+<rect fill="none" height="1300" stroke="#ffffff" stroke-width="2.5" width="950" x="25" y="25"></rect>
+<!-- Try Line (Top In-Goal) -->
+<line stroke="#ffffff" stroke-width="3" x1="25" x2="975" y1="90" y2="90"></line>
+<!-- Dead Ball Depth Top -->
+<line stroke="#ffffff" stroke-dasharray="14 10" stroke-width="1.5" x1="25" x2="975" y1="25" y2="25"></line>
+<!-- 5m Dashed In-Goal Line -->
+<line stroke="#ffffff" stroke-dasharray="8 8" stroke-width="1.5" x1="25" x2="975" y1="150" y2="150"></line>
+<!-- 22m Line Top -->
+<line stroke="#ffffff" stroke-width="2.5" x1="25" x2="975" y1="330" y2="330"></line>
+<!-- 10m Dashed Line Top -->
+<line stroke="#ffffff" stroke-dasharray="12 10" stroke-width="1.75" x1="25" x2="975" y1="520" y2="520"></line>
+<!-- Halfway Line & Center Spot -->
+<line stroke="#ffffff" stroke-width="3" x1="25" x2="975" y1="675" y2="675"></line>
+<circle cx="500" cy="675" fill="#ffffff" r="7"></circle>
+<!-- 10m Dashed Line Bottom -->
+<line stroke="#ffffff" stroke-dasharray="12 10" stroke-width="1.75" x1="25" x2="975" y1="830" y2="830"></line>
+<!-- 22m Line Bottom -->
+<line stroke="#ffffff" stroke-width="2.5" x1="25" x2="975" y1="1020" y2="1020"></line>
+<!-- Try Line Bottom -->
+<line stroke="#ffffff" stroke-width="3" x1="25" x2="975" y1="1260" y2="1260"></line>
+<!-- Rugby H-Goal Posts Geometry (Top and Bottom) -->
+<path d="M 460 45 L 460 90 M 540 45 L 540 90 M 460 65 L 540 65" opacity="0.6" stroke="#ffffff" stroke-width="3"></path>
+<path d="M 460 1260 L 460 1305 M 540 1260 L 540 1305 M 460 1285 L 540 1285" opacity="0.6" stroke="#ffffff" stroke-width="3"></path>
+</svg>
+<!-- PITCH HEADER STRIP -->
+<div class="relative z-10 flex items-center justify-between pb-3 mb-2 border-b border-white/10 px-2">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-primary shadow-[0_0_8px_#4edea3]"></span>
+<span class="font-headline-sm text-xs md:text-sm uppercase tracking-wider text-on-surface font-extrabold">Starting XV Tactical Grid</span>
+<span class="text-on-surface-variant text-xs hidden sm:inline">• Formation 1-15</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="text-[11px] font-bold uppercase tracking-widest text-primary flex items-center gap-1">
+            Attacking Direction
+            <span class="material-symbols-outlined text-[16px]">arrow_upward</span>
+</span>
+</div>
+</div>
+<!-- ========================================== -->
+<!-- TACTICAL FORMATION ROWS (15 ATHLETIC JERSEYS) -->
+<!-- ========================================== -->
+<!-- ROW 1: FRONT ROW (1, 2, 3) -->
+<div class="relative z-10 w-full mb-6">
+<div class="text-center mb-1">
+<span class="font-label-sm text-[10px] uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-surface-container-lowest/80 text-emerald-300/80 border border-emerald-900/50 backdrop-blur-sm">Front Row</span>
+</div>
+<div class="grid grid-cols-3 gap-3 md:gap-8 max-w-3xl mx-auto">
+<!-- #1 Andrew Porter (IRE) -->
+<div class="jersey-card group flex flex-col items-center cursor-pointer transition-transform duration-200 hover:-translate-y-1.5" data-player="porter">
+<div class="relative w-28 h-32 md:w-32 md:h-36 jersey-shadow transition-transform group-hover:scale-105">
+<svg class="w-full h-full" viewbox="0 0 120 140">
+<defs>
+<lineargradient id="ire-grad" x1="0" x2="1" y1="0" y2="1">
+<stop offset="0%" stop-color="#147c47"></stop>
+<stop offset="100%" stop-color="#094a28"></stop>
+</lineargradient>
+<lineargradient id="ire-sleeve" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#1b8e53"></stop>
+<stop offset="100%" stop-color="#06381e"></stop>
+</lineargradient>
+</defs>
+<!-- Athletic Raglan Jersey Silhouette -->
+<path d="M 38 18 L 10 35 L 24 58 L 36 50 L 36 122 C 36 125 40 127 45 127 L 75 127 C 80 127 84 125 84 122 L 84 50 L 96 58 L 110 35 L 82 18 C 74 25 46 25 38 18 Z" fill="url(#ire-grad)" stroke="#06381e" stroke-width="1.5"></path>
+<!-- Ergonomic Sleeves -->
+<path d="M 10 35 L 24 58 L 18 63 L 5 42 Z" fill="url(#ire-sleeve)"></path>
+<path d="M 110 35 L 96 58 L 102 63 L 115 42 Z" fill="url(#ire-sleeve)"></path>
+<!-- Clean Modern Collar -->
+<path d="M 44 20 C 50 28 70 28 76 20 L 70 17 C 65 23 55 23 50 17 Z" fill="#ffffff"></path>
+<!-- Back-of-shirt Player Name -->
+<text fill="#ffffff" font-family="Chivo" font-size="9" font-weight="800" letter-spacing="1" text-anchor="middle" x="60" y="38">PORTER</text>
+<!-- Large Rugby Number -->
+<text dominant-baseline="central" fill="#ffffff" font-family="Chivo" font-size="38" font-weight="900" text-anchor="middle" x="60" y="78">1</text>
+<!-- Sleek Base Ribbon (Position, Price, Points) -->
+<rect fill="#042714" height="17" opacity="0.9" rx="2" width="48" x="36" y="106"></rect>
+<text fill="#4edea3" font-family="Chivo" font-size="8.5" font-weight="800" x="44" y="118">PR</text>
+<text fill="#dde3ed" font-family="Inter" font-size="7.5" font-weight="600" text-anchor="middle" x="60" y="118">€12.5M</text>
+<text fill="#ffffff" font-family="Chivo" font-size="8" font-weight="800" text-anchor="end" x="77" y="118">44p</text>
+</svg>
+<span class="absolute top-1 right-2 text-[9px] font-black uppercase px-1.5 py-0.5 rounded bg-[#169B62] text-white shadow">IRE</span>
+</div>
+</div>
+<!-- #2 Dan Sheehan (IRE) -->
+<div class="jersey-card group flex flex-col items-center cursor-pointer transition-transform duration-200 hover:-translate-y-1.5" data-player="sheehan">
+<div class="relative w-28 h-32 md:w-32 md:h-36 jersey-shadow transition-transform group-hover:scale-105">
+<svg class="w-full h-full" viewbox="0 0 120 140">
+<path d="M 38 18 L 10 35 L 24 58 L 36 50 L 36 122 C 36 125 40 127 45 127 L 75 127 C 80 127 84 125 84 122 L 84 50 L 96 58 L 110 35 L 82 18 C 74 25 46 25 38 18 Z" fill="url(#ire-grad)" stroke="#06381e" stroke-width="1.5"></path>
+<path d="M 10 35 L 24 58 L 18 63 L 5 42 Z" fill="url(#ire-sleeve)"></path>
+<path d="M 110 35 L 96 58 L 102 63 L 115 42 Z" fill="url(#ire-sleeve)"></path>
+<path d="M 44 20 C 50 28 70 28 76 20 L 70 17 C 65 23 55 23 50 17 Z" fill="#ffffff"></path>
+<text fill="#ffffff" font-family="Chivo" font-size="9" font-weight="800" letter-spacing="1" text-anchor="middle" x="60" y="38">SHEEHAN</text>
+<text dominant-baseline="central" fill="#ffffff" font-family="Chivo" font-size="38" font-weight="900" text-anchor="middle" x="60" y="78">2</text>
+<rect fill="#042714" height="17" opacity="0.9" rx="2" width="48" x="36" y="106"></rect>
+<text fill="#4edea3" font-family="Chivo" font-size="8.5" font-weight="800" x="44" y="118">HK</text>
+<text fill="#dde3ed" font-family="Inter" font-size="7.5" font-weight="600" text-anchor="middle" x="60" y="118">€14.0M</text>
+<text fill="#ffffff" font-family="Chivo" font-size="8" font-weight="800" text-anchor="end" x="77" y="118">52p</text>
+</svg>
+<span class="absolute top-1 right-2 text-[9px] font-black uppercase px-1.5 py-0.5 rounded bg-[#169B62] text-white shadow">IRE</span>
+</div>
+</div>
+<!-- #3 Uini Atonio (FRA) -->
+<div class="jersey-card group flex flex-col items-center cursor-pointer transition-transform duration-200 hover:-translate-y-1.5" data-player="atonio">
+<div class="relative w-28 h-32 md:w-32 md:h-36 jersey-shadow transition-transform group-hover:scale-105">
+<svg class="w-full h-full" viewbox="0 0 120 140">
+<defs>
+<lineargradient id="fra-grad" x1="0" x2="1" y1="0" y2="1">
+<stop offset="0%" stop-color="#1442c7"></stop>
+<stop offset="100%" stop-color="#041a6e"></stop>
+</lineargradient>
+</defs>
+<path d="M 38 18 L 10 35 L 24 58 L 36 50 L 36 122 C 36 125 40 127 45 127 L 75 127 C 80 127 84 125 84 122 L 84 50 L 96 58 L 110 35 L 82 18 C 74 25 46 25 38 18 Z" fill="url(#fra-grad)" stroke="#03124f" stroke-width="1.5"></path>
+<path d="M 10 35 L 24 58 L 18 63 L 5 42 Z" fill="#041a6e"></path>
+<path d="M 110 35 L 96 58 L 102 63 L 115 42 Z" fill="#041a6e"></path>
+<path d="M 44 20 C 50 28 70 28 76 20 L 70 17 C 65 23 55 23 50 17 Z" fill="#ffffff"></path>
+<rect fill="#cf142b" height="6" width="4" x="58" y="21"></rect>
+<text fill="#ffffff" font-family="Chivo" font-size="9" font-weight="800" letter-spacing="1" text-anchor="middle" x="60" y="38">ATONIO</text>
+<text dominant-baseline="central" fill="#ffffff" font-family="Chivo" font-size="38" font-weight="900" text-anchor="middle" x="60" y="78">3</text>
+<rect fill="#020c35" height="17" opacity="0.9" rx="2" width="48" x="36" y="106"></rect>
+<text fill="#6bd8cb" font-family="Chivo" font-size="8.5" font-weight="800" x="44" y="118">PR</text>
+<text fill="#dde3ed" font-family="Inter" font-size="7.5" font-weight="600" text-anchor="middle" x="60" y="118">€11.5M</text>
+<text fill="#ffffff" font-family="Chivo" font-size="8" font-weight="800" text-anchor="end" x="77" y="118">38.5p</text>
+</svg>
+<span class="absolute top-1 right-2 text-[9px] font-black uppercase px-1.5 py-0.5 rounded bg-[#002395] text-white shadow">FRA</span>
+</div>
+</div>
+</div>
+</div>
+<!-- ROW 2: SECOND ROW LOCKS (4, 5) -->
+<div class="relative z-10 w-full mb-6">
+<div class="text-center mb-1">
+<span class="font-label-sm text-[10px] uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-surface-container-lowest/80 text-emerald-300/80 border border-emerald-900/50 backdrop-blur-sm">Second Row Locks</span>
+</div>
+<div class="grid grid-cols-2 gap-8 md:gap-24 max-w-xl mx-auto">
+<!-- #4 Maro Itoje (ENG) -->
+<div class="jersey-card group flex flex-col items-center cursor-pointer transition-transform duration-200 hover:-translate-y-1.5" data-player="itoje">
+<div class="relative w-28 h-32 md:w-32 md:h-36 jersey-shadow transition-transform group-hover:scale-105">
+<svg class="w-full h-full" viewbox="0 0 120 140">
+<defs>
+<lineargradient id="eng-grad" x1="0" x2="1" y1="0" y2="1">
+<stop offset="0%" stop-color="#ffffff"></stop>
+<stop offset="100%" stop-color="#d9e1ec"></stop>
+</lineargradient>
+</defs>
+<path d="M 38 18 L 10 35 L 24 58 L 36 50 L 36 122 C 36 125 40 127 45 127 L 75 127 C 80 127 84 125 84 122 L 84 50 L 96 58 L 110 35 L 82 18 C 74 25 46 25 38 18 Z" fill="url(#eng-grad)" stroke="#94a3b8" stroke-width="1.5"></path>
+<path d="M 10 35 L 24 58 L 18 63 L 5 42 Z" fill="#cbd5e1"></path>
+<path d="M 110 35 L 96 58 L 102 63 L 115 42 Z" fill="#cbd5e1"></path>
+<!-- Navy & Crimson Trim Collar -->
+<path d="M 44 20 C 50 28 70 28 76 20 L 70 17 C 65 23 55 23 50 17 Z" fill="#0f172a"></path>
+<path d="M 48 19 C 52 23 68 23 72 19 Z" fill="#cf142b"></path>
+<text fill="#0f172a" font-family="Chivo" font-size="9" font-weight="800" letter-spacing="1" text-anchor="middle" x="60" y="38">ITOJE</text>
+<text dominant-baseline="central" fill="#cf142b" font-family="Chivo" font-size="38" font-weight="900" text-anchor="middle" x="60" y="78">4</text>
+<rect fill="#0f172a" height="17" opacity="0.9" rx="2" width="48" x="36" y="106"></rect>
+<text fill="#f87171" font-family="Chivo" font-size="8.5" font-weight="800" x="44" y="118">LK</text>
+<text fill="#cbd5e1" font-family="Inter" font-size="7.5" font-weight="600" text-anchor="middle" x="60" y="118">€13.0M</text>
+<text fill="#ffffff" font-family="Chivo" font-size="8" font-weight="800" text-anchor="end" x="77" y="118">49p</text>
+</svg>
+<span class="absolute top-1 right-2 text-[9px] font-black uppercase px-1.5 py-0.5 rounded bg-white text-[#cf142b] border border-red-200 shadow">ENG</span>
+</div>
+</div>
+<!-- #5 Tadhg Beirne (IRE) -->
+<div class="jersey-card group flex flex-col items-center cursor-pointer transition-transform duration-200 hover:-translate-y-1.5" data-player="beirne">
+<div class="relative w-28 h-32 md:w-32 md:h-36 jersey-shadow transition-transform group-hover:scale-105">
+<svg class="w-full h-full" viewbox="0 0 120 140">
+<path d="M 38 18 L 10 35 L 24 58 L 36 50 L 36 122 C 36 125 40 127 45 127 L 75 127 C 80 127 84 125 84 122 L 84 50 L 96 58 L 110 35 L 82 18 C 74 25 46 25 38 18 Z" fill="url(#ire-grad)" stroke="#06381e" stroke-width="1.5"></path>
+<path d="M 10 35 L 24 58 L 18 63 L 5 42 Z" fill="url(#ire-sleeve)"></path>
+<path d="M 110 35 L 96 58 L 102 63 L 115 42 Z" fill="url(#ire-sleeve)"></path>
+<path d="M 44 20 C 50 28 70 28 76 20 L 70 17 C 65 23 55 23 50 17 Z" fill="#ffffff"></path>
+<text fill="#ffffff" font-family="Chivo" font-size="9" font-weight="800" letter-spacing="1" text-anchor="middle" x="60" y="38">BEIRNE</text>
+<text dominant-baseline="central" fill="#ffffff" font-family="Chivo" font-size="38" font-weight="900" text-anchor="middle" x="60" y="78">5</text>
+<rect fill="#042714" height="17" opacity="0.9" rx="2" width="48" x="36" y="106"></rect>
+<text fill="#4edea3" font-family="Chivo" font-size="8.5" font-weight="800" x="44" y="118">LK</text>
+<text fill="#dde3ed" font-family="Inter" font-size="7.5" font-weight="600" text-anchor="middle" x="60" y="118">€13.5M</text>
+<text fill="#ffffff" font-family="Chivo" font-size="8" font-weight="800" text-anchor="end" x="77" y="118">54p</text>
+</svg>
+<span class="absolute top-1 right-2 text-[9px] font-black uppercase px-1.5 py-0.5 rounded bg-[#169B62] text-white shadow">IRE</span>
+</div>
+</div>
+</div>
+</div>
+<!-- ROW 3: BACK ROW / LOOSE FORWARDS (6, 8-C, 7) -->
+<div class="relative z-10 w-full mb-6">
+<div class="text-center mb-1">
+<span class="font-label-sm text-[10px] uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-surface-container-lowest/80 text-emerald-300/80 border border-emerald-900/50 backdrop-blur-sm">Loose Forwards &amp; Back Row</span>
+</div>
+<div class="grid grid-cols-3 gap-3 md:gap-8 max-w-3xl mx-auto">
+<!-- #6 Francois Cros (FRA) -->
+<div class="jersey-card group flex flex-col items-center cursor-pointer transition-transform duration-200 hover:-translate-y-1.5" data-player="cros">
+<div class="relative w-28 h-32 md:w-32 md:h-36 jersey-shadow transition-transform group-hover:scale-105">
+<svg class="w-full h-full" viewbox="0 0 120 140">
+<path d="M 38 18 L 10 35 L 24 58 L 36 50 L 36 122 C 36 125 40 127 45 127 L 75 127 C 80 127 84 125 84 122 L 84 50 L 96 58 L 110 35 L 82 18 C 74 25 46 25 38 18 Z" fill="url(#fra-grad)" stroke="#03124f" stroke-width="1.5"></path>
+<path d="M 10 35 L 24 58 L 18 63 L 5 42 Z" fill="#041a6e"></path>
+<path d="M 110 35 L 96 58 L 102 63 L 115 42 Z" fill="#041a6e"></path>
+<path d="M 44 20 C 50 28 70 28 76 20 L 70 17 C 65 23 55 23 50 17 Z" fill="#ffffff"></path>
+<rect fill="#cf142b" height="6" width="4" x="58" y="21"></rect>
+<text fill="#ffffff" font-family="Chivo" font-size="9" font-weight="800" letter-spacing="1" text-anchor="middle" x="60" y="38">CROS</text>
+<text dominant-baseline="central" fill="#ffffff" font-family="Chivo" font-size="38" font-weight="900" text-anchor="middle" x="60" y="78">6</text>
+<rect fill="#020c35" height="17" opacity="0.9" rx="2" width="48" x="36" y="106"></rect>
+<text fill="#6bd8cb" font-family="Chivo" font-size="8.5" font-weight="800" x="44" y="118">FL</text>
+<text fill="#dde3ed" font-family="Inter" font-size="7.5" font-weight="600" text-anchor="middle" x="60" y="118">€12.0M</text>
+<text fill="#ffffff" font-family="Chivo" font-size="8" font-weight="800" text-anchor="end" x="77" y="118">46p</text>
+</svg>
+<span class="absolute top-1 right-2 text-[9px] font-black uppercase px-1.5 py-0.5 rounded bg-[#002395] text-white shadow">FRA</span>
+</div>
+</div>
+<!-- #8 Caelan Doris (CAPTAIN 2.0x - Gold Aura & Refined Crest) -->
+<div class="jersey-card group flex flex-col items-center cursor-pointer transition-transform duration-200 hover:-translate-y-2" data-player="doris">
+<div class="relative w-30 h-34 md:w-36 md:h-40 captain-glow transition-transform group-hover:scale-105">
+<svg class="w-full h-full" viewbox="0 0 120 140">
+<!-- Subtle Golden Aura Halo behind Jersey -->
+<path d="M 38 18 L 10 35 L 24 58 L 36 50 L 36 122 C 36 125 40 127 45 127 L 75 127 C 80 127 84 125 84 122 L 84 50 L 96 58 L 110 35 L 82 18 C 74 25 46 25 38 18 Z" fill="none" opacity="0.8" stroke="#ffb95f" stroke-width="3.5"></path>
+<!-- Ireland Jersey Body -->
+<path d="M 38 18 L 10 35 L 24 58 L 36 50 L 36 122 C 36 125 40 127 45 127 L 75 127 C 80 127 84 125 84 122 L 84 50 L 96 58 L 110 35 L 82 18 C 74 25 46 25 38 18 Z" fill="url(#ire-grad)" stroke="#06381e" stroke-width="1.5"></path>
+<path d="M 10 35 L 24 58 L 18 63 L 5 42 Z" fill="url(#ire-sleeve)"></path>
+<path d="M 110 35 L 96 58 L 102 63 L 115 42 Z" fill="url(#ire-sleeve)"></path>
+<!-- Gold Captain Armband on Left Sleeve -->
+<rect fill="#ffb95f" height="6.5" stroke="#b45309" stroke-width="0.75" transform="rotate(-38 12 49)" width="13" x="7" y="47"></rect>
+<!-- Collar -->
+<path d="M 44 20 C 50 28 70 28 76 20 L 70 17 C 65 23 55 23 50 17 Z" fill="#ffffff"></path>
+<!-- Back-of-shirt Player Name -->
+<text fill="#ffffff" font-family="Chivo" font-size="10" font-weight="900" letter-spacing="1" text-anchor="middle" x="60" y="38">DORIS</text>
+<!-- Number 8 -->
+<text dominant-baseline="central" fill="#ffffff" font-family="Chivo" font-size="40" font-weight="900" text-anchor="middle" x="60" y="78">8</text>
+<!-- Gold Circular Captain Crest Badge on Left Chest -->
+<circle cx="42" cy="50" fill="#ffb95f" r="7.5" stroke="#78350f" stroke-width="1"></circle>
+<text fill="#2a1700" font-family="Chivo" font-size="9" font-weight="900" text-anchor="middle" x="42" y="53.5">C</text>
+<!-- Base Plate (Gold Accent) -->
+<rect fill="#1e1808" height="17" rx="2" stroke="#ffb95f" stroke-width="0.75" width="48" x="36" y="106"></rect>
+<text fill="#ffb95f" font-family="Chivo" font-size="8.5" font-weight="900" x="44" y="118">N8</text>
+<text fill="#dde3ed" font-family="Inter" font-size="7.5" font-weight="600" text-anchor="middle" x="60" y="118">€14.5M</text>
+<text fill="#ffb95f" font-family="Chivo" font-size="8" font-weight="900" text-anchor="end" x="77" y="118">125p</text>
+</svg>
+<!-- Multiplier Pill -->
+<span class="absolute -top-2 left-1/2 -translate-x-1/2 text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-gradient-to-r from-amber-400 to-amber-500 text-stone-950 shadow-lg border border-amber-200">
+                (C) 2.0x
+              </span>
+<span class="absolute top-1 right-2 text-[9px] font-black uppercase px-1.5 py-0.5 rounded bg-[#169B62] text-white shadow">IRE</span>
+</div>
+</div>
+<!-- #7 Tommy Reffell (WAL) -->
+<div class="jersey-card group flex flex-col items-center cursor-pointer transition-transform duration-200 hover:-translate-y-1.5" data-player="reffell">
+<div class="relative w-28 h-32 md:w-32 md:h-36 jersey-shadow transition-transform group-hover:scale-105">
+<svg class="w-full h-full" viewbox="0 0 120 140">
+<defs>
+<lineargradient id="wal-grad" x1="0" x2="1" y1="0" y2="1">
+<stop offset="0%" stop-color="#d61434"></stop>
+<stop offset="100%" stop-color="#800a1d"></stop>
+</lineargradient>
+</defs>
+<path d="M 38 18 L 10 35 L 24 58 L 36 50 L 36 122 C 36 125 40 127 45 127 L 75 127 C 80 127 84 125 84 122 L 84 50 L 96 58 L 110 35 L 82 18 C 74 25 46 25 38 18 Z" fill="url(#wal-grad)" stroke="#600514" stroke-width="1.5"></path>
+<path d="M 10 35 L 24 58 L 18 63 L 5 42 Z" fill="#800a1d"></path>
+<path d="M 110 35 L 96 58 L 102 63 L 115 42 Z" fill="#800a1d"></path>
+<path d="M 44 20 C 50 28 70 28 76 20 L 70 17 C 65 23 55 23 50 17 Z" fill="#ffffff"></path>
+<text fill="#ffffff" font-family="Chivo" font-size="9" font-weight="800" letter-spacing="1" text-anchor="middle" x="60" y="38">REFFELL</text>
+<text dominant-baseline="central" fill="#ffffff" font-family="Chivo" font-size="38" font-weight="900" text-anchor="middle" x="60" y="78">7</text>
+<rect fill="#38040d" height="17" opacity="0.9" rx="2" width="48" x="36" y="106"></rect>
+<text fill="#fda4af" font-family="Chivo" font-size="8.5" font-weight="800" x="44" y="118">FL</text>
+<text fill="#dde3ed" font-family="Inter" font-size="7.5" font-weight="600" text-anchor="middle" x="60" y="118">€10.5M</text>
+<text fill="#ffffff" font-family="Chivo" font-size="8" font-weight="800" text-anchor="end" x="77" y="118">41p</text>
+</svg>
+<span class="absolute top-1 right-2 text-[9px] font-black uppercase px-1.5 py-0.5 rounded bg-[#c8102e] text-white shadow">WAL</span>
+</div>
+</div>
+</div>
+</div>
+<!-- ROW 4: HALF-BACKS (9-VC, 10) -->
+<div class="relative z-10 w-full mb-6">
+<div class="text-center mb-1">
+<span class="font-label-sm text-[10px] uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-surface-container-lowest/80 text-emerald-300/80 border border-emerald-900/50 backdrop-blur-sm">Half-Back Tactical Hub</span>
+</div>
+<div class="grid grid-cols-2 gap-8 md:gap-24 max-w-xl mx-auto">
+<!-- #9 Antoine Dupont (FRA - VC Silver Badge) -->
+<div class="jersey-card group flex flex-col items-center cursor-pointer transition-transform duration-200 hover:-translate-y-1.5" data-player="dupont">
+<div class="relative w-28 h-32 md:w-32 md:h-36 jersey-shadow transition-transform group-hover:scale-105">
+<svg class="w-full h-full" viewbox="0 0 120 140">
+<path d="M 38 18 L 10 35 L 24 58 L 36 50 L 36 122 C 36 125 40 127 45 127 L 75 127 C 80 127 84 125 84 122 L 84 50 L 96 58 L 110 35 L 82 18 C 74 25 46 25 38 18 Z" fill="url(#fra-grad)" stroke="#03124f" stroke-width="1.5"></path>
+<path d="M 10 35 L 24 58 L 18 63 L 5 42 Z" fill="#041a6e"></path>
+<path d="M 110 35 L 96 58 L 102 63 L 115 42 Z" fill="#041a6e"></path>
+<path d="M 44 20 C 50 28 70 28 76 20 L 70 17 C 65 23 55 23 50 17 Z" fill="#ffffff"></path>
+<rect fill="#cf142b" height="6" width="4" x="58" y="21"></rect>
+<text fill="#ffffff" font-family="Chivo" font-size="9.5" font-weight="900" letter-spacing="1" text-anchor="middle" x="60" y="38">DUPONT</text>
+<text dominant-baseline="central" fill="#ffffff" font-family="Chivo" font-size="38" font-weight="900" text-anchor="middle" x="60" y="78">9</text>
+<!-- Silver VC Badge -->
+<circle cx="42" cy="50" fill="#e2e8f0" r="7.5" stroke="#475569" stroke-width="1"></circle>
+<text fill="#0f172a" font-family="Chivo" font-size="8" font-weight="900" text-anchor="middle" x="42" y="53.5">VC</text>
+<rect fill="#020c35" height="17" opacity="0.9" rx="2" width="48" x="36" y="106"></rect>
+<text fill="#6bd8cb" font-family="Chivo" font-size="8.5" font-weight="800" x="44" y="118">SH</text>
+<text fill="#dde3ed" font-family="Inter" font-size="7.5" font-weight="600" text-anchor="middle" x="60" y="118">€16.5M</text>
+<text fill="#ffffff" font-family="Chivo" font-size="8" font-weight="800" text-anchor="end" x="77" y="118">68p</text>
+</svg>
+<span class="absolute top-1 right-2 text-[9px] font-black uppercase px-1.5 py-0.5 rounded bg-[#002395] text-white shadow">FRA</span>
+</div>
+</div>
+<!-- #10 Finn Russell (SCO) -->
+<div class="jersey-card group flex flex-col items-center cursor-pointer transition-transform duration-200 hover:-translate-y-1.5" data-player="russell">
+<div class="relative w-28 h-32 md:w-32 md:h-36 jersey-shadow transition-transform group-hover:scale-105">
+<svg class="w-full h-full" viewbox="0 0 120 140">
+<defs>
+<lineargradient id="sco-grad" x1="0" x2="1" y1="0" y2="1">
+<stop offset="0%" stop-color="#0a326a"></stop>
+<stop offset="100%" stop-color="#021430"></stop>
+</lineargradient>
+</defs>
+<path d="M 38 18 L 10 35 L 24 58 L 36 50 L 36 122 C 36 125 40 127 45 127 L 75 127 C 80 127 84 125 84 122 L 84 50 L 96 58 L 110 35 L 82 18 C 74 25 46 25 38 18 Z" fill="url(#sco-grad)" stroke="#010d21" stroke-width="1.5"></path>
+<path d="M 10 35 L 24 58 L 18 63 L 5 42 Z" fill="#021a3e"></path>
+<path d="M 110 35 L 96 58 L 102 63 L 115 42 Z" fill="#021a3e"></path>
+<rect fill="#00a8e8" height="3" transform="rotate(-38 13 47)" width="13" x="7" y="46"></rect>
+<rect fill="#00a8e8" height="3" transform="rotate(38 105 47)" width="13" x="99" y="46"></rect>
+<path d="M 44 20 C 50 28 70 28 76 20 L 70 17 C 65 23 55 23 50 17 Z" fill="#ffffff"></path>
+<text fill="#ffffff" font-family="Chivo" font-size="9" font-weight="900" letter-spacing="1" text-anchor="middle" x="60" y="38">RUSSELL</text>
+<text dominant-baseline="central" fill="#ffffff" font-family="Chivo" font-size="38" font-weight="900" text-anchor="middle" x="60" y="78">10</text>
+<rect fill="#010d21" height="17" opacity="0.9" rx="2" width="48" x="36" y="106"></rect>
+<text fill="#38bdf8" font-family="Chivo" font-size="8.5" font-weight="800" x="44" y="118">FH</text>
+<text fill="#dde3ed" font-family="Inter" font-size="7.5" font-weight="600" text-anchor="middle" x="60" y="118">€15.0M</text>
+<text fill="#ffffff" font-family="Chivo" font-size="8" font-weight="800" text-anchor="end" x="77" y="118">56.5p</text>
+</svg>
+<span class="absolute top-1 right-2 text-[9px] font-black uppercase px-1.5 py-0.5 rounded bg-[#0065BF] text-white shadow">SCO</span>
+</div>
+</div>
+</div>
+</div>
+<!-- ROW 5: MIDFIELD CENTERS (12, 13) -->
+<div class="relative z-10 w-full mb-6">
+<div class="text-center mb-1">
+<span class="font-label-sm text-[10px] uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-surface-container-lowest/80 text-emerald-300/80 border border-emerald-900/50 backdrop-blur-sm">Midfield Centers</span>
+</div>
+<div class="grid grid-cols-2 gap-8 md:gap-24 max-w-xl mx-auto">
+<!-- #12 Bundee Aki (IRE) -->
+<div class="jersey-card group flex flex-col items-center cursor-pointer transition-transform duration-200 hover:-translate-y-1.5" data-player="aki">
+<div class="relative w-28 h-32 md:w-32 md:h-36 jersey-shadow transition-transform group-hover:scale-105">
+<svg class="w-full h-full" viewbox="0 0 120 140">
+<path d="M 38 18 L 10 35 L 24 58 L 36 50 L 36 122 C 36 125 40 127 45 127 L 75 127 C 80 127 84 125 84 122 L 84 50 L 96 58 L 110 35 L 82 18 C 74 25 46 25 38 18 Z" fill="url(#ire-grad)" stroke="#06381e" stroke-width="1.5"></path>
+<path d="M 10 35 L 24 58 L 18 63 L 5 42 Z" fill="url(#ire-sleeve)"></path>
+<path d="M 110 35 L 96 58 L 102 63 L 115 42 Z" fill="url(#ire-sleeve)"></path>
+<path d="M 44 20 C 50 28 70 28 76 20 L 70 17 C 65 23 55 23 50 17 Z" fill="#ffffff"></path>
+<text fill="#ffffff" font-family="Chivo" font-size="9.5" font-weight="900" letter-spacing="1" text-anchor="middle" x="60" y="38">AKI</text>
+<text dominant-baseline="central" fill="#ffffff" font-family="Chivo" font-size="36" font-weight="900" text-anchor="middle" x="60" y="78">12</text>
+<rect fill="#042714" height="17" opacity="0.9" rx="2" width="48" x="36" y="106"></rect>
+<text fill="#4edea3" font-family="Chivo" font-size="8.5" font-weight="800" x="44" y="118">IC</text>
+<text fill="#dde3ed" font-family="Inter" font-size="7.5" font-weight="600" text-anchor="middle" x="60" y="118">€13.0M</text>
+<text fill="#ffffff" font-family="Chivo" font-size="8" font-weight="800" text-anchor="end" x="77" y="118">51p</text>
+</svg>
+<span class="absolute top-1 right-2 text-[9px] font-black uppercase px-1.5 py-0.5 rounded bg-[#169B62] text-white shadow">IRE</span>
+</div>
+</div>
+<!-- #13 Garry Ringrose (IRE) -->
+<div class="jersey-card group flex flex-col items-center cursor-pointer transition-transform duration-200 hover:-translate-y-1.5" data-player="ringrose">
+<div class="relative w-28 h-32 md:w-32 md:h-36 jersey-shadow transition-transform group-hover:scale-105">
+<svg class="w-full h-full" viewbox="0 0 120 140">
+<path d="M 38 18 L 10 35 L 24 58 L 36 50 L 36 122 C 36 125 40 127 45 127 L 75 127 C 80 127 84 125 84 122 L 84 50 L 96 58 L 110 35 L 82 18 C 74 25 46 25 38 18 Z" fill="url(#ire-grad)" stroke="#06381e" stroke-width="1.5"></path>
+<path d="M 10 35 L 24 58 L 18 63 L 5 42 Z" fill="url(#ire-sleeve)"></path>
+<path d="M 110 35 L 96 58 L 102 63 L 115 42 Z" fill="url(#ire-sleeve)"></path>
+<path d="M 44 20 C 50 28 70 28 76 20 L 70 17 C 65 23 55 23 50 17 Z" fill="#ffffff"></path>
+<text fill="#ffffff" font-family="Chivo" font-size="9" font-weight="900" letter-spacing="1" text-anchor="middle" x="60" y="38">RINGROSE</text>
+<text dominant-baseline="central" fill="#ffffff" font-family="Chivo" font-size="36" font-weight="900" text-anchor="middle" x="60" y="78">13</text>
+<rect fill="#042714" height="17" opacity="0.9" rx="2" width="48" x="36" y="106"></rect>
+<text fill="#4edea3" font-family="Chivo" font-size="8.5" font-weight="800" x="44" y="118">OC</text>
+<text fill="#dde3ed" font-family="Inter" font-size="7.5" font-weight="600" text-anchor="middle" x="60" y="118">€12.5M</text>
+<text fill="#ffffff" font-family="Chivo" font-size="8" font-weight="800" text-anchor="end" x="77" y="118">47p</text>
+</svg>
+<span class="absolute top-1 right-2 text-[9px] font-black uppercase px-1.5 py-0.5 rounded bg-[#169B62] text-white shadow">IRE</span>
+</div>
+</div>
+</div>
+</div>
+<!-- ROW 6: BACK THREE (11, 15, 14) -->
+<div class="relative z-10 w-full mb-3">
+<div class="text-center mb-1">
+<span class="font-label-sm text-[10px] uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-surface-container-lowest/80 text-emerald-300/80 border border-emerald-900/50 backdrop-blur-sm">Back Three / Strike Runners</span>
+</div>
+<div class="grid grid-cols-3 gap-3 md:gap-8 max-w-3xl mx-auto">
+<!-- #11 Duhan van der Merwe (SCO) -->
+<div class="jersey-card group flex flex-col items-center cursor-pointer transition-transform duration-200 hover:-translate-y-1.5" data-player="vdmerwe">
+<div class="relative w-28 h-32 md:w-32 md:h-36 jersey-shadow transition-transform group-hover:scale-105">
+<svg class="w-full h-full" viewbox="0 0 120 140">
+<path d="M 38 18 L 10 35 L 24 58 L 36 50 L 36 122 C 36 125 40 127 45 127 L 75 127 C 80 127 84 125 84 122 L 84 50 L 96 58 L 110 35 L 82 18 C 74 25 46 25 38 18 Z" fill="url(#sco-grad)" stroke="#010d21" stroke-width="1.5"></path>
+<path d="M 10 35 L 24 58 L 18 63 L 5 42 Z" fill="#021a3e"></path>
+<path d="M 110 35 L 96 58 L 102 63 L 115 42 Z" fill="#021a3e"></path>
+<rect fill="#00a8e8" height="3" transform="rotate(-38 13 47)" width="13" x="7" y="46"></rect>
+<rect fill="#00a8e8" height="3" transform="rotate(38 105 47)" width="13" x="99" y="46"></rect>
+<path d="M 44 20 C 50 28 70 28 76 20 L 70 17 C 65 23 55 23 50 17 Z" fill="#ffffff"></path>
+<text fill="#ffffff" font-family="Chivo" font-size="8.5" font-weight="900" letter-spacing="0.5" text-anchor="middle" x="60" y="38">V.D. MERWE</text>
+<text dominant-baseline="central" fill="#ffffff" font-family="Chivo" font-size="36" font-weight="900" text-anchor="middle" x="60" y="78">11</text>
+<rect fill="#010d21" height="17" opacity="0.9" rx="2" width="48" x="36" y="106"></rect>
+<text fill="#38bdf8" font-family="Chivo" font-size="8.5" font-weight="800" x="44" y="118">LW</text>
+<text fill="#dde3ed" font-family="Inter" font-size="7.5" font-weight="600" text-anchor="middle" x="60" y="118">€14.0M</text>
+<text fill="#ffffff" font-family="Chivo" font-size="8" font-weight="800" text-anchor="end" x="77" y="118">58p</text>
+</svg>
+<span class="absolute top-1 right-2 text-[9px] font-black uppercase px-1.5 py-0.5 rounded bg-[#0065BF] text-white shadow">SCO</span>
+</div>
+</div>
+<!-- #15 Hugo Keenan (IRE) -->
+<div class="jersey-card group flex flex-col items-center cursor-pointer transition-transform duration-200 hover:-translate-y-1.5" data-player="keenan">
+<div class="relative w-28 h-32 md:w-32 md:h-36 jersey-shadow transition-transform group-hover:scale-105">
+<svg class="w-full h-full" viewbox="0 0 120 140">
+<path d="M 38 18 L 10 35 L 24 58 L 36 50 L 36 122 C 36 125 40 127 45 127 L 75 127 C 80 127 84 125 84 122 L 84 50 L 96 58 L 110 35 L 82 18 C 74 25 46 25 38 18 Z" fill="url(#ire-grad)" stroke="#06381e" stroke-width="1.5"></path>
+<path d="M 10 35 L 24 58 L 18 63 L 5 42 Z" fill="url(#ire-sleeve)"></path>
+<path d="M 110 35 L 96 58 L 102 63 L 115 42 Z" fill="url(#ire-sleeve)"></path>
+<path d="M 44 20 C 50 28 70 28 76 20 L 70 17 C 65 23 55 23 50 17 Z" fill="#ffffff"></path>
+<text fill="#ffffff" font-family="Chivo" font-size="9.5" font-weight="900" letter-spacing="1" text-anchor="middle" x="60" y="38">KEENAN</text>
+<text dominant-baseline="central" fill="#ffffff" font-family="Chivo" font-size="36" font-weight="900" text-anchor="middle" x="60" y="78">15</text>
+<rect fill="#042714" height="17" opacity="0.9" rx="2" width="48" x="36" y="106"></rect>
+<text fill="#4edea3" font-family="Chivo" font-size="8.5" font-weight="800" x="44" y="118">FB</text>
+<text fill="#dde3ed" font-family="Inter" font-size="7.5" font-weight="600" text-anchor="middle" x="60" y="118">€13.5M</text>
+<text fill="#ffffff" font-family="Chivo" font-size="8" font-weight="800" text-anchor="end" x="77" y="118">49.5p</text>
+</svg>
+<span class="absolute top-1 right-2 text-[9px] font-black uppercase px-1.5 py-0.5 rounded bg-[#169B62] text-white shadow">IRE</span>
+</div>
+</div>
+<!-- #14 Damian Penaud (FRA) -->
+<div class="jersey-card group flex flex-col items-center cursor-pointer transition-transform duration-200 hover:-translate-y-1.5" data-player="penaud">
+<div class="relative w-28 h-32 md:w-32 md:h-36 jersey-shadow transition-transform group-hover:scale-105">
+<svg class="w-full h-full" viewbox="0 0 120 140">
+<path d="M 38 18 L 10 35 L 24 58 L 36 50 L 36 122 C 36 125 40 127 45 127 L 75 127 C 80 127 84 125 84 122 L 84 50 L 96 58 L 110 35 L 82 18 C 74 25 46 25 38 18 Z" fill="url(#fra-grad)" stroke="#03124f" stroke-width="1.5"></path>
+<path d="M 10 35 L 24 58 L 18 63 L 5 42 Z" fill="#041a6e"></path>
+<path d="M 110 35 L 96 58 L 102 63 L 115 42 Z" fill="#041a6e"></path>
+<path d="M 44 20 C 50 28 70 28 76 20 L 70 17 C 65 23 55 23 50 17 Z" fill="#ffffff"></path>
+<rect fill="#cf142b" height="6" width="4" x="58" y="21"></rect>
+<text fill="#ffffff" font-family="Chivo" font-size="9" font-weight="900" letter-spacing="1" text-anchor="middle" x="60" y="38">PENAUD</text>
+<text dominant-baseline="central" fill="#ffffff" font-family="Chivo" font-size="36" font-weight="900" text-anchor="middle" x="60" y="78">14</text>
+<rect fill="#020c35" height="17" opacity="0.9" rx="2" width="48" x="36" y="106"></rect>
+<text fill="#6bd8cb" font-family="Chivo" font-size="8.5" font-weight="800" x="44" y="118">RW</text>
+<text fill="#dde3ed" font-family="Inter" font-size="7.5" font-weight="600" text-anchor="middle" x="60" y="118">€15.5M</text>
+<text fill="#ffffff" font-family="Chivo" font-size="8" font-weight="800" text-anchor="end" x="77" y="118">64p</text>
+</svg>
+<span class="absolute top-1 right-2 text-[9px] font-black uppercase px-1.5 py-0.5 rounded bg-[#002395] text-white shadow">FRA</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ========================================== -->
+<!-- DUGOUT TACTICAL BENCH (Positioned Beneath Pitch) -->
+<!-- ========================================== -->
+<section class="w-full max-w-[1320px] mt-6 bg-gradient-to-b from-[#111923] to-[#0a1017] rounded-2xl border border-surface-container-high/90 p-4 md:p-6 shadow-2xl relative overflow-hidden">
+<!-- Dugout Canopy Aesthetic -->
+<div class="absolute -top-12 left-0 right-0 h-16 bg-gradient-to-b from-white/5 to-transparent pointer-events-none"></div>
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 mb-4 border-b border-surface-variant/40">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">airline_seat_recline_extra</span>
+<span class="font-headline-sm text-sm md:text-base uppercase tracking-wider text-on-surface font-extrabold">DUGOUT BENCH • 3 TACTICAL RESERVES</span>
+</div>
+<span class="font-body-sm text-xs text-on-surface-variant">Auto-substitution triggered in numerical priority (1 → 3)</span>
+</div>
+<!-- Bench Seats Row with 3 Authentically Rendered Reserve Kits -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<!-- Reserve 1: Ellis Genge (ENG #16) -->
+<div class="p-3 rounded-xl bg-surface-container/60 hover:bg-surface-container-high border border-surface-variant/40 flex items-center justify-between gap-4 transition-all">
+<div class="flex items-center gap-3">
+<!-- Mini Jersey -->
+<div class="w-14 h-16 flex-shrink-0 drop-shadow">
+<svg class="w-full h-full" viewbox="0 0 120 140">
+<path d="M 38 18 L 10 35 L 24 58 L 36 50 L 36 122 C 36 125 40 127 45 127 L 75 127 C 80 127 84 125 84 122 L 84 50 L 96 58 L 110 35 L 82 18 C 74 25 46 25 38 18 Z" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2"></path>
+<path d="M 44 20 C 50 28 70 28 76 20 L 70 17 C 65 23 55 23 50 17 Z" fill="#0f172a"></path>
+<text fill="#0f172a" font-family="Chivo" font-size="11" font-weight="900" text-anchor="middle" x="60" y="38">GENGE</text>
+<text dominant-baseline="central" fill="#cf142b" font-family="Chivo" font-size="38" font-weight="900" text-anchor="middle" x="60" y="78">16</text>
+</svg>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-1.5">
+<span class="text-[10px] font-black uppercase px-1.5 py-0.5 rounded bg-surface-variant text-primary font-mono">SUB 1</span>
+<span class="font-headline-sm text-sm text-on-surface font-extrabold">E. Genge</span>
+<span class="text-[9px] font-bold px-1 rounded bg-white text-red-600">ENG</span>
+</div>
+<span class="text-xs text-on-surface-variant mt-0.5">Prop • Front Row cover • €11.0M</span>
+<span class="text-xs text-primary font-bold mt-0.5">36.5 pts</span>
+</div>
+</div>
+<button class="p-2 rounded-lg bg-surface-variant/40 hover:bg-surface-variant text-on-surface-variant hover:text-on-surface transition-colors" title="Swap with Starting Player">
+<span class="material-symbols-outlined text-[20px]">swap_vert</span>
+</button>
+</div>
+<!-- Reserve 2: Jac Morgan (WAL #17) -->
+<div class="p-3 rounded-xl bg-surface-container/60 hover:bg-surface-container-high border border-surface-variant/40 flex items-center justify-between gap-4 transition-all">
+<div class="flex items-center gap-3">
+<div class="w-14 h-16 flex-shrink-0 drop-shadow">
+<svg class="w-full h-full" viewbox="0 0 120 140">
+<path d="M 38 18 L 10 35 L 24 58 L 36 50 L 36 122 C 36 125 40 127 45 127 L 75 127 C 80 127 84 125 84 122 L 84 50 L 96 58 L 110 35 L 82 18 C 74 25 46 25 38 18 Z" fill="#c8102e" stroke="#750617" stroke-width="2"></path>
+<path d="M 44 20 C 50 28 70 28 76 20 L 70 17 C 65 23 55 23 50 17 Z" fill="#ffffff"></path>
+<text fill="#ffffff" font-family="Chivo" font-size="11" font-weight="900" text-anchor="middle" x="60" y="38">MORGAN</text>
+<text dominant-baseline="central" fill="#ffffff" font-family="Chivo" font-size="38" font-weight="900" text-anchor="middle" x="60" y="78">17</text>
+</svg>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-1.5">
+<span class="text-[10px] font-black uppercase px-1.5 py-0.5 rounded bg-surface-variant text-primary font-mono">SUB 2</span>
+<span class="font-headline-sm text-sm text-on-surface font-extrabold">J. Morgan</span>
+<span class="text-[9px] font-bold px-1 rounded bg-[#c8102e] text-white">WAL</span>
+</div>
+<span class="text-xs text-on-surface-variant mt-0.5">Flanker • Back Row cover • €10.0M</span>
+<span class="text-xs text-primary font-bold mt-0.5">39.0 pts</span>
+</div>
+</div>
+<button class="p-2 rounded-lg bg-surface-variant/40 hover:bg-surface-variant text-on-surface-variant hover:text-on-surface transition-colors" title="Swap with Starting Player">
+<span class="material-symbols-outlined text-[20px]">swap_vert</span>
+</button>
+</div>
+<!-- Reserve 3: Paolo Garbisi (ITA #18) -->
+<div class="p-3 rounded-xl bg-surface-container/60 hover:bg-surface-container-high border border-surface-variant/40 flex items-center justify-between gap-4 transition-all">
+<div class="flex items-center gap-3">
+<div class="w-14 h-16 flex-shrink-0 drop-shadow">
+<svg class="w-full h-full" viewbox="0 0 120 140">
+<defs>
+<lineargradient id="ita-grad" x1="0" x2="1" y1="0" y2="1">
+<stop offset="0%" stop-color="#0087dc"></stop>
+<stop offset="100%" stop-color="#004c80"></stop>
+</lineargradient>
+</defs>
+<path d="M 38 18 L 10 35 L 24 58 L 36 50 L 36 122 C 36 125 40 127 45 127 L 75 127 C 80 127 84 125 84 122 L 84 50 L 96 58 L 110 35 L 82 18 C 74 25 46 25 38 18 Z" fill="url(#ita-grad)" stroke="#003559" stroke-width="2"></path>
+<path d="M 44 20 C 50 28 70 28 76 20 L 70 17 C 65 23 55 23 50 17 Z" fill="#ffffff"></path>
+<text fill="#ffffff" font-family="Chivo" font-size="11" font-weight="900" text-anchor="middle" x="60" y="38">GARBISI</text>
+<text dominant-baseline="central" fill="#ffffff" font-family="Chivo" font-size="38" font-weight="900" text-anchor="middle" x="60" y="78">18</text>
+</svg>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-1.5">
+<span class="text-[10px] font-black uppercase px-1.5 py-0.5 rounded bg-surface-variant text-primary font-mono">SUB 3</span>
+<span class="font-headline-sm text-sm text-on-surface font-extrabold">P. Garbisi</span>
+<span class="text-[9px] font-bold px-1 rounded bg-[#0087dc] text-white">ITA</span>
+</div>
+<span class="text-xs text-on-surface-variant mt-0.5">Fly-Half • Backline cover • €9.5M</span>
+<span class="text-xs text-primary font-bold mt-0.5">34.0 pts</span>
+</div>
+</div>
+<button class="p-2 rounded-lg bg-surface-variant/40 hover:bg-surface-variant text-on-surface-variant hover:text-on-surface transition-colors" title="Swap with Starting Player">
+<span class="material-symbols-outlined text-[20px]">swap_vert</span>
+</button>
+</div>
+</div>
+</section>
+</main>
+<!-- ========================================== -->
+<!-- FLOATING EDGE TRIGGER HANDLE FOR TACTICAL DRAWER -->
+<!-- ========================================== -->
+<button class="fixed left-0 top-36 z-50 flex items-center gap-2 pr-3.5 pl-2.5 py-2.5 bg-surface-container-high/95 hover:bg-surface-variant backdrop-blur-md text-on-surface rounded-r-2xl border-r-2 border-y border-primary/50 shadow-[4px_6px_24px_rgba(0,0,0,0.6)] transition-all group cursor-pointer" id="left-drawer-toggle-btn"><span class="material-symbols-outlined text-primary text-[22px] group-hover:-translate-x-0.5 transition-transform">explore</span><div class="flex flex-col items-start"><span class="font-headline-sm text-[11px] uppercase tracking-wider font-extrabold group-hover:text-primary transition-colors">Tournament Hub</span><span class="inline-flex items-center gap-1 text-[9px] font-bold text-primary bg-emerald-950/80 px-1.5 py-0.5 rounded border border-emerald-500/30"><span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>Round 1</span></div></button><button class="fixed right-0 top-36 z-50 flex items-center gap-2 pl-3.5 pr-2.5 py-2.5 bg-surface-container-high/95 hover:bg-surface-variant backdrop-blur-md text-on-surface rounded-l-2xl border-l-2 border-y border-emerald-500/50 shadow-[-4px_6px_24px_rgba(0,0,0,0.6)] transition-all group" id="drawer-toggle-btn">
+<div class="flex flex-col items-end">
+<span class="font-headline-sm text-[11px] uppercase tracking-wider font-extrabold group-hover:text-primary transition-colors">Tactical Desk</span>
+<span class="inline-flex items-center gap-1 text-[9px] font-bold text-emerald-400 bg-emerald-950/80 px-1.5 py-0.5 rounded border border-emerald-500/30">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+        100% Valid
+      </span>
+</div>
+<span class="material-symbols-outlined text-primary text-[22px] group-hover:translate-x-0.5 transition-transform">dashboard_customize</span>
+</button>
+<!-- ========================================== -->
+<!-- COLLAPSIBLE TEAM INFORMATION DRAWER (SLIDE OVER) -->
+<!-- ========================================== -->
+<div class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 opacity-0 pointer-events-none transition-opacity duration-300" id="nav-drawer-overlay"></div>
+<aside class="fixed top-0 left-0 h-full w-full max-w-md bg-surface-container-low border-r border-surface-container-high shadow-2xl z-50 transform -translate-x-full transition-transform duration-300 ease-in-out flex flex-col overflow-y-auto" id="nav-tournament-drawer">
+<div class="sticky top-0 bg-surface-container-low/95 backdrop-blur-md p-5 border-b border-surface-container flex items-center justify-between z-10">
+<div class="flex items-center gap-3">
+<div class="p-2 rounded-lg bg-surface-container border border-surface-variant/50 text-primary">
+<span class="material-symbols-outlined text-[24px]">sports_rugby</span>
+</div>
+<div class="flex flex-col">
+<h2 class="font-headline-sm text-lg font-black text-on-surface uppercase leading-none">Tournament Hub</h2>
+<span class="text-xs text-on-surface-variant font-medium mt-0.5">Six Nations Championship 2025</span>
+</div>
+</div>
+<button aria-label="Close Tournament Drawer" class="p-1.5 rounded-lg bg-surface-container hover:bg-surface-variant text-on-surface-variant hover:text-on-surface transition-colors cursor-pointer" id="nav-drawer-close-btn">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+<div class="p-5 flex flex-col gap-6">
+<!-- Active Round & Championship Snapshot -->
+<div class="p-4 rounded-xl bg-surface-container border border-surface-variant/40 flex items-center justify-between">
+<div class="flex flex-col">
+<span class="text-[10px] uppercase font-bold text-on-surface-variant tracking-wider">Active Gameweek</span>
+<span class="font-headline-sm text-base font-extrabold text-on-surface mt-0.5">Round 1 of 5</span>
+<span class="text-xs text-emerald-400 font-semibold mt-0.5 flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Lockout: 2d 14h</span>
+</div>
+<div class="flex flex-col items-end">
+<span class="text-[10px] uppercase font-bold text-on-surface-variant">Overall Fantasy Rank</span>
+<span class="font-headline-sm text-base font-black text-primary mt-0.5">#1,420</span>
+<span class="text-[11px] text-on-surface-variant font-medium">Top 4.2%</span>
+</div>
+</div>
+<!-- Primary Navigation Routes -->
+<div class="flex flex-col gap-2">
+<span class="text-[11px] font-bold uppercase tracking-wider text-on-surface-variant px-1">Tournament Sections</span>
+<!-- Item 1: My Squad (Active) -->
+<a class="flex items-center justify-between p-3.5 rounded-xl bg-primary/10 border border-primary/40 text-on-surface transition-all group" href="#">
+<div class="flex items-center gap-3.5">
+<div class="w-10 h-10 rounded-lg bg-primary/20 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[22px]">shield_person</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<span class="font-headline-sm text-sm font-extrabold text-on-surface">My Squad</span>
+<span class="px-1.5 py-0.2 rounded bg-primary text-on-primary-container text-[9px] font-black uppercase">Active</span>
+</div>
+<span class="text-xs text-on-surface-variant mt-0.5">Tactical Pitch &amp; Dugout Bench (18/18)</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-primary text-[20px]">chevron_right</span>
+</a>
+<!-- Item 2: Match Center -->
+<a class="flex items-center justify-between p-3.5 rounded-xl bg-surface-container hover:bg-surface-container-high border border-surface-variant/40 text-on-surface transition-all group" href="#">
+<div class="flex items-center gap-3.5">
+<div class="w-10 h-10 rounded-lg bg-surface-variant/40 text-blue-400 flex items-center justify-center group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-[22px]">stadium</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<span class="font-headline-sm text-sm font-bold text-on-surface group-hover:text-primary transition-colors">Match Center</span>
+<span class="px-1.5 py-0.5 rounded bg-red-600/20 text-rose-300 border border-red-500/30 text-[9px] font-black uppercase flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span>LIVE</span>
+</div>
+<span class="text-xs text-on-surface-variant mt-0.5">Live match streams, round switcher, fixtures</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-on-surface group-hover:translate-x-0.5 transition-all text-[20px]">chevron_right</span>
+</a>
+<!-- Item 3: Leagues -->
+<a class="flex items-center justify-between p-3.5 rounded-xl bg-surface-container hover:bg-surface-container-high border border-surface-variant/40 text-on-surface transition-all group" href="#">
+<div class="flex items-center gap-3.5">
+<div class="w-10 h-10 rounded-lg bg-surface-variant/40 text-amber-400 flex items-center justify-center group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-[22px]">military_tech</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<span class="font-headline-sm text-sm font-bold text-on-surface group-hover:text-primary transition-colors">Leagues</span>
+<span class="px-1.5 py-0.5 rounded bg-surface-variant text-secondary text-[9px] font-bold">5 Joined</span>
+</div>
+<span class="text-xs text-on-surface-variant mt-0.5">Private classic &amp; head-to-head leagues, invite codes</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-on-surface group-hover:translate-x-0.5 transition-all text-[20px]">chevron_right</span>
+</a>
+<!-- Item 4: Stats & Fixtures -->
+<a class="flex items-center justify-between p-3.5 rounded-xl bg-surface-container hover:bg-surface-container-high border border-surface-variant/40 text-on-surface transition-all group" href="#">
+<div class="flex items-center gap-3.5">
+<div class="w-10 h-10 rounded-lg bg-surface-variant/40 text-cyan-400 flex items-center justify-center group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-[22px]">analytics</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<span class="font-headline-sm text-sm font-bold text-on-surface group-hover:text-primary transition-colors">Stats &amp; Fixtures</span>
+</div>
+<span class="text-xs text-on-surface-variant mt-0.5">Tournament calendar, player rankings, form guides</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-on-surface group-hover:translate-x-0.5 transition-all text-[20px]">chevron_right</span>
+</a>
+<!-- Item 5: Rules & Admin -->
+<a class="flex items-center justify-between p-3.5 rounded-xl bg-surface-container hover:bg-surface-container-high border border-surface-variant/40 text-on-surface transition-all group" href="#">
+<div class="flex items-center gap-3.5">
+<div class="w-10 h-10 rounded-lg bg-surface-variant/40 text-slate-300 flex items-center justify-center group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-[22px]">gavel</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<span class="font-headline-sm text-sm font-bold text-on-surface group-hover:text-primary transition-colors">Rules &amp; Admin</span>
+</div>
+<span class="text-xs text-on-surface-variant mt-0.5">Scoring point matrix, CSV reconciliation, official rules</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-on-surface group-hover:translate-x-0.5 transition-all text-[20px]">chevron_right</span>
+</a>
+</div>
+<!-- Quick Action / Switch Mode Card -->
+<div class="p-4 rounded-xl bg-surface-container-high border border-surface-variant/50 flex flex-col gap-2.5">
+<div class="flex items-center justify-between">
+<span class="font-headline-sm text-xs uppercase font-extrabold text-on-surface">Six Nations Fantasy Pass</span>
+<span class="text-[10px] font-bold text-primary px-1.5 py-0.5 rounded bg-primary/10 border border-primary/20">PRO TIER</span>
+</div>
+<p class="text-xs text-on-surface-variant">Unlock multi-league projections, expected try calculations, and live sub alerts.</p>
+<button class="w-full py-2 rounded-lg bg-primary-container hover:bg-primary text-on-primary-container font-label-md text-xs font-bold uppercase tracking-wider transition-colors cursor-pointer">
+        View Premium Analytics
+      </button>
+</div>
+</div>
+</aside><div class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 opacity-0 pointer-events-none transition-opacity duration-300" id="drawer-overlay"></div>
+<aside class="fixed top-0 right-0 h-full w-full max-w-md bg-surface-container-low border-l border-surface-container-high shadow-2xl z-50 transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col overflow-y-auto" id="tactical-drawer">
+<!-- Drawer Header -->
+<div class="sticky top-0 bg-surface-container-low/95 backdrop-blur-md p-5 border-b border-surface-container flex items-center justify-between z-10">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[24px]">assignment</span>
+<div class="flex flex-col">
+<h2 class="font-headline-sm text-lg font-black text-on-surface uppercase leading-none">Tactical Intelligence</h2>
+<span class="text-xs text-on-surface-variant font-medium mt-0.5">Captaincy &amp; Roster Compliance</span>
+</div>
+</div>
+<button aria-label="Close Drawer" class="p-1.5 rounded-lg bg-surface-container hover:bg-surface-variant text-on-surface-variant hover:text-on-surface transition-colors" id="drawer-close-btn">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+<div class="p-5 flex flex-col gap-6">
+<!-- 1. DESIGNATED LEADERSHIP & CAPTAINCY BREAKDOWN -->
+<div class="flex flex-col gap-3 p-4 rounded-xl bg-surface-container border border-surface-variant/40">
+<div class="flex items-center justify-between">
+<span class="font-headline-sm text-xs font-black uppercase tracking-wider text-secondary flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px]">military_tech</span>
+            Active Captain (2.0x Multiplier)
+          </span>
+<span class="text-[10px] font-black px-2 py-0.5 rounded bg-secondary/20 text-secondary border border-secondary/30">125.0 PTS TOTAL</span>
+</div>
+<div class="flex items-center gap-3 mt-1">
+<div class="w-14 h-14 rounded-xl overflow-hidden bg-surface-container-high flex-shrink-0 border border-secondary/50">
+<img alt="Caelan Doris" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/AEtjO1Ulb6eP2WRuqpMsq_XbnvztSfkvgWboRAbvpJcRkZNn68WmJ4JRbmXnAL3gOYGB_Pw-YdKwLAErK0rbZG74_fXX6yAbEYODoe4QxxElaZfBbjOWTQg2VJLHGsqvQ6Bpgr_GXOqP9SmDAaKQxI1nb_9i9cLyv8X3ajzc4UTHV6A3YqdQ4dlOpZ33Hz3tk7RhNtBuhuM8vagieEJPHy_uLNA8zUg320SF468YDem20AkwZx4W_jfDaZZ1ZzBe"/>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-1.5">
+<span class="font-headline-sm text-base text-on-surface font-black">Caelan Doris</span>
+<span class="text-[10px] font-bold px-1.5 rounded bg-[#169B62] text-white">IRE</span>
+</div>
+<span class="text-xs text-on-surface-variant">Number Eight • €14.5M • Form: 9.2</span>
+</div>
+</div>
+<!-- Captain Scoring Detail Breakdown -->
+<div class="mt-2 grid grid-cols-2 gap-2 text-xs">
+<div class="p-2 rounded bg-surface-container-low flex justify-between">
+<span class="text-on-surface-variant">18 Tackles</span>
+<span class="font-bold text-on-surface">+27.0p</span>
+</div>
+<div class="p-2 rounded bg-surface-container-low flex justify-between">
+<span class="text-on-surface-variant">1 Try Scored</span>
+<span class="font-bold text-primary">+15.0p</span>
+</div>
+<div class="p-2 rounded bg-surface-container-low flex justify-between">
+<span class="text-on-surface-variant">2 Turnovers Won</span>
+<span class="font-bold text-on-surface">+10.0p</span>
+</div>
+<div class="p-2 rounded bg-surface-container-low flex justify-between">
+<span class="text-on-surface-variant">65m Carries</span>
+<span class="font-bold text-on-surface">+10.5p</span>
+</div>
+</div>
+<div class="text-[11px] text-right text-secondary font-bold">
+          Base: 62.5 pts × 2.0 = 125.0 pts
+        </div>
+<!-- Vice Captain -->
+<div class="mt-2 pt-3 border-t border-surface-variant/40 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="text-[10px] font-black px-1.5 py-0.5 rounded bg-slate-300 text-slate-900">VC</span>
+<span class="font-headline-sm text-xs font-bold text-on-surface">Antoine Dupont (FRA)</span>
+</div>
+<span class="text-xs font-bold text-primary">68.0 pts (Standard)</span>
+</div>
+</div>
+<!-- 2. ROSTER COMPLIANCE AUDIT MATRIX -->
+<div class="flex flex-col gap-3 p-4 rounded-xl bg-surface-container border border-surface-variant/40">
+<div class="flex items-center justify-between">
+<span class="font-headline-sm text-xs font-black uppercase tracking-wider text-primary flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px]">verified</span>
+            Roster Compliance Audit
+          </span>
+<span class="text-[10px] font-black px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-500/40">100% REGULATION</span>
+</div>
+<ul class="flex flex-col gap-2.5 text-xs">
+<li class="flex items-center justify-between">
+<span class="flex items-center gap-2 text-on-surface">
+<span class="material-symbols-outlined text-primary text-[17px]">check_circle</span>
+              Squad Size (15 Starting + 3 Bench)
+            </span>
+<strong class="text-primary font-bold">18 / 18</strong>
+</li>
+<li class="flex items-center justify-between">
+<span class="flex items-center gap-2 text-on-surface">
+<span class="material-symbols-outlined text-primary text-[17px]">check_circle</span>
+              Salary Cap Compliance
+            </span>
+<strong class="text-primary font-bold">€85.5M / €100.0M</strong>
+</li>
+<li class="flex items-center justify-between">
+<span class="flex items-center gap-2 text-on-surface">
+<span class="material-symbols-outlined text-primary text-[17px]">check_circle</span>
+              Max 4 Players Per Nation Rule
+            </span>
+<strong class="text-primary font-bold">Compliant (IRE 4/4)</strong>
+</li>
+<li class="flex items-center justify-between">
+<span class="flex items-center gap-2 text-on-surface">
+<span class="material-symbols-outlined text-primary text-[17px]">check_circle</span>
+              Leadership Designations
+            </span>
+<strong class="text-primary font-bold">C &amp; VC Active</strong>
+</li>
+</ul>
+<!-- Nation Breakdown Grid -->
+<div class="mt-2 pt-3 border-t border-surface-variant/40 flex flex-col gap-1.5">
+<span class="text-[11px] font-bold text-on-surface-variant uppercase">Nation Distribution</span>
+<div class="grid grid-cols-3 gap-1.5 text-center text-xs font-semibold">
+<div class="p-1 rounded bg-emerald-950/60 text-emerald-300 border border-emerald-800/40">IRE: 4/4 (Max)</div>
+<div class="p-1 rounded bg-surface-container-low text-blue-300">FRA: 3/4</div>
+<div class="p-1 rounded bg-surface-container-low text-slate-300">ENG: 3/4</div>
+<div class="p-1 rounded bg-surface-container-low text-sky-300">SCO: 2/4</div>
+<div class="p-1 rounded bg-surface-container-low text-rose-300">WAL: 2/4</div>
+<div class="p-1 rounded bg-surface-container-low text-cyan-300">ITA: 1/4</div>
+</div>
+</div>
+</div>
+<!-- Quick Transfer Action -->
+<div class="p-4 rounded-xl bg-surface-container-high border border-surface-variant/50 flex flex-col gap-2">
+<span class="text-xs text-on-surface-variant flex items-center gap-1.5">
+<span class="material-symbols-outlined text-secondary text-[16px]">info</span>
+          2 Free transfers available before lockout
+        </span>
+<button class="w-full py-2.5 rounded-lg bg-surface-variant hover:bg-surface-bright text-on-surface font-label-md text-xs font-bold uppercase tracking-wider transition-colors">
+          Transfer Market
+        </button>
+</div>
+</div>
+</aside>
+<!-- FOOTER -->
+<footer class="w-full bg-surface-container-lowest/80 backdrop-blur-md border-t border-surface-container py-3 mt-6">
+<div class="max-w-[1720px] mx-auto px-4 md:px-8 flex flex-col sm:flex-row items-center justify-between text-xs text-on-surface-variant gap-2">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span class="font-bold uppercase text-primary">Live Sync:</span>
+<span>Official Six Nations Championship API Connected</span>
+</div>
+<div>© 2025 Six Nations Rugby Fantasy • Elite Championship Engine</div>
+</div>
+</footer>
+<!-- SCRIPT FOR COLLAPSIBLE DRAWER & INTERACTIVITY -->
+<script>
+    (function initSquadInteractions() {
+      const toggleBtn = document.getElementById('drawer-toggle-btn');
+      const closeBtn = document.getElementById('drawer-close-btn');
+      const drawer = document.getElementById('tactical-drawer');
+      const overlay = document.getElementById('drawer-overlay');
+
+      function openDrawer() {
+        drawer.classList.remove('translate-x-full');
+        overlay.classList.remove('opacity-0', 'pointer-events-none');
+      }
+
+      function closeDrawer() {
+        drawer.classList.add('translate-x-full');
+        overlay.classList.add('opacity-0', 'pointer-events-none');
+      }
+
+      if (toggleBtn) toggleBtn.addEventListener('click', openDrawer);
+      if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
+      if (overlay) overlay.addEventListener('click', closeDrawer);
+
+      // Lock CTA Feedback
+      const lockBtn = document.getElementById('btn-lock-squad');
+      if (lockBtn) {
+        lockBtn.addEventListener('click', () => {
+          const prevHTML = lockBtn.innerHTML;
+          lockBtn.innerHTML = `
+            <span class="material-symbols-outlined text-[17px] animate-spin">sync</span>
+            <span>Locked!</span>
+          `;
+          lockBtn.classList.replace('bg-primary-container', 'bg-emerald-600');
+          setTimeout(() => {
+            lockBtn.innerHTML = prevHTML;
+            lockBtn.classList.replace('bg-emerald-600', 'bg-primary-container');
+          }, 2000);
+        });
+      }
+
+      // Jersey Selection Visual Click Handler
+      const cards = document.querySelectorAll('.jersey-card');
+      cards.forEach(card => {
+        card.addEventListener('click', () => {
+          cards.forEach(c => {
+            if (c.getAttribute('data-player') !== 'doris') {
+              c.classList.remove('scale-105');
+            }
+          });
+          card.classList.add('scale-105');
+        });
+      });
+    })();
+  </script>
+</body></html>

@@ -1,0 +1,33 @@
+{
+  "name": "six-nations-fantasy",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "engines": {
+    "node": ">=22.20.0 <23"
+  },
+  "overrides": {
+    "react": "19.2.3",
+    "react-native": "0.86.3",
+    "react-native-reanimated": "4.5.1",
+    "react-native-worklets": "0.10.1"
+  },
+  "scripts": {
+    "dev": "npm run dev --workspace backend",
+    "dev:web": "npm run web --workspace frontend",
+    "dev:frontend": "npm run start --workspace frontend",
+    "verify:frontend": "npm run typecheck --workspace frontend && npm run test --workspace frontend && npm run build:web --workspace frontend",
+    "build": "npm run build --workspace backend",
+    "typecheck": "npm run typecheck --workspace backend",
+    "test": "npm run test --workspace backend",
+    "contracts": "npm run contracts --workspace backend",
+    "contracts:check": "npm run contracts:check --workspace backend",
+    "test:db": "bash backend/scripts/test-database.sh",
+    "types": "npm run types --workspace backend",
+    "types:check": "npm run types:check --workspace backend",
+    "verify": "npm run typecheck && npm test && npm run build && npm run contracts:check && npm run types:check"
+  }
+}

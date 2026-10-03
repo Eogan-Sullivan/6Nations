@@ -1,0 +1,7 @@
+package-lock.json
+backend/contracts/
+backend/dist/
+node_modules/
+AGENTS.md
+Plan.md
+documentation/delivery/assessments/

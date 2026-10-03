@@ -1,0 +1,26 @@
+export const colors = {
+  bg: '#081118',
+  lowest: '#050B10',
+  panel: '#111D25',
+  raised: '#17252C',
+  elevated: '#2C4144',
+  active: '#1D3031',
+  border: '#30464A',
+  text: '#F0F5F2',
+  muted: '#9FB5AE',
+  emerald: '#53E0A3',
+  amber: '#F4C46D',
+  danger: '#FFACA6',
+  teal: '#6BD8CB',
+  pitch: '#0C352A',
+  pitchStripe: '#104333',
+  line: '#91E4C2',
+  demoSurface: '#12271E',
+  demoBorder: '#496447',
+  navSurface: '#0B171D',
+};
+export const fonts = {
+  heading: 'Chivo_700Bold',
+  body: 'Inter_400Regular',
+  medium: 'Inter_600SemiBold',
+};

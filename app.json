@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "extra": {
+      "eas": {
+        "projectId": "c02dab70-2fa9-449d-9cbc-1f531f71fb3c"
+      }
+    },
+    "owner": "eogansullivans-team",
+    "slug": "sixnations"
+  }
+}
