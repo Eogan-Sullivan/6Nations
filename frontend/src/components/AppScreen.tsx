@@ -14,11 +14,12 @@ export function AppScreen({ active, title, description, children, freshness = 'd
   const styles = useMemo(() => makeStyles(c), [c]);
   const { width } = useWindowDimensions();
   const desktop = width >= 1024;
+  const showStateGuide = !['demo', 'connected', 'official'].includes(freshness);
   return (
     <MatchdayCanvas active={active}>
       <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={[styles.content, desktop && styles.contentDesktop]}>
         <View style={[styles.titleBlock, width < 520 && styles.titleBlockNarrow]}><View style={styles.titleCopy}><Text accessibilityRole="header" style={styles.title}>{title}</Text><Label muted>{description}</Label></View><StatusBanner status={freshness} detail={freshnessDetail} compact /></View>
-        <View accessibilityRole="text" style={styles.stateGuide}><Text style={styles.stateGuideTitle}>Data confidence</Text><Text style={styles.stateGuideCopy}>{stateCopy[freshness]}</Text></View>
+        {showStateGuide && <View accessibilityRole="text" style={styles.stateGuide}><Text style={styles.stateGuideTitle}>Data confidence</Text><Text style={styles.stateGuideCopy}>{stateCopy[freshness]}</Text></View>}
         {children}
       </ScrollView>
     </MatchdayCanvas>

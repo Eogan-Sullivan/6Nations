@@ -65,24 +65,28 @@ export function CommandDock({ active, alertCount = 0, onOpenHub, onOpenTactical 
         accessibilityLabel="Primary navigation"
         style={[styles.dock, desktop && styles.dockDesktop, expanded && styles.dockExpanded, { transform: [{ translateY: progress.interpolate({ inputRange: [0, 1], outputRange: [0, desktop ? -6 : -4] }) }] }]}
       >
-        {desktop && <Pressable
+        {desktop ? <View style={styles.dockToggle}>
+          <View style={styles.mark}><Text style={styles.markText}>6</Text></View>
+          <View style={styles.toggleCopy}>
+            <Text style={styles.dockEyebrow}>SIX NATIONS</Text>
+            <Text style={styles.dockTitle}>Navigation</Text>
+          </View>
+        </View> : <Pressable
           accessibilityRole="button"
           accessibilityLabel={`${expanded ? 'Collapse' : 'Expand'} navigation${alertCount > 0 ? `, ${alertCount} alert${alertCount === 1 ? '' : 's'}` : ''}`}
-          accessibilityHint={expanded ? 'Hides navigation and quick actions' : 'Shows navigation and quick actions'}
-          accessibilityState={{ expanded, disabled: desktop }}
-          disabled={desktop}
+          accessibilityHint={expanded ? 'Hides quick actions' : 'Shows quick actions'}
+          accessibilityState={{ expanded }}
           onPress={() => setExpanded((value) => !value)}
           style={({ pressed }) => [styles.dockToggle, pressed && styles.pressed]}
         >
           <View style={styles.mark}><Text style={styles.markText}>6</Text></View>
           <View style={styles.toggleCopy}>
             <Text style={styles.dockEyebrow}>SIX NATIONS</Text>
-            <Text style={styles.dockTitle}>{desktop ? 'Navigation' : expanded ? 'Navigation' : destinations.find((item) => item.route === active)?.label}</Text>
+            <Text style={styles.dockTitle}>{destinations.find((item) => item.route === active)?.label}</Text>
           </View>
-          {!desktop && <View style={styles.activity}>{alertCount > 0 && <Text style={styles.alertCount}>{alertCount}</Text>}<Feather name={expanded ? 'chevron-down' : 'chevron-up'} size={16} color={c.muted} /></View>}
+          <View style={styles.activity}>{alertCount > 0 && <Text style={styles.alertCount}>{alertCount}</Text>}<Feather name={expanded ? 'chevron-down' : 'chevron-up'} size={16} color={c.muted} /></View>
         </Pressable>}
-        {(
-          <Animated.View style={styles.expandedContent}>
+        <Animated.View style={styles.expandedContent}>
             <View accessibilityRole="tablist" style={[styles.destinationGrid, desktop && styles.destinationGridDesktop]}>
               {destinations.map((destination) => {
                 const selected = active === destination.route;
@@ -112,8 +116,7 @@ export function CommandDock({ active, alertCount = 0, onOpenHub, onOpenTactical 
               <Text style={styles.footerLabel}>DISPLAY</Text>
               <ThemeToggle />
             </View>}
-          </Animated.View>
-        )}
+        </Animated.View>
       </Animated.View>
     </View>
   );

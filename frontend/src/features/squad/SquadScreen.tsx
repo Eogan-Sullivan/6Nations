@@ -16,6 +16,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, Label } from '../../components/ui';
 import { CommandDock } from '../../components/CommandDock';
+import { OverlaySurface } from '../../components/OverlaySurface';
 import { fonts, type ThemeColors } from '../../theme/tokens';
 import { exampleDraft } from './demo';
 import {
@@ -493,29 +494,17 @@ export default function SquadScreen() {
                     </Button>
                   </View>
                   <Text style={s.reserveCover}>
-                    {squad.players.find((p) => p.id === squad.draft.slots[index])?.position ?? 'Open cover'} cover · auto-substitutes when an eligible starter does not play
+                    {squad.players.find((p) => p.id === squad.draft.slots[index])?.position ?? 'Open'} cover · auto-substitutes when an eligible starter does not play
                   </Text>
                 </View>
               ))}
             </View>
-            <View style={s.nationPanel}>
-              <Text style={s.smallHeading}>MAXIMUM FOUR PER NATION · ALL 18 PLAYERS</Text>
-              <View style={s.nationCounts}>
-                {NATIONS.map((n) => {
-                  const count = picked.filter((p) => p.nation === n).length;
-                  return (
-                    <View key={n} style={s.nationCount}>
-                      <Text style={[s.nationAbbr, { color: theme === 'light' ? lightNationColor[n] : nationColor[n] }]}>
-                        {shortNation[n]}
-                      </Text>
-                      <Text style={[s.count, count > 4 && { color: c.danger }]}>
-                        {count}
-                        <Text style={s.metricUnit}>/4</Text>
-                      </Text>
-                    </View>
-                  );
-                })}
+            <View style={s.quotaSummary}>
+              <View style={s.quotaCopy}>
+                <Text style={s.smallHeading}>NATION QUOTA</Text>
+                <Label muted>Maximum four players per nation. Review the full distribution in Tactical Desk.</Label>
               </View>
+              <Button compact onPress={() => setTacticalDrawer(true)}>View quotas</Button>
             </View>
             <View style={s.validationCard} accessibilityLabel="Squad validation">
               <View style={s.validationIcon}><Text style={s.validationIconText}>{issues.length ? '!' : '✓'}</Text></View>
@@ -733,16 +722,8 @@ export default function SquadScreen() {
         onOpenTactical={() => setTacticalDrawer(true)}
       />
 
-      <Modal visible={hubDrawer} transparent animationType={reduceMotion ? 'none' : 'fade'} onRequestClose={() => setHubDrawer(false)}>
-        <View style={s.drawerBackdrop}>
-          <View accessibilityViewIsModal style={s.drawerCard}>
-            <View style={s.drawerHeader}>
-              <View>
-                <Text style={s.drawerTitle}>TOURNAMENT HUB</Text>
-                <Label muted>Six Nations Fantasy · 2027</Label>
-              </View>
-              <Button compact label="Close Tournament Hub" onPress={() => setHubDrawer(false)}>Close</Button>
-            </View>
+      <OverlaySurface visible={hubDrawer} mode="drawer" title="Tournament Hub" onClose={() => setHubDrawer(false)}>
+            <Label muted>Six Nations Fantasy · 2027</Label>
             <View style={s.drawerSnapshot}>
               <Text style={s.smallHeading}>ACTIVE GAMEWEEK</Text>
               <Text style={s.drawerMetric}>Round 1 of 5</Text>
@@ -750,44 +731,29 @@ export default function SquadScreen() {
               <Text style={s.drawerRank}>Overall rank · — (demo)</Text>
             </View>
             <Text style={s.filterLabel}>TOURNAMENT SECTIONS</Text>
-            {['My Squad', 'Match Center', 'Leagues', 'Stats & Fixtures', 'Rules & Admin'].map((item, index) => (
-              <Pressable
-                key={item}
-                accessibilityRole="button"
-                onPress={() => {
-                  setHubDrawer(false);
-                  if (index === 0) router.push('/squad');
-                  if (index === 1) router.push('/matches');
-                  if (index === 2) router.push('/leagues');
-                  if (index === 3) router.push('/stats');
-                }}
-                style={[s.drawerNavRow, index === 0 && s.drawerNavActive]}
-              >
-                <View>
-                  <Text style={s.drawerNavTitle}>{item}</Text>
-                  <Text style={s.drawerNavCopy}>{index === 0 ? 'Tactical pitch & dugout bench' : index === 1 ? 'Fixtures and live match status' : index === 2 ? 'Private and global standings' : index === 3 ? 'Scoring, form, and rankings' : 'Competition rules and administration'}</Text>
-                </View>
-                <Text style={s.drawerChevron}>{index === 4 ? 'INFO' : 'OPEN'}</Text>
+            {[
+              ['My Squad', 'Tactical pitch & dugout bench', '/squad'],
+              ['Match Centre', 'Fixtures and live match status', '/matches'],
+              ['Leagues', 'Private and global standings', '/leagues'],
+              ['Stats & Fixtures', 'Scoring, form, and rankings', '/stats'],
+            ].map(([item, copy, route], index) => (
+              <Pressable key={item} accessibilityRole="button" accessibilityLabel={`Open ${item}`} onPress={() => { setHubDrawer(false); router.push(route as '/squad' | '/matches' | '/leagues' | '/stats'); }} style={[s.drawerNavRow, index === 0 && s.drawerNavActive]}>
+                <View><Text style={s.drawerNavTitle}>{item}</Text><Text style={s.drawerNavCopy}>{copy}</Text></View>
+                <Text style={s.drawerChevron}>OPEN</Text>
               </Pressable>
             ))}
+            <View style={s.drawerNavRow} accessibilityLabel="Rules and scoring information">
+              <View><Text style={s.drawerNavTitle}>Rules & scoring</Text><Text style={s.drawerNavCopy}>Competition rules and scoring guidance</Text></View>
+              <Text style={s.drawerChevron}>INFO</Text>
+            </View>
             <View style={s.drawerNote}>
               <Text style={s.smallHeading}>DEMO MODE</Text>
               <Label muted>Local draft storage is active. Account sync and official submission are not connected in this preview.</Label>
             </View>
-          </View>
-        </View>
-      </Modal>
+      </OverlaySurface>
 
-      <Modal visible={tacticalDrawer} transparent animationType={reduceMotion ? 'none' : 'fade'} onRequestClose={() => setTacticalDrawer(false)}>
-        <View style={s.drawerBackdrop}>
-          <View accessibilityViewIsModal style={s.drawerCard}>
-            <View style={s.drawerHeader}>
-              <View>
-                <Text style={s.drawerTitle}>TACTICAL INTELLIGENCE</Text>
-                <Label muted>Captaincy & roster compliance</Label>
-              </View>
-              <Button compact label="Close Tactical Desk" onPress={() => setTacticalDrawer(false)}>Close</Button>
-            </View>
+      <OverlaySurface visible={tacticalDrawer} mode="drawer" title="Tactical Desk" onClose={() => setTacticalDrawer(false)}>
+            <Label muted>Captaincy & roster compliance</Label>
             <View style={s.drawerSnapshot}>
               <Text style={s.drawerAccent}>CAPTAINCY</Text>
               <Text style={s.drawerMetric}>{captain?.name ?? 'No captain selected'}</Text>
@@ -816,9 +782,7 @@ export default function SquadScreen() {
             >
               Transfer Market · {squad.transfersRemaining} free
             </Button>
-          </View>
-        </View>
-      </Modal>
+      </OverlaySurface>
 
       <Modal visible={transferMarket} transparent animationType={reduceMotion ? 'none' : mobile ? 'slide' : 'fade'} onRequestClose={() => setTransferMarket(false)}>
         <View style={[s.modalBackdrop, mobile && s.modalBackdropMobile]}>
@@ -1405,6 +1369,8 @@ const makeStyles = (c: ThemeColors) => StyleSheet.create({
     borderColor: c.border,
     backgroundColor: 'transparent',
   },
+  quotaSummary: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 12, paddingVertical: 12, marginTop: 18, borderTopWidth: 1, borderBottomWidth: 1, borderColor: c.border },
+  quotaCopy: { flex: 1, minWidth: 0, gap: 4 },
   nationCounts: {
     flexDirection: 'row',
     flexWrap: 'wrap',

@@ -2,6 +2,14 @@
 
 Backend implementation for the approved 2027 game specification in [Plan.md](Plan.md). Product decisions and delivery sequence are recorded in [documentation/delivery/milestones.md](documentation/delivery/milestones.md) and [decisions.md](documentation/delivery/decisions.md).
 
+## Frontend screenshots
+
+These captures show the current squad builder demo at desktop and mobile widths:
+
+![Desktop squad builder](frontend/docs/screenshots/squad-desktop.png)
+
+![Mobile squad builder](frontend/docs/screenshots/squad-mobile.png)
+
 The current assignment covers the backend only. Frontend development consumes the generated [OpenAPI contract](backend/contracts/openapi.json) and [TypeScript types](backend/contracts/client-types.d.ts).
 
 Use Node 22.20.0 from `.node-version` and npm 11.21.0 (recorded in `packageManager`), then run:
