@@ -1,7 +1,10 @@
+import { useTheme } from '../../theme/ThemeProvider';
+import { useMemo } from 'react';
 import { useState } from 'react';
 import { Pressable, StyleSheet, Text, View, type GestureResponderEvent } from 'react-native';
-import { colors as c, fonts } from '../../theme/tokens';
+import { fonts, type ThemeColors } from '../../theme/tokens';
 import type { Player } from './model';
+import { nationColors } from '../../theme/nations';
 
 type PlayerJerseyProps = {
   player?: Player;
@@ -13,6 +16,7 @@ type PlayerJerseyProps = {
   role?: 'C' | 'VC' | null;
   active?: boolean;
   reserve?: boolean;
+  compact?: boolean;
   disabled?: boolean;
   onPress?: () => void;
   onRemove?: () => void;
@@ -31,19 +35,23 @@ const positionShort: Record<Player['position'], string> = {
 
 export function PlayerJersey({
   player,
-  teamColor = c.emerald,
-  detailColor = c.amber,
-  numberColor = c.text,
+  teamColor = nationColors.jersey.Ireland.fabric,
+  detailColor = nationColors.jersey.Ireland.trim,
+  numberColor = nationColors.jersey.Ireland.number,
   teamCode,
   slotLabel,
   role,
   active = false,
   reserve = false,
+  compact = false,
   disabled = false,
   onPress,
   onRemove,
 }: PlayerJerseyProps) {
+  const { colors: c } = useTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
   const [removeHighlighted, setRemoveHighlighted] = useState(false);
+  const [hovered, setHovered] = useState(false);
   const playerName = player?.name ?? 'OPEN SLOT';
   const jerseyNumber = player ? String(player.number).padStart(2, '0') : '—';
   const label = player
@@ -56,20 +64,21 @@ export function PlayerJersey({
   };
 
   return (
+    <View style={[styles.wrap, compact && styles.compactWrap, reserve && styles.reserveWrap, (active || hovered) && styles.active, hovered && styles.hovered]}>
     <Pressable
       accessibilityRole="button"
       accessibilityLabel={label}
       accessibilityState={{ selected: active, disabled }}
       disabled={disabled}
       onPress={onPress}
+      onFocus={() => setHovered(true)}
+      onBlur={() => setHovered(false)}
       style={({ pressed }) => [
-        styles.wrap,
-        reserve && styles.reserveWrap,
-        active && styles.active,
+        styles.selection,
         pressed && styles.pressed,
       ]}
     >
-      <View style={[styles.jerseyStage, disabled && styles.disabled]}>
+      <View style={[styles.jerseyStage, compact && styles.compactJerseyStage, disabled && styles.disabled]}>
         <View style={[styles.jersey, !player && styles.emptyJersey]}>
           <View style={[styles.sleeve, styles.leftSleeve, { backgroundColor: player ? teamColor : c.raised, borderColor: player ? detailColor : c.border }]} />
           <View style={[styles.sleeve, styles.rightSleeve, { backgroundColor: player ? teamColor : c.raised, borderColor: player ? detailColor : c.border }]} />
@@ -81,13 +90,22 @@ export function PlayerJersey({
             <View style={[styles.fabricSeam, { backgroundColor: player ? detailColor : c.border }]} />
           </View>
         </View>
+        {role && <Text style={[styles.role, role === 'C' ? styles.captain : styles.vice]}>{role}</Text>}
+      </View>
+      <View style={[styles.nameplate, compact && styles.compactNameplate]}>
+        <Text numberOfLines={1} style={[styles.name, compact && styles.compactName, !player && styles.emptyText]}>{playerName}</Text>
+        <View style={styles.metaLine}>
+          <View style={[styles.teamDot, { backgroundColor: player ? teamColor : c.border }]} />
+          <Text style={[styles.meta, compact && styles.compactMeta]}>{player ? `${teamCode} · ${positionShort[player.position]}` : slotLabel}</Text>
+          <Text style={[styles.price, compact && styles.compactMeta]}>{player ? `${(player.priceTenths / 10).toFixed(1)} cr` : 'SELECT'}</Text>
+        </View>
+      </View>
+    </Pressable>
         {player && onRemove && (
           <Pressable
             accessibilityRole="button"
             accessibilityLabel={`Remove ${player.name}`}
             onPress={remove}
-            onHoverIn={() => setRemoveHighlighted(true)}
-            onHoverOut={() => setRemoveHighlighted(false)}
             onFocus={() => setRemoveHighlighted(true)}
             onBlur={() => setRemoveHighlighted(false)}
             style={({ pressed }) => [styles.remove, removeHighlighted && styles.removeHighlighted, pressed && styles.pressed]}
@@ -95,21 +113,11 @@ export function PlayerJersey({
             <Text style={[styles.removeText, removeHighlighted && styles.removeTextHighlighted]}>×</Text>
           </Pressable>
         )}
-        {role && <Text style={[styles.role, role === 'C' ? styles.captain : styles.vice]}>{role}</Text>}
-      </View>
-      <View style={styles.nameplate}>
-        <Text numberOfLines={1} style={[styles.name, !player && styles.emptyText]}>{playerName}</Text>
-        <View style={styles.metaLine}>
-          <View style={[styles.teamDot, { backgroundColor: player ? teamColor : c.border }]} />
-          <Text style={styles.meta}>{player ? `${teamCode} · ${positionShort[player.position]}` : slotLabel}</Text>
-          <Text style={styles.price}>{player ? `${(player.priceTenths / 10).toFixed(1)} cr` : 'SELECT'}</Text>
-        </View>
-      </View>
-    </Pressable>
+    </View>
   );
 }
 
-const styles = StyleSheet.create({
+const makeStyles = (c: ThemeColors) => StyleSheet.create({
   wrap: {
     flex: 1,
     minWidth: 76,
@@ -123,32 +131,36 @@ const styles = StyleSheet.create({
     paddingBottom: 3,
     gap: 3,
   },
+  compactWrap: { minHeight: 116, paddingHorizontal: 1 },
+  selection: { width: '100%', alignItems: 'center', gap: 3 },
   reserveWrap: { minHeight: 112, minWidth: 88 },
   active: {
     borderColor: c.emerald,
-    backgroundColor: '#123A2E',
-    shadowColor: '#000000',
+    backgroundColor: c.accentSoft,
+    shadowColor: c.shadow,
     shadowOpacity: 0.28,
     shadowRadius: 12,
     shadowOffset: { width: 0, height: 5 },
     elevation: 4,
   },
+  hovered: { borderColor: c.elevated },
   disabled: { opacity: 0.7 },
   pressed: { opacity: 0.78, transform: [{ scale: 0.98 }] },
-  jerseyStage: { width: 70, height: 82, alignItems: 'center', position: 'relative' },
-  jersey: { width: 70, height: 80, position: 'relative', alignItems: 'center' },
+  jerseyStage: { width: 82, height: 96, alignItems: 'center', position: 'relative' },
+  compactJerseyStage: { width: 64, height: 76, transform: [{ scale: 0.78 }] },
+  jersey: { width: 82, height: 94, position: 'relative', alignItems: 'center' },
   emptyJersey: { opacity: 0.8 },
   torso: {
     position: 'absolute',
     top: 8,
-    left: 13,
-    width: 44,
-    height: 65,
+    left: 17,
+    width: 48,
+    height: 77,
     borderWidth: 1,
     borderRadius: 5,
     alignItems: 'center',
     overflow: 'hidden',
-    shadowColor: '#000',
+    shadowColor: c.shadow,
     shadowOpacity: 0.22,
     shadowRadius: 5,
     shadowOffset: { width: 0, height: 3 },
@@ -157,8 +169,8 @@ const styles = StyleSheet.create({
   sleeve: {
     position: 'absolute',
     top: 10,
-    width: 22,
-    height: 31,
+    width: 26,
+    height: 35,
     borderWidth: 1,
     borderRadius: 8,
   },
@@ -171,16 +183,17 @@ const styles = StyleSheet.create({
     height: 14,
     borderWidth: 2,
     borderRadius: 12,
-    backgroundColor: '#0A241D',
+    backgroundColor: c.jerseyNeck,
   },
   highlight: { position: 'absolute', top: 11, width: 24, height: 2, opacity: 0.5 },
-  number: { marginTop: 19, fontFamily: fonts.heading, fontSize: 27, lineHeight: 28, letterSpacing: -1 },
+  number: { marginTop: 23, fontFamily: fonts.heading, fontSize: 30, lineHeight: 31, letterSpacing: -1 },
   initials: { fontFamily: fonts.medium, fontSize: 8, letterSpacing: 1, opacity: 0.9 },
   fabricSeam: { position: 'absolute', bottom: 8, width: 24, height: 1, opacity: 0.48 },
   remove: {
     position: 'absolute',
-    right: -4,
-    top: -4,
+    left: '50%',
+    marginLeft: 17,
+    top: 0,
     width: 22,
     height: 22,
     borderRadius: 11,
@@ -192,7 +205,7 @@ const styles = StyleSheet.create({
     zIndex: 3,
   },
   removeHighlighted: { borderColor: c.danger },
-  removeText: { color: '#B4C8C0', fontFamily: fonts.medium, fontSize: 17, lineHeight: 18 },
+  removeText: { color: c.muted, fontFamily: fonts.medium, fontSize: 17, lineHeight: 18 },
   removeTextHighlighted: { color: c.danger },
   role: {
     position: 'absolute',
@@ -201,7 +214,7 @@ const styles = StyleSheet.create({
     minWidth: 24,
     paddingVertical: 3,
     borderRadius: 12,
-    color: c.bg,
+    color: c.onBadge,
     fontFamily: fonts.heading,
     fontSize: 10,
     textAlign: 'center',
@@ -210,11 +223,14 @@ const styles = StyleSheet.create({
   },
   captain: { backgroundColor: c.amber },
   vice: { backgroundColor: c.teal },
-  nameplate: { width: '100%', alignItems: 'center', gap: 1, backgroundColor: c.panel, borderRadius: 4, paddingVertical: 3 },
+  nameplate: { width: '100%', alignItems: 'center', gap: 2, backgroundColor: c.panel, borderRadius: 6, paddingVertical: 5, borderWidth: 1, borderColor: c.border },
+  compactNameplate: { paddingVertical: 4, borderRadius: 5 },
   name: { maxWidth: '100%', color: c.text, fontFamily: fonts.heading, fontSize: 11, letterSpacing: 0.15 },
+  compactName: { fontSize: 9, letterSpacing: 0 },
   emptyText: { color: c.muted },
   metaLine: { width: '100%', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 3 },
   teamDot: { width: 5, height: 5, borderRadius: 3 },
-  meta: { color: '#B4C8C0', fontFamily: fonts.medium, fontSize: 9, letterSpacing: 0.35 },
-  price: { color: '#B4C8C0', fontFamily: fonts.body, fontSize: 9 },
+  meta: { color: c.muted, fontFamily: fonts.medium, fontSize: 9, letterSpacing: 0.35 },
+  price: { color: c.muted, fontFamily: fonts.body, fontSize: 9 },
+  compactMeta: { fontSize: 8, letterSpacing: 0 },
 });

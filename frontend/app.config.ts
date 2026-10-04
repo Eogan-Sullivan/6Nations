@@ -6,8 +6,8 @@ const config: ExpoConfig = {
   scheme: 'sixnations',
   version: '0.1.0',
   orientation: 'default',
-  userInterfaceStyle: 'dark',
-  plugins: ['expo-router', 'expo-font', 'expo-status-bar'],
+  userInterfaceStyle: 'automatic',
+  plugins: ['expo-router', 'expo-font', 'expo-status-bar', 'expo-system-ui'],
   web: { bundler: 'metro', output: 'single', name: '6Nations · My Squad' },
   ios: { supportsTablet: true },
 };

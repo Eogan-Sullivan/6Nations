@@ -1,9 +1,13 @@
+import { useTheme } from '../../theme/ThemeProvider';
+import { useMemo } from 'react';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { Text, View, StyleSheet } from 'react-native';
 import { Button, Label } from '../../components/ui';
-import { colors as c, fonts } from '../../theme/tokens';
+import { fonts, type ThemeColors } from '../../theme/tokens';
 
 export default function InviteScreen() {
+  const { colors: c } = useTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
   const router = useRouter();
   const { code } = useLocalSearchParams<{ code: string }>();
   return (
@@ -19,4 +23,4 @@ export default function InviteScreen() {
   );
 }
 
-const styles = StyleSheet.create({ screen: { flex: 1, backgroundColor: c.bg, justifyContent: 'center', padding: 20 }, panel: { width: '100%', maxWidth: 520, alignSelf: 'center', padding: 24, backgroundColor: c.panel, borderWidth: 1, borderColor: c.border, gap: 16 }, kicker: { color: c.amber, fontFamily: fonts.medium, fontSize: 11, letterSpacing: 1.2 }, title: { color: c.text, fontFamily: fonts.heading, fontSize: 36, lineHeight: 42 } });
+const makeStyles = (c: ThemeColors) => StyleSheet.create({ screen: { flex: 1, backgroundColor: c.bg, justifyContent: 'center', padding: 20 }, panel: { width: '100%', maxWidth: 520, alignSelf: 'center', padding: 24, backgroundColor: c.panel, borderWidth: 1, borderColor: c.border, gap: 16 }, kicker: { color: c.amber, fontFamily: fonts.medium, fontSize: 11, letterSpacing: 1.2 }, title: { color: c.text, fontFamily: fonts.heading, fontSize: 36, lineHeight: 42 } });

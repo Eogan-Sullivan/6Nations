@@ -4,16 +4,25 @@
   "version": "0.1.0",
   "workspaces": [
     "backend",
-    "frontend"
+    "frontend",
+    "tooling/api-types"
   ],
   "engines": {
-    "node": ">=22.20.0 <23"
+    "node": ">=22.20.0 <23",
+    "npm": ">=11.21.0 <12"
   },
   "overrides": {
     "react": "19.2.3",
     "react-native": "0.86.3",
     "react-native-reanimated": "4.5.1",
-    "react-native-worklets": "0.10.1"
+    "react-native-worklets": "0.10.1",
+    "chokidar": { "braces": "file:./tooling/vendor/packages/braces-3.0.4+sixnations.1.tgz" },
+    "micromatch": { "braces": "file:./tooling/vendor/packages/braces-3.0.4+sixnations.1.tgz" },
+    "query-string": { "decode-uri-component": "file:./tooling/vendor/packages/decode-uri-component-0.5.0+sixnations.1.tgz" },
+    "@expo/cli": { "@expo/code-signing-certificates": "file:./tooling/vendor/packages/expo-code-signing-certificates-0.0.6+sixnations.1.tgz" },
+    "xcode@3.0.1": {
+      "uuid": "11.1.1"
+    }
   },
   "scripts": {
     "dev": "npm run dev --workspace backend",
@@ -28,6 +37,18 @@
     "test:db": "bash backend/scripts/test-database.sh",
     "types": "npm run types --workspace backend",
     "types:check": "npm run types:check --workspace backend",
-    "verify": "npm run typecheck && npm test && npm run build && npm run contracts:check && npm run types:check"
+    "verify": "npm run typecheck && npm test && npm run build && npm run contracts:check && npm run types:check && npm run test:tooling",
+    "test:tooling": "node --test tooling/security/*.test.cjs"
+  },
+  "devDependencies": {
+    "braces": "file:./tooling/vendor/packages/braces-3.0.4+sixnations.1.tgz",
+    "decode-uri-component": "file:./tooling/vendor/packages/decode-uri-component-0.5.0+sixnations.1.tgz",
+    "node-forge": "file:./tooling/vendor/packages/node-forge-1.4.1+sixnations.1.tgz",
+    "@expo/code-signing-certificates": "file:./tooling/vendor/packages/expo-code-signing-certificates-0.0.6+sixnations.1.tgz"
+  },
+  "packageManager": "npm@11.21.0",
+  "allowScripts": {
+    "esbuild@0.28.2": true,
+    "fsevents@2.3.3": true
   }
 }

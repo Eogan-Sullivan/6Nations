@@ -1,6 +1,8 @@
+import { useTheme } from '../theme/ThemeProvider';
+import { useMemo } from 'react';
 import { forwardRef, type ComponentRef, type ReactNode } from 'react';
 import { Pressable, StyleSheet, Text, View, type ViewStyle, type StyleProp } from 'react-native';
-import { colors, fonts } from '../theme/tokens';
+import { fonts, type ThemeColors } from '../theme/tokens';
 
 export function Label({
   children,
@@ -11,6 +13,8 @@ export function Label({
   muted?: boolean;
   style?: StyleProp<ViewStyle>;
 }) {
+  const { colors } = useTheme();
+  const styles = useMemo(() => makeStyles(colors), [colors]);
   return (
     <View style={style}>
       <Text style={[styles.label, muted && { color: colors.muted }]}>{children}</Text>
@@ -39,6 +43,8 @@ export const Button = forwardRef<ComponentRef<typeof Pressable>, {
   selected = false,
   compact = false,
 }, ref) => {
+  const { colors } = useTheme();
+  const styles = useMemo(() => makeStyles(colors), [colors]);
   const unavailable = disabled || loading;
   return (
     <Pressable
@@ -56,16 +62,17 @@ export const Button = forwardRef<ComponentRef<typeof Pressable>, {
         variant === 'ghost' && styles.ghost,
         variant === 'danger' && { borderColor: colors.danger },
         selected && styles.selected,
-        unavailable && { opacity: 0.4 },
-        pressed && !unavailable && { opacity: 0.75 },
+        unavailable && { backgroundColor: colors.raised, borderColor: colors.border },
+        pressed && !unavailable && { opacity: 0.82, transform: [{ scale: 0.97 }] },
       ]}
     >
       <Text
         style={[
           styles.buttonText,
-          variant === 'primary' && { color: colors.bg },
+          variant === 'primary' && { color: colors.onAccent },
           variant === 'danger' && { color: colors.danger },
           selected && variant !== 'primary' && { color: colors.bg },
+          unavailable && { color: colors.muted },
         ]}
       >
         {loading ? 'Loading…' : children}
@@ -75,7 +82,7 @@ export const Button = forwardRef<ComponentRef<typeof Pressable>, {
 });
 Button.displayName = 'Button';
 
-export const styles = StyleSheet.create({
+const makeStyles = (colors: ThemeColors) => StyleSheet.create({
   label: { fontFamily: fonts.body, color: colors.text, fontSize: 14, lineHeight: 22 },
   button: {
     minHeight: 44,
@@ -89,8 +96,8 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: colors.panel,
   },
-  compact: { minHeight: 36, paddingHorizontal: 12, paddingVertical: 8 },
-  primary: { backgroundColor: colors.emerald, borderColor: colors.emerald },
+  compact: { minHeight: 44, minWidth: 44, paddingHorizontal: 12, paddingVertical: 8 },
+  primary: { backgroundColor: colors.accentFill, borderColor: colors.accentFill },
   ghost: { borderColor: 'transparent', backgroundColor: 'transparent' },
   selected: { borderColor: colors.text, backgroundColor: colors.text },
   buttonText: { color: colors.text, fontFamily: fonts.medium, fontSize: 13, textAlign: 'center' },

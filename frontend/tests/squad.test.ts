@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { demoPlayers, exampleDraft } from '../src/features/squad/demo';
+import { authenticatedRedirect } from '../src/features/auth/routing';
 import {
   FORMATION,
   NATIONS,
@@ -13,6 +14,12 @@ import {
   selectedPlayers,
   validateDraft,
 } from '../src/features/squad/model';
+
+test('authenticated users wait for profile restoration and skip onboarding when complete', () => {
+  assert.equal(authenticatedRedirect(null), null);
+  assert.equal(authenticatedRedirect(true), '/squad');
+  assert.equal(authenticatedRedirect(false), '/onboarding');
+});
 
 test('demo has an affordable legal 18-player squad spanning every starter position', () => {
   const draft = exampleDraft();

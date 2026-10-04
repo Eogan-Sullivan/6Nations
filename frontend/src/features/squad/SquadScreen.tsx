@@ -1,8 +1,9 @@
-import { memo, useMemo, useRef, useState } from 'react';
+import { useTheme } from '../../theme/ThemeProvider';
+import { useMemo } from 'react';
+import { memo, useRef, useState } from 'react';
 import { useRouter } from 'expo-router';
 import {
   ActivityIndicator,
-  Image,
   Modal,
   Pressable,
   ScrollView,
@@ -14,8 +15,8 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, Label } from '../../components/ui';
-import { AppTabs } from '../../components/AppScreen';
-import { colors as c, fonts } from '../../theme/tokens';
+import { CommandDock } from '../../components/CommandDock';
+import { fonts, type ThemeColors } from '../../theme/tokens';
 import { exampleDraft } from './demo';
 import {
   FORMATION,
@@ -35,6 +36,8 @@ import {
 } from './model';
 import { useSquad } from './useSquad';
 import { PlayerJersey } from './PlayerJersey';
+import { nationColors } from '../../theme/nations';
+import { useReducedMotion } from '../../lib/useReducedMotion';
 
 const shortNation: Record<Nation, string> = {
   Ireland: 'IRE',
@@ -44,27 +47,15 @@ const shortNation: Record<Nation, string> = {
   Wales: 'WAL',
   Italy: 'ITA',
 };
-const nationColor: Record<Nation, string> = {
-  Ireland: '#7EE2A4',
-  France: '#9BAFFF',
-  England: '#F1F5E9',
-  Scotland: '#B8A5F4',
-  Wales: '#FFACA6',
-  Italy: '#8AD9ED',
-};
-const jerseyColors: Record<Nation, { fabric: string; trim: string; number: string }> = {
-  Ireland: { fabric: '#087F50', trim: '#E8EEDC', number: '#FFFFFF' },
-  England: { fabric: '#F2F3ED', trim: '#B92335', number: '#142536' },
-  France: { fabric: '#214BB8', trim: '#D94750', number: '#FFFFFF' },
-  Scotland: { fabric: '#172B4D', trim: '#E8EEDC', number: '#FFFFFF' },
-  Wales: { fabric: '#B32638', trim: '#F4F2EC', number: '#FFFFFF' },
-  Italy: { fabric: '#126DB5', trim: '#F4F2EC', number: '#FFFFFF' },
-};
+const lightNationColor = nationColors.light;
+const nationColor = nationColors.dark;
+const jerseyColors = nationColors.jersey;
 const pitchRows = [
   [12, 13, 14],
   [10, 11],
-  [8, 9],
-  [5, 6, 7],
+  [9],
+  [8],
+  [5, 7, 6],
   [3, 4],
   [0, 1, 2],
 ];
@@ -84,6 +75,12 @@ const starterLabels = [
   'Left wing',
   'Fullback',
   'Right wing',
+];
+
+const fixtures = [
+  { home: 'IRE', away: 'ENG', time: 'Fri 31 Jan · 20:00', tone: '#087F50' },
+  { home: 'FRA', away: 'ITA', time: 'Sat 1 Feb · 14:15', tone: '#214BB8' },
+  { home: 'SCO', away: 'WAL', time: 'Sat 1 Feb · 16:45', tone: '#172B4D' },
 ];
 
 type PlayerPoolRowProps = {
@@ -113,6 +110,8 @@ const PlayerPoolRow = memo(function PlayerPoolRow({
   onDetail,
   onAdd,
 }: PlayerPoolRowProps) {
+  const { colors: c, theme } = useTheme();
+  const s = useMemo(() => makeStyles(c), [c]);
   const previewCost = cost - activePriceTenths + player.priceTenths;
   const nextNationCount = nationCount - (activeNation === player.nation ? 1 : 0) + 1;
   const warning = !selected && compatible
@@ -136,12 +135,13 @@ const PlayerPoolRow = memo(function PlayerPoolRow({
         >
           <Text numberOfLines={2} style={s.playerName}>{player.name} <Text style={s.infoIcon}>↗</Text></Text>
           <View style={s.playerBadges}>
-            <Text style={[s.nationBadge, { color: nationColor[player.nation] }]}>{shortNation[player.nation]}</Text>
+            <Text style={[s.nationBadge, { color: theme === 'light' ? lightNationColor[player.nation] : nationColor[player.nation] }]}>{shortNation[player.nation]}</Text>
             <Text style={s.positionBadge}>{player.position}</Text>
           </View>
         </Pressable>
         {!!warning && <Text style={s.warningText}>{warning}</Text>}
         {!compatible && <Text style={s.playerMeta}>Choose a {requiredPosition} slot to add</Text>}
+        {compatible && <Text style={s.playerForm}>FORM <Text style={s.playerFormValue}>{player.form.toFixed(1)}</Text> · {player.fantasyPoints} pts</Text>}
       </View>
       <View style={s.playerPrice}>
         <Text style={s.price}>{credits(player.priceTenths)}</Text>
@@ -154,9 +154,12 @@ const PlayerPoolRow = memo(function PlayerPoolRow({
 });
 
 export default function SquadScreen() {
+  const { colors: c, theme } = useTheme();
+  const s = useMemo(() => makeStyles(c), [c]);
   const router = useRouter();
   const squad = useSquad();
   const { width } = useWindowDimensions();
+  const reduceMotion = useReducedMotion();
   const wide = width >= 1024;
   const mobile = width < 640;
   const mainScroll = useRef<ScrollView>(null);
@@ -191,7 +194,7 @@ export default function SquadScreen() {
   const requiredPosition: Position | null = activeSlot < 15 ? FORMATION[activeSlot] ?? null : null;
   const captain = squad.players.find((p) => p.id === squad.draft.captainId);
   const vice = squad.players.find((p) => p.id === squad.draft.viceCaptainId);
-  const editable = squad.storageReady && !squad.locked;
+  const editable = squad.storageReady && !squad.locked && squad.players.length > 0;
   const dirty = squad.confirmed && JSON.stringify(squad.draft) !== JSON.stringify(squad.confirmed);
   const filtered = useMemo(
     () =>
@@ -242,7 +245,7 @@ export default function SquadScreen() {
     return (
       <View
         key={index}
-        style={[s.slot, list && s.listSlot]}
+        style={[s.slot, mobile && !list && s.slotMobile, list && s.listSlot]}
       >
         <PlayerJersey
           player={player}
@@ -254,6 +257,7 @@ export default function SquadScreen() {
           role={player ? role(player.id) as 'C' | 'VC' | null : null}
           active={activeSlot === index}
           reserve={index >= 15}
+          compact={mobile && view === 'pitch'}
           disabled={!editable}
           onPress={() => {
             if (!editable) return;
@@ -281,119 +285,54 @@ export default function SquadScreen() {
 
   return (
     <SafeAreaView style={s.screen} className="flex-1">
-      {wide && <AppTabs active="/squad" />}
+      <View pointerEvents="none" style={s.atmosphere}>
+        <View style={s.atmosphereGlow} />
+        <View style={s.atmosphereGlowSecondary} />
+        <View style={s.atmosphereVignette} />
+      </View>
       <ScrollView
         ref={mainScroll}
         contentContainerStyle={[s.page, wide && s.pageWide]}
         keyboardShouldPersistTaps="handled"
       >
-        <View style={s.header}>
-          <View style={s.headerLead}>
-            <Pressable
-              accessibilityRole="button"
-              accessibilityLabel="Open Tournament Hub"
-              onPress={() => setHubDrawer(true)}
-              style={({ pressed }) => [s.menuButton, pressed && { opacity: 0.75 }]}
-            >
-              <Text style={s.menuButtonText}>MENU</Text>
-              {wide && <Text style={s.menuButtonLabel}>MENU</Text>}
-            </Pressable>
-          <View style={s.brand}>
-            <Image
-              source={require('../../assets/stitch-logo.jpg')}
-              style={s.brandMark}
-              accessibilityLabel="6Nations logo"
-            />
-            <View>
-              <Text style={s.wordmark}>6Nations</Text>
-              <Text style={s.brandSub}>SIX NATIONS FANTASY · 2027</Text>
-            </View>
-          </View>
-          </View>
-          <View style={[s.headerRight, mobile && s.headerRightMobile]}>
-            {!mobile && <Pressable
-              accessibilityRole="button"
-              accessibilityLabel="Open Tactical Desk"
-              onPress={() => setTacticalDrawer(true)}
-              style={({ pressed }) => [s.headerDesk, pressed && { opacity: 0.75 }]}
-            >
-              <Text style={s.headerDeskLabel}>TACTICAL DESK</Text>
-              <Text style={s.headerDeskStatus}>{issues.length ? 'CHECK SQUAD' : '100% VALID'}</Text>
-            </Pressable>}
-            <View style={mobile ? s.mobileStatusBar : s.desktopStatusGroup}>
-              <Text style={s.demoPill}>DEMO MODE</Text>
-              <Text style={s.lockout}>{squad.locked ? 'SAVED ON DEVICE' : 'NO OFFICIAL LOCKOUT'}</Text>
-              <Text style={s.syncStatus}>● LOCAL {squad.saving ? 'SAVING' : 'READY'}</Text>
-              {!mobile && <Text style={s.manager}>Alex’s XV</Text>}
-            </View>
-            <Pressable
-              accessibilityRole="button"
-              accessibilityLabel="Save demo squad"
-              accessibilityState={{ disabled: squad.saving }}
-              disabled={squad.saving || squad.locked}
-              onPress={() => void lockSquad()}
-              style={({ pressed }) => [s.lockButton, squad.saving && { opacity: 0.5 }, pressed && { opacity: 0.75 }]}
-            >
-              <Text style={s.lockButtonText}>{squad.locked ? 'SAVED' : squad.saving ? 'SAVING…' : 'SAVE DEMO SQUAD'}</Text>
-            </Pressable>
-          </View>
-        </View>
         <View style={s.hero}>
           <View style={s.heroText}>
-            <Text style={s.eyebrow}>2027 SEASON / SAMPLE ROUND 01</Text>
+              <Text style={s.eyebrow}>Round 1 · Men's Six Nations 2027</Text>
             <Text accessibilityRole="header" accessibilityLabel="Your squad. Your call." style={s.title}>
               My Squad
             </Text>
             <Label muted>
-              Build your starting XV, pick your leaders, and make every credit count.
+              Build your winning XV, pick your captain and score big in the Six Nations.
             </Label>
+            {mobile && <Button compact onPress={() => setHubDrawer(true)}>Open tournament hub</Button>}
           </View>
-          <View style={s.heroAside}>
-            <Text style={s.smallHeading}>YOUR FIRST XV STARTS HERE</Text>
-            <Label muted>Round 01 command centre · live-ready scoring and account sync surface.</Label>
+          <View style={s.deadlineCard}>
+            <View style={s.deadlineTopline}>
+              <Text style={s.deadlineLabel}>DEADLINE</Text>
+              <View style={s.previewDot} />
+            </View>
+            <Text style={s.deadlineDate}>Fri 31 Jan, 19:30</Text>
+            <Text style={s.deadlineCountdown}>2d 14h 32m</Text>
+            <Text style={s.deadlineHint}>Lock your squad before kick-off</Text>
           </View>
         </View>
 
-        <View style={s.metrics}>
-          <View style={s.metric}>
-            <Text style={s.metricCaption}>BUDGET REMAINING</Text>
-            <Text
-              testID="budget-remaining"
-              style={[s.metricValue, cost > 1000 && { color: c.danger }]}
-            >
-              {credits(1000 - cost)} <Text style={s.metricUnit}>cr</Text>
-            </Text>
-            <View style={s.progressTrack}>
-              <View
-                style={[
-                  s.progress,
-                  {
-                    width: `${Math.min(cost / 10, 100)}%`,
-                    backgroundColor: cost > 1000 ? c.danger : c.emerald,
-                  },
-                ]}
-              />
-            </View>
-            <Label muted>{credits(cost)} / 100.0 credits spent</Label>
+        <View accessibilityLabel="Squad progress" style={s.workflowSummary}>
+          <View style={s.workflowStat}>
+            <Text style={s.workflowValue} testID="squad-count">{picked.length}/18</Text>
+            <Text style={s.workflowLabel}>PLAYERS</Text>
           </View>
-          <View style={s.metric}>
-            <Text style={s.metricCaption}>SQUAD SELECTED</Text>
-            <Text testID="squad-count" style={s.metricValue}>
-              {picked.length}
-              <Text style={s.metricUnit}> / 18</Text>
-            </Text>
-            <Label muted>
-              {squad.draft.slots.slice(0, 15).filter(Boolean).length}/15 starters ·{' '}
-              {squad.draft.slots.slice(15).filter(Boolean).length}/3 reserves
-            </Label>
+          <View style={s.workflowRule} />
+          <View style={s.workflowStat}>
+            <Text testID="budget-remaining" style={[s.workflowValue, cost > 1000 && { color: c.danger }]}>{credits(1000 - cost)} cr</Text>
+            <Text style={s.workflowLabel}>BUDGET LEFT</Text>
           </View>
-          <View style={s.metric}>
-            <Text style={s.metricCaption}>CAPTAINCY</Text>
-            <Text style={s.captainLine}>
-              <Text style={s.roleBadge}>C</Text> {captain?.name ?? 'Choose your captain'}
-            </Text>
-            <Label muted>VC · {vice?.name ?? 'Choose your vice-captain'}</Label>
+          <View style={s.workflowRule} />
+          <View style={s.workflowStat}>
+            <Text style={[s.workflowValue, issues.length > 0 && s.workflowWarning]}>{issues.length ? `${issues.length} TO FIX` : 'READY'}</Text>
+            <Text style={s.workflowLabel}>SQUAD CHECK</Text>
           </View>
+          <Label muted style={s.workflowHint}>Select a jersey to fill that position.</Label>
         </View>
 
         {squad.error && (
@@ -405,6 +344,12 @@ export default function SquadScreen() {
                 <Button onPress={() => setResetting(true)}>Start a new draft</Button>
               )}
             </View>
+          </View>
+        )}
+        {squad.source === 'api' && squad.players.length === 0 && !squad.error && (
+          <View style={s.dataUnavailable}>
+            <Text accessibilityRole="header" style={s.dataUnavailableTitle}>Player data is not available yet.</Text>
+            <Label muted>Your account is connected. The squad catalog will appear when the rugby data API publishes the season.</Label>
           </View>
         )}
         {squad.confirmed && (
@@ -428,10 +373,11 @@ export default function SquadScreen() {
           <View style={[s.squadPanel, wide && { flex: 2 }]}>
             <View style={s.sectionHeading}>
               <View>
-                <Text style={s.h2}>
-                  My squad
-                </Text>
-                <Label muted>Tap a slot to select or replace a player.</Label>
+                <View style={s.sectionTitleLine}>
+                  <Text style={s.h2}>Starting XV</Text>
+                  <Text style={s.selectionPill}>{squad.draft.slots.slice(0, 15).filter(Boolean).length} of 15 selected</Text>
+                </View>
+                <Label muted>Tap a jersey to select, replace or make a leader.</Label>
               </View>
               <View style={s.wrap}>
                 <Button compact selected={view === 'pitch'} onPress={() => setView('pitch')}>
@@ -443,18 +389,37 @@ export default function SquadScreen() {
               </View>
             </View>
             {view === 'pitch' ? (
-              <View style={s.pitch}>
+              <View style={[s.pitch, mobile && s.pitchMobile]}>
                 <View pointerEvents="none" style={StyleSheet.absoluteFill}>
+                  <View style={s.pitchLight} />
+                  <View style={s.pitchShadow} />
                   <View style={s.pitchStripe} />
                   <View style={[s.pitchStripe, { top: '34%' }]} />
                   <View style={[s.pitchStripe, { top: '68%' }]} />
                   <View style={s.pitchBoundary} />
+                  <View style={s.deadBallTop} />
+                  <View style={s.deadBallBottom} />
+                  <View style={s.tryLineTop} />
+                  <View style={s.tryLineBottom} />
+                  <View style={s.twentyTwoTop} />
+                  <View style={s.twentyTwoBottom} />
+                  <View style={s.tenMetreTop} />
+                  <View style={s.tenMetreBottom} />
                   <View style={s.halfway} />
-                  <View style={s.centerCircle} />
+                  <View style={[s.goalPosts, s.goalPostsTop]}>
+                    <View style={s.goalUpright} />
+                    <View style={s.goalCrossbar} />
+                    <View style={s.goalUpright} />
+                  </View>
+                  <View style={[s.goalPosts, s.goalPostsBottom]}>
+                    <View style={s.goalUpright} />
+                    <View style={s.goalCrossbar} />
+                    <View style={s.goalUpright} />
+                  </View>
                 </View>
                 <View style={s.pitchHeader}>
                   <Text style={s.pitchLegend}>STARTING XV</Text>
-                  <Text style={s.attackDirection}>ATTACK →</Text>
+                  <Text style={s.attackDirection}>ATTACK ↑</Text>
                 </View>
                 <View style={s.pitchLabels} pointerEvents="none">
                   <Text style={s.pitchLabel}>BACK THREE</Text>
@@ -463,7 +428,25 @@ export default function SquadScreen() {
                   <Text style={s.pitchLabel}>PACK</Text>
                 </View>
                 {pitchRows.map((row, index) => (
-                  <View key={index} style={s.pitchRow}>
+                  <View
+                    key={index}
+                    style={[
+                      s.pitchRow,
+                      mobile && s.pitchRowMobile,
+                      index === 0 && s.backThreeRow,
+                      mobile && index === 0 && s.backThreeRowMobile,
+                      index === 1 && s.centresRow,
+                      mobile && index === 1 && s.centresRowMobile,
+                      (index === 2 || index === 3) && s.halfRow,
+                      mobile && (index === 2 || index === 3) && s.halfRowMobile,
+                      index === 4 && s.backRow,
+                      mobile && index === 4 && s.backRowMobile,
+                      index === 5 && s.locksRow,
+                      mobile && index === 5 && s.locksRowMobile,
+                      index === 6 && s.frontRow,
+                      mobile && index === 6 && s.frontRowMobile,
+                    ]}
+                  >
                     {row.map((i) => slotCard(i))}
                   </View>
                 ))}
@@ -481,7 +464,7 @@ export default function SquadScreen() {
             </View>
             <View style={s.reserveRow}>
               {[15, 16, 17].map((index) => (
-                <View key={index} style={s.reserveItem}>
+                <View key={index} style={[s.reserveItem, mobile && s.reserveItemMobile]}>
                   {slotCard(index)}
                   <View style={s.reserveControls}>
                     <Button
@@ -522,7 +505,7 @@ export default function SquadScreen() {
                   const count = picked.filter((p) => p.nation === n).length;
                   return (
                     <View key={n} style={s.nationCount}>
-                      <Text style={[s.nationAbbr, { color: nationColor[n] }]}>
+                      <Text style={[s.nationAbbr, { color: theme === 'light' ? lightNationColor[n] : nationColor[n] }]}>
                         {shortNation[n]}
                       </Text>
                       <Text style={[s.count, count > 4 && { color: c.danger }]}>
@@ -532,6 +515,13 @@ export default function SquadScreen() {
                     </View>
                   );
                 })}
+              </View>
+            </View>
+            <View style={s.validationCard} accessibilityLabel="Squad validation">
+              <View style={s.validationIcon}><Text style={s.validationIconText}>{issues.length ? '!' : '✓'}</Text></View>
+              <View style={s.validationCopy}>
+                <Text style={issues.length ? s.validationTitleWarning : s.validationTitle}>{issues.length ? 'Squad needs attention' : 'Valid squad'}</Text>
+                <Text style={s.validationMessage}>{issues.length ? issues[0]?.message : `You've selected ${picked.length} players and are within budget.`}</Text>
               </View>
             </View>
             <View style={s.localStatus}>
@@ -547,7 +537,7 @@ export default function SquadScreen() {
                 disabled={!editable}
                 onPress={openReview}
               >
-                Review squad →
+                Review & lock squad →
               </Button>
               <View style={s.wrap}>
                 <Button
@@ -567,10 +557,8 @@ export default function SquadScreen() {
             onLayout={(event) => setPoolY(event.nativeEvent.layout.y)}
             style={[s.poolPanel, wide && { flex: 1 }]}
           >
-            <Text style={s.eyebrow}>BUILD YOUR TEAM</Text>
-            <Text style={s.h2}>
-              Player pool
-            </Text>
+            <Text style={s.eyebrow}>Player selection</Text>
+            <Text style={s.h2}>Player pool</Text>
             <Label muted>Fantasy price, recent form, appearances, and points feed the selection decision.</Label>
             <View style={s.activeSelection}>
               <Text style={s.smallHeading}>
@@ -708,13 +696,9 @@ export default function SquadScreen() {
                 Show more players ({filtered.length - limit} remaining)
               </Button>
             )}
-            <View style={s.tip}>
-              <Text style={s.smallHeading}>THE CAPTAIN’S EDGE</Text>
-              <Label muted>
-                Your captain earns double points. If they don’t participate, your playing
-                vice-captain takes over. Reserves never inherit captaincy.
-              </Label>
-            </View>
+            <Button compact onPress={() => setTacticalDrawer(true)}>
+              Captaincy & scoring rules
+            </Button>
           </View>
         </View>
         <View style={s.footer}>
@@ -728,16 +712,21 @@ export default function SquadScreen() {
         <View style={s.mobileActionBar}>
           <View style={s.mobileActionCopy}>
             <Text style={s.mobileActionTitle}>{picked.length}/18 selected</Text>
-            <Text style={s.mobileActionMeta}>{squad.status}</Text>
+            <Text style={s.mobileActionMeta}>{issues.length ? `${issues.length} checks to fix` : 'Ready to review and lock'}</Text>
           </View>
           <Button variant="primary" disabled={squad.saving || squad.locked} onPress={() => void lockSquad()}>
-            {squad.locked ? 'SAVED' : squad.saving ? 'SAVING…' : 'SAVE DEMO SQUAD'}
+            {squad.locked ? 'LOCKED' : squad.saving ? 'SAVING…' : 'LOCK SQUAD'}
           </Button>
         </View>
       )}
-      {!wide && <AppTabs active="/squad" />}
+      <CommandDock
+        active="/squad"
+        alertCount={issues.length}
+        onOpenHub={() => setHubDrawer(true)}
+        onOpenTactical={() => setTacticalDrawer(true)}
+      />
 
-      <Modal visible={hubDrawer} transparent animationType="none" onRequestClose={() => setHubDrawer(false)}>
+      <Modal visible={hubDrawer} transparent animationType={reduceMotion ? 'none' : 'fade'} onRequestClose={() => setHubDrawer(false)}>
         <View style={s.drawerBackdrop}>
           <View accessibilityViewIsModal style={s.drawerCard}>
             <View style={s.drawerHeader}>
@@ -782,7 +771,7 @@ export default function SquadScreen() {
         </View>
       </Modal>
 
-      <Modal visible={tacticalDrawer} transparent animationType="none" onRequestClose={() => setTacticalDrawer(false)}>
+      <Modal visible={tacticalDrawer} transparent animationType={reduceMotion ? 'none' : 'fade'} onRequestClose={() => setTacticalDrawer(false)}>
         <View style={s.drawerBackdrop}>
           <View accessibilityViewIsModal style={s.drawerCard}>
             <View style={s.drawerHeader}>
@@ -824,9 +813,9 @@ export default function SquadScreen() {
         </View>
       </Modal>
 
-      <Modal visible={transferMarket} transparent animationType="none" onRequestClose={() => setTransferMarket(false)}>
-        <View style={s.modalBackdrop}>
-          <View accessibilityViewIsModal style={s.modalCard}>
+      <Modal visible={transferMarket} transparent animationType={reduceMotion ? 'none' : mobile ? 'slide' : 'fade'} onRequestClose={() => setTransferMarket(false)}>
+        <View style={[s.modalBackdrop, mobile && s.modalBackdropMobile]}>
+          <View accessibilityViewIsModal style={[s.modalCard, mobile && s.modalCardMobile]}>
             <Text style={s.eyebrow}>TRANSFER MARKET</Text>
             <Text accessibilityRole="header" style={s.modalTitle}>Make a squad transfer</Text>
             <Label muted>{squad.transfersRemaining} free transfer{squad.transfersRemaining === 1 ? '' : 's'} remaining this round. Select a starting slot, then choose a compatible replacement.</Label>
@@ -863,20 +852,48 @@ export default function SquadScreen() {
       <Modal
         visible={!!detail}
         transparent
-        animationType="none"
+        animationType={reduceMotion ? 'none' : mobile ? 'slide' : 'fade'}
         onRequestClose={() => setDetail(null)}
       >
-        <View style={s.modalBackdrop}>
-          <View accessibilityViewIsModal style={s.modalCard}>
+        <View style={[s.modalBackdrop, mobile && s.modalBackdropMobile]}>
+          <Pressable
+            onPress={() => setDetail(null)}
+            style={s.profileBackdropClose}
+            accessibilityElementsHidden
+            importantForAccessibility="no"
+          />
+          <View accessibilityViewIsModal style={[s.modalCard, mobile && s.modalCardMobile]}>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel="Close player details"
+              accessibilityHint="Dismisses this player profile"
+              onPress={() => setDetail(null)}
+              style={s.profileClose}
+              hitSlop={8}
+            >
+              <View style={s.profileCloseLineA} />
+              <View style={s.profileCloseLineB} />
+            </Pressable>
             <ScrollView keyboardShouldPersistTaps="handled">
-              <Text style={s.eyebrow}>SYNTHETIC PLAYER PROFILE</Text>
-              <Text style={s.drawerAccent}>PERFORMANCE DATA / ROUND 01 PREVIEW</Text>
-              <Text accessibilityRole="header" style={s.modalTitle}>
-                {detail?.name}
-              </Text>
-              <Label>
-                {detail?.nation} · {detail?.position}
-              </Label>
+              <View style={s.profileHero}>
+                {detail && (
+                  <PlayerJersey
+                    player={detail}
+                    teamColor={jerseyColors[detail.nation].fabric}
+                    detailColor={jerseyColors[detail.nation].trim}
+                    numberColor={jerseyColors[detail.nation].number}
+                    teamCode={shortNation[detail.nation]}
+                    slotLabel={detail.position}
+                    role={role(detail.id) as 'C' | 'VC' | null}
+                  />
+                )}
+                <View style={s.profileHeroCopy}>
+                  <Text style={s.eyebrow}>PLAYER PROFILE · ROUND 01</Text>
+                  <Text accessibilityRole="header" style={s.modalTitle}>{detail?.name}</Text>
+                  <Label>{detail?.nation} · {detail?.position}</Label>
+                  <Text style={s.profileForm}>FORM {detail?.form.toFixed(1) ?? '—'} <Text style={s.profileFormMuted}>/ LAST 5</Text></Text>
+                </View>
+              </View>
               <Text style={s.detailPrice}>
                 {detail ? credits(detail.priceTenths) : ''}{' '}
                 <Text style={s.metricUnit}>credits</Text>
@@ -887,6 +904,15 @@ export default function SquadScreen() {
                 <View><Text style={s.metricCaption}>APPEARANCES</Text><Text style={s.playerStat}>{detail?.appearances ?? 0}</Text></View>
               </View>
               <Label muted>{detail?.description}</Label>
+              <View style={s.fixtureList}>
+                {fixtures.slice(0, 3).map((fixture) => (
+                  <View key={`${fixture.home}-${fixture.away}-profile`} style={s.fixtureCard}>
+                    <View style={[s.fixtureStripe, { backgroundColor: fixture.tone }]} />
+                    <Text style={s.fixtureTeams}>{fixture.home} <Text style={s.fixtureVs}>vs</Text> {fixture.away}</Text>
+                    <Text style={s.fixtureTime}>{fixture.time}</Text>
+                  </View>
+                ))}
+              </View>
               <View style={s.tip}>
                 <Label muted>
                   Points are the published fantasy total for this round preview. Captain scores are
@@ -904,9 +930,6 @@ export default function SquadScreen() {
                     Add to {slotLabel(activeSlot)}
                   </Button>
                 )}
-              <View style={s.modalClose}>
-                <Button onPress={() => setDetail(null)}>Close player details</Button>
-              </View>
             </ScrollView>
           </View>
         </View>
@@ -915,13 +938,13 @@ export default function SquadScreen() {
       <Modal
         visible={review}
         transparent
-        animationType="none"
+        animationType={reduceMotion ? 'none' : mobile ? 'slide' : 'fade'}
         onRequestClose={() => {
           if (!confirming) setReview(false);
         }}
       >
-        <View style={s.modalBackdrop}>
-          <View accessibilityViewIsModal style={s.modalCard}>
+        <View style={[s.modalBackdrop, mobile && s.modalBackdropMobile]}>
+          <View accessibilityViewIsModal style={[s.modalCard, mobile && s.modalCardMobile]}>
             <ScrollView keyboardShouldPersistTaps="handled">
               <Text style={s.eyebrow}>
                 {confirmed ? 'SAVED ON THIS DEVICE' : 'ONE LAST TEAM TALK'}
@@ -1000,11 +1023,11 @@ export default function SquadScreen() {
       <Modal
         visible={resetting}
         transparent
-        animationType="none"
+        animationType={mobile ? 'slide' : 'fade'}
         onRequestClose={() => setResetting(false)}
       >
-        <View style={s.modalBackdrop}>
-          <View accessibilityViewIsModal style={s.modalCard}>
+        <View style={[s.modalBackdrop, mobile && s.modalBackdropMobile]}>
+          <View accessibilityViewIsModal style={[s.modalCard, mobile && s.modalCardMobile]}>
             <Text style={s.modalTitle}>Start fresh?</Text>
             <Label muted>This clears your draft and demo confirmation on this device.</Label>
             <View style={s.modalClose}>
@@ -1029,8 +1052,12 @@ export default function SquadScreen() {
   );
 }
 
-const s = StyleSheet.create({
+const makeStyles = (c: ThemeColors) => StyleSheet.create({
   screen: { flex: 1, backgroundColor: c.bg },
+  atmosphere: { ...StyleSheet.absoluteFill, overflow: 'hidden' },
+  atmosphereGlow: { position: 'absolute', width: 620, height: 620, borderRadius: 310, top: -290, right: -180, backgroundColor: c.pitchLight, opacity: 0.12 },
+  atmosphereGlowSecondary: { position: 'absolute', width: 460, height: 460, borderRadius: 230, bottom: -250, left: '28%', backgroundColor: c.emerald, opacity: 0.045 },
+  atmosphereVignette: { ...StyleSheet.absoluteFill, borderWidth: 32, borderColor: c.pitchShadow, opacity: 0.12 },
   loading: {
     flex: 1,
     backgroundColor: c.bg,
@@ -1039,21 +1066,21 @@ const s = StyleSheet.create({
     gap: 16,
   },
   page: {
-    paddingHorizontal: 16,
-    paddingBottom: 116,
+    paddingHorizontal: 20,
+    paddingBottom: 196,
     width: '100%',
     maxWidth: 1440,
     alignSelf: 'center',
   },
-  pageWide: { paddingHorizontal: 32 },
+  pageWide: { paddingHorizontal: 40, marginLeft: 192 },
   header: {
-    minHeight: 72,
+    minHeight: 76,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     gap: 16,
     borderBottomWidth: 1,
-    borderBottomColor: '#20373B',
+    borderBottomColor: c.border,
     paddingVertical: 14,
     flexWrap: 'wrap',
   },
@@ -1061,7 +1088,7 @@ const s = StyleSheet.create({
   menuButton: {
     minHeight: 40,
     paddingHorizontal: 10,
-    borderRadius: 4,
+    borderRadius: 8,
     borderWidth: 1,
     borderColor: c.border,
     backgroundColor: c.panel,
@@ -1073,23 +1100,23 @@ const s = StyleSheet.create({
   brandMark: {
     width: 42,
     height: 42,
-    borderRadius: 4,
+    borderRadius: 10,
     backgroundColor: c.lowest,
   },
-  brandGlyph: { fontFamily: fonts.heading, fontSize: 28, color: c.bg },
-  wordmark: { color: c.text, fontFamily: fonts.heading, fontSize: 21, letterSpacing: 1.8 },
+  brandGlyph: { fontFamily: fonts.heading, fontSize: 28, color: c.onAccent },
+  wordmark: { color: c.text, fontFamily: fonts.heading, fontSize: 22, letterSpacing: 1.8 },
   brandSub: { color: c.muted, fontFamily: fonts.medium, fontSize: 11, letterSpacing: 1.2 },
   headerRight: { flexDirection: 'row', alignItems: 'center', gap: 16, flexWrap: 'wrap', flexShrink: 1 },
   headerRightMobile: { width: '100%', gap: 8, justifyContent: 'space-between' },
   desktopStatusGroup: { flexDirection: 'row', alignItems: 'center', gap: 12, flexWrap: 'wrap' },
   mobileStatusBar: { flex: 1, minWidth: 0, gap: 4 },
-  headerDesk: { gap: 3, paddingHorizontal: 10, paddingVertical: 7, backgroundColor: '#13271F', borderRadius: 4 },
+  headerDesk: { gap: 3, paddingHorizontal: 10, paddingVertical: 7, backgroundColor: c.accentSoft, borderRadius: 4 },
   headerDeskLabel: { color: c.text, fontFamily: fonts.medium, fontSize: 12, letterSpacing: 1 },
   headerDeskStatus: { color: c.emerald, fontFamily: fonts.medium, fontSize: 11, letterSpacing: 0.8 },
   syncStatus: { color: c.teal, fontFamily: fonts.medium, fontSize: 12, letterSpacing: 0.7 },
   demoPill: {
     color: c.emerald,
-    backgroundColor: '#193022',
+    backgroundColor: c.accentSoft,
     paddingHorizontal: 12,
     paddingVertical: 8,
     fontFamily: fonts.medium,
@@ -1099,14 +1126,14 @@ const s = StyleSheet.create({
   },
   manager: { color: c.text, fontFamily: fonts.medium, fontSize: 14 },
   lockout: { color: c.amber, fontFamily: fonts.medium, fontSize: 12, letterSpacing: 0.8 },
-  lockButton: { minHeight: 40, paddingHorizontal: 14, justifyContent: 'center', backgroundColor: c.emerald, borderRadius: 4 },
-  lockButtonText: { color: c.bg, fontFamily: fonts.medium, fontSize: 12, letterSpacing: 0.8 },
-  mobileActionBar: { position: 'absolute', left: 0, right: 0, bottom: 64, paddingHorizontal: 14, paddingVertical: 10, backgroundColor: '#10211E', borderTopWidth: 1, borderTopColor: c.emerald, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 12 },
+  lockButton: { minHeight: 42, paddingHorizontal: 16, justifyContent: 'center', backgroundColor: c.accentFill, borderRadius: 8 },
+  lockButtonText: { color: c.onAccent, fontFamily: fonts.medium, fontSize: 12, letterSpacing: 0.8 },
+  mobileActionBar: { position: 'absolute', left: 0, right: 0, bottom: 72, paddingHorizontal: 14, paddingVertical: 10, backgroundColor: c.navSurface, borderTopWidth: 1, borderTopColor: c.emerald, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 12, zIndex: 110 },
   mobileActionCopy: { flex: 1, minWidth: 0, gap: 3 },
   mobileActionTitle: { color: c.text, fontFamily: fonts.medium, fontSize: 13 },
   mobileActionMeta: { color: c.muted, fontFamily: fonts.body, fontSize: 11 },
   hero: {
-    paddingVertical: 30,
+    paddingVertical: 36,
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: 24,
@@ -1115,32 +1142,81 @@ const s = StyleSheet.create({
   },
   heroText: { flexGrow: 1, flexShrink: 1 },
   heroAside: { maxWidth: 280, gap: 4 },
+  deadlineCard: { width: 250, minHeight: 118, padding: 16, borderWidth: 1, borderColor: c.amber, borderRadius: 12, backgroundColor: c.raised, shadowColor: c.amber, shadowOpacity: 0.12, shadowRadius: 16, shadowOffset: { width: 0, height: 6 }, gap: 5 },
+  deadlineTopline: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  deadlineLabel: { color: c.amber, fontFamily: fonts.medium, fontSize: 11, letterSpacing: 1.6 },
+  previewDot: { width: 7, height: 7, borderRadius: 4, backgroundColor: c.amber },
+  deadlineDate: { color: c.text, fontFamily: fonts.medium, fontSize: 17, marginTop: 5 },
+  deadlineCountdown: { color: c.text, fontFamily: fonts.heading, fontSize: 30, letterSpacing: -0.5, fontVariant: ['tabular-nums'] },
+  deadlineHint: { color: c.muted, fontFamily: fonts.body, fontSize: 12 },
+  commandStrip: {
+    minHeight: 76,
+    padding: 14,
+    marginBottom: 22,
+    borderWidth: 1,
+    borderColor: c.border,
+    borderRadius: 12,
+    backgroundColor: c.lowest,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: 16,
+    shadowColor: c.shadow,
+    shadowOpacity: 0.16,
+    shadowRadius: 18,
+    shadowOffset: { width: 0, height: 8 },
+  },
+  commandLead: { flexDirection: 'row', alignItems: 'center', gap: 10, flex: 1, minWidth: 220 },
+  commandTitle: { color: c.text, fontFamily: fonts.medium, fontSize: 12, letterSpacing: 1.1 },
+  commandCopy: { color: c.muted, fontFamily: fonts.body, fontSize: 12, marginTop: 3 },
+  commandStats: { flexDirection: 'row', flexWrap: 'wrap', gap: 20 },
+  commandStat: { minWidth: 92, gap: 3 },
+  commandStatLabel: { color: c.muted, fontFamily: fonts.medium, fontSize: 10, letterSpacing: 0.9 },
+  commandStatValue: { color: c.emerald, fontFamily: fonts.heading, fontSize: 14, fontVariant: ['tabular-nums'] },
+  commandWarning: { color: c.amber },
   eyebrow: {
     color: c.emerald,
     fontFamily: fonts.medium,
     fontSize: 11,
-    letterSpacing: 1.5,
+    letterSpacing: 0.2,
     marginBottom: 10,
   },
   title: {
     fontFamily: fonts.heading,
-    fontSize: 42,
-    lineHeight: 48,
+    fontSize: 48,
+    lineHeight: 54,
     color: c.text,
     marginBottom: 12,
   },
-  metrics: { flexDirection: 'row', flexWrap: 'wrap', gap: 10, marginBottom: 30 },
+  workflowSummary: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+    gap: 16,
+    paddingVertical: 14,
+    marginBottom: 24,
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    borderColor: c.border,
+  },
+  workflowStat: { minWidth: 84, gap: 2 },
+  workflowValue: { color: c.text, fontFamily: fonts.heading, fontSize: 18, fontVariant: ['tabular-nums'] },
+  workflowWarning: { color: c.amber },
+  workflowLabel: { color: c.muted, fontFamily: fonts.medium, fontSize: 10, letterSpacing: 1 },
+  workflowRule: { width: 1, height: 28, backgroundColor: c.border },
+  workflowHint: { flexGrow: 1, minWidth: 220, marginLeft: 'auto' },
   metric: {
     flexGrow: 1,
     flexBasis: 260,
     padding: 16,
-    borderRadius: 8,
+    borderRadius: 10,
     borderWidth: 1,
     borderColor: c.border,
-    backgroundColor: c.panel,
+    backgroundColor: c.lowest,
     gap: 8,
-    shadowColor: '#000',
-    shadowOpacity: 0.18,
+    shadowColor: c.shadow,
+    shadowOpacity: 0.12,
     shadowRadius: 12,
     shadowOffset: { width: 0, height: 6 },
   },
@@ -1161,20 +1237,15 @@ const s = StyleSheet.create({
   },
   progressTrack: { height: 4, backgroundColor: c.border, borderRadius: 2, overflow: 'hidden' },
   progress: { height: 4 },
-  columns: { gap: 20 },
-  columnsWide: { flexDirection: 'row', alignItems: 'flex-start', gap: 24 },
+  columns: { gap: 24 },
+  columnsWide: { flexDirection: 'row', alignItems: 'flex-start', gap: 28 },
   squadPanel: { minWidth: 0 },
   poolPanel: {
     minWidth: 0,
-    borderWidth: 1,
-    borderColor: c.border,
-    borderRadius: 3,
-    backgroundColor: c.panel,
-    padding: 18,
-    shadowColor: '#000',
-    shadowOpacity: 0.14,
-    shadowRadius: 14,
-    shadowOffset: { width: 0, height: 8 },
+    borderLeftWidth: 1,
+    borderLeftColor: c.border,
+    paddingLeft: 22,
+    paddingVertical: 4,
   },
   sectionHeading: {
     flexDirection: 'row',
@@ -1182,8 +1253,10 @@ const s = StyleSheet.create({
     gap: 12,
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 16,
+    marginBottom: 18,
   },
+  sectionTitleLine: { flexDirection: 'row', alignItems: 'center', gap: 10 },
+  selectionPill: { color: c.muted, fontFamily: fonts.medium, fontSize: 12 },
   h2: { color: c.text, fontFamily: fonts.heading, fontSize: 26, lineHeight: 32, marginBottom: 4 },
   h3: { color: c.text, fontFamily: fonts.heading, fontSize: 19, marginBottom: 4 },
   smallHeading: {
@@ -1196,25 +1269,30 @@ const s = StyleSheet.create({
   wrap: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
   pitch: {
     backgroundColor: c.pitch,
-    borderRadius: 10,
+    borderRadius: 18,
     overflow: 'hidden',
     paddingHorizontal: 12,
-    paddingVertical: 18,
+    paddingVertical: 26,
     gap: 5,
     borderWidth: 1,
-    borderColor: '#2F745C',
-    shadowColor: '#000',
+    borderColor: c.pitchBorder,
+    minHeight: 650,
+    shadowColor: c.shadow,
     shadowOpacity: 0.3,
     shadowRadius: 16,
     shadowOffset: { width: 0, height: 10 },
   },
+  pitchMobile: { paddingHorizontal: 5, paddingVertical: 20, gap: 3, minHeight: 650 },
   pitchStripe: {
     position: 'absolute',
     top: '0%',
     height: '16.6%',
     width: '100%',
     backgroundColor: c.pitchStripe,
+    opacity: 0.5,
   },
+  pitchLight: { position: 'absolute', top: -140, left: '18%', width: '64%', height: 280, borderRadius: 180, backgroundColor: c.pitchLight, opacity: 0.25 },
+  pitchShadow: { position: 'absolute', bottom: -120, left: '-10%', width: '120%', height: 240, borderRadius: 200, backgroundColor: c.pitchShadow, opacity: 0.32 },
   pitchBoundary: {
     position: 'absolute',
     top: 18,
@@ -1222,31 +1300,33 @@ const s = StyleSheet.create({
     left: 12,
     right: 12,
     borderWidth: 1,
-    borderColor: '#7BC7A6',
+    borderColor: c.line,
     opacity: 0.52,
   },
+  deadBallTop: { position: 'absolute', top: 8, left: 12, right: 12, borderTopWidth: 1, borderColor: c.line, opacity: 0.45 },
+  deadBallBottom: { position: 'absolute', bottom: 8, left: 12, right: 12, borderTopWidth: 1, borderColor: c.line, opacity: 0.45 },
+  tryLineTop: { position: 'absolute', top: '13%', left: 12, right: 12, borderTopWidth: 2, borderColor: c.line, opacity: 0.8 },
+  tryLineBottom: { position: 'absolute', top: '87%', left: 12, right: 12, borderTopWidth: 2, borderColor: c.line, opacity: 0.8 },
+  twentyTwoTop: { position: 'absolute', top: '27%', left: 12, right: 12, borderTopWidth: 1, borderColor: c.line, opacity: 0.6 },
+  twentyTwoBottom: { position: 'absolute', top: '73%', left: 12, right: 12, borderTopWidth: 1, borderColor: c.line, opacity: 0.6 },
+  tenMetreTop: { position: 'absolute', top: '40%', left: 12, right: 12, borderTopWidth: 1, borderColor: c.line, opacity: 0.35 },
+  tenMetreBottom: { position: 'absolute', top: '60%', left: 12, right: 12, borderTopWidth: 1, borderColor: c.line, opacity: 0.35 },
+  goalPosts: { position: 'absolute', left: '39%', width: '22%', height: 34, alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row', opacity: 0.8 },
+  goalPostsTop: { top: '5%' },
+  goalPostsBottom: { bottom: '5%' },
+  goalUpright: { width: 2, height: 34, backgroundColor: c.line },
+  goalCrossbar: { position: 'absolute', left: 0, right: 0, top: 15, height: 2, backgroundColor: c.line },
   halfway: {
     position: 'absolute',
     top: '50%',
     left: 12,
     right: 12,
     borderTopWidth: 1,
-    borderColor: '#7BC7A6',
+    borderColor: c.line,
     opacity: 0.52,
   },
-  centerCircle: {
-    position: 'absolute',
-    top: '42%',
-    left: '38%',
-    width: '24%',
-    height: '16%',
-    borderRadius: 100,
-    borderWidth: 1,
-    borderColor: '#7BC7A6',
-    opacity: 0.34,
-  },
   pitchLegend: {
-    color: '#B4DEC9',
+    color: c.pitchText,
     fontFamily: fonts.medium,
     fontSize: 10,
     letterSpacing: 2,
@@ -1254,20 +1334,34 @@ const s = StyleSheet.create({
     marginBottom: 4,
   },
   pitchHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 4 },
-  attackDirection: { color: c.amber, fontFamily: fonts.medium, fontSize: 11, letterSpacing: 1.1 },
+  attackDirection: { color: c.pitchText, fontFamily: fonts.medium, fontSize: 11, letterSpacing: 1.1 },
   pitchLabels: { position: 'absolute', left: 5, top: '18%', bottom: '8%', justifyContent: 'space-around', opacity: 0.78 },
-  pitchLabel: { color: '#8ABCA5', fontFamily: fonts.medium, fontSize: 7, letterSpacing: 0.6, transform: [{ rotate: '-90deg' }] },
-  pitchRow: { flexDirection: 'row', gap: 7, justifyContent: 'center', zIndex: 1, minHeight: 101 },
+  pitchLabel: { color: c.pitchMuted, fontFamily: fonts.medium, fontSize: 7, letterSpacing: 0.6, transform: [{ rotate: '-90deg' }] },
+  pitchRow: { flexDirection: 'row', gap: 9, justifyContent: 'center', alignSelf: 'center', zIndex: 1, minHeight: 108 },
+  pitchRowMobile: { width: '100%', gap: 2, minHeight: 92 },
+  backThreeRow: { width: '92%', gap: 14 },
+  backThreeRowMobile: { width: '100%', gap: 2 },
+  centresRow: { width: '62%', gap: 24 },
+  centresRowMobile: { width: '74%', gap: 2 },
+  halfRow: { width: '30%' },
+  halfRowMobile: { width: '44%' },
+  backRow: { width: '72%', gap: 14 },
+  backRowMobile: { width: '86%', gap: 2 },
+  locksRow: { width: '52%', gap: 30 },
+  locksRowMobile: { width: '72%', gap: 2 },
+  frontRow: { width: '78%', gap: 14 },
+  frontRowMobile: { width: '94%', gap: 2 },
   slot: {
     flex: 1,
     minWidth: 76,
     maxWidth: 142,
   },
+  slotMobile: { minWidth: 0, maxWidth: 142 },
   activeSlot: {},
   slotTop: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   slotNumber: { color: c.muted, fontFamily: fonts.medium, fontSize: 12 },
   roleBadge: {
-    color: c.bg,
+    color: c.onAccent,
     backgroundColor: c.amber,
     fontFamily: fonts.medium,
     fontSize: 11,
@@ -1279,6 +1373,7 @@ const s = StyleSheet.create({
   slotName: { color: c.text, fontFamily: fonts.medium, fontSize: 12, lineHeight: 16 },
   slotPoints: { color: c.teal, fontFamily: fonts.body, fontSize: 11 },
   slotPosition: { color: c.muted, fontFamily: fonts.body, fontSize: 12, lineHeight: 17, marginTop: 2 },
+  squadCountAnchor: { position: 'absolute', opacity: 0, width: 1, height: 1 },
   slotMetaRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 6 },
   nationBadge: {
     alignSelf: 'flex-start',
@@ -1290,17 +1385,18 @@ const s = StyleSheet.create({
   listSlot: { flexBasis: '45%', maxWidth: '100%', flexGrow: 1 },
   reserveHeading: { marginTop: 24, marginBottom: 12, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end', gap: 12 },
   reserveCount: { color: c.teal, fontFamily: fonts.medium, fontSize: 11, letterSpacing: 0.8 },
-  reserveRow: { flexDirection: 'row', gap: 8 },
-  reserveItem: { flex: 1, minWidth: 0, gap: 6, padding: 6, borderWidth: 1, borderColor: c.border, borderRadius: 8, backgroundColor: c.panel },
-  reserveControls: { flexDirection: 'row', gap: 4, justifyContent: 'center' },
-  reserveCover: { color: c.muted, fontFamily: fonts.body, fontSize: 12, lineHeight: 17, textAlign: 'center' },
+  reserveRow: { flexDirection: 'row', gap: 8, flexWrap: 'wrap' },
+  reserveItem: { flex: 1, minWidth: 0, gap: 8, paddingTop: 12, borderTopWidth: 1, borderTopColor: c.border },
+  reserveItemMobile: { flexBasis: '100%', flexGrow: 0 },
+  reserveControls: { flexDirection: 'row', gap: 6, justifyContent: 'flex-start', flexWrap: 'wrap' },
+  reserveCover: { color: c.muted, fontFamily: fonts.body, fontSize: 12, lineHeight: 18, textAlign: 'left' },
   nationPanel: {
     padding: 16,
     marginTop: 20,
-    borderWidth: 1,
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
     borderColor: c.border,
-    borderRadius: 8,
-    backgroundColor: c.panel,
+    backgroundColor: 'transparent',
   },
   nationCounts: {
     flexDirection: 'row',
@@ -1315,14 +1411,21 @@ const s = StyleSheet.create({
   localStatus: { marginVertical: 16, gap: 4 },
   status: { color: c.emerald, fontFamily: fonts.medium, fontSize: 12 },
   actions: { gap: 8 },
+  validationCard: { flexDirection: 'row', alignItems: 'center', gap: 12, padding: 16, marginTop: 22, borderWidth: 1, borderColor: c.emerald, borderRadius: 12, backgroundColor: c.accentSoft },
+  validationIcon: { width: 30, height: 30, borderRadius: 15, alignItems: 'center', justifyContent: 'center', backgroundColor: c.emerald },
+  validationIconText: { color: c.onAccent, fontFamily: fonts.heading, fontSize: 18 },
+  validationCopy: { flex: 1, gap: 3 },
+  validationTitle: { color: c.emerald, fontFamily: fonts.heading, fontSize: 16 },
+  validationTitleWarning: { color: c.amber, fontFamily: fonts.heading, fontSize: 16 },
+  validationMessage: { color: c.muted, fontFamily: fonts.body, fontSize: 13, lineHeight: 19 },
   activeSelection: {
-    backgroundColor: '#153A30',
-    padding: 14,
-    borderRadius: 3,
+    backgroundColor: 'transparent',
+    paddingVertical: 14,
+    paddingHorizontal: 0,
     gap: 8,
     marginVertical: 18,
-    borderLeftWidth: 3,
-    borderLeftColor: c.emerald,
+    borderBottomWidth: 1,
+    borderBottomColor: c.border,
   },
   search: {
     minHeight: 52,
@@ -1330,10 +1433,10 @@ const s = StyleSheet.create({
     fontFamily: fonts.body,
     fontSize: 14,
     padding: 14,
-    backgroundColor: c.bg,
+    backgroundColor: c.inputBackground,
     borderColor: c.border,
     borderWidth: 1,
-    borderRadius: 3,
+    borderRadius: 10,
   },
   filterLabel: {
     color: c.muted,
@@ -1356,12 +1459,13 @@ const s = StyleSheet.create({
     alignItems: 'center',
     gap: 12,
     paddingVertical: 13,
-    paddingHorizontal: 6,
+    paddingHorizontal: 8,
+    borderRadius: 8,
     borderBottomWidth: 1,
     borderBottomColor: c.border,
   },
-  playerRowSelected: { backgroundColor: '#183A31' },
-  playerRowDisabled: { opacity: 0.55 },
+  playerRowSelected: { backgroundColor: c.accentSoft, borderLeftWidth: 3, borderLeftColor: c.emerald, paddingLeft: 10 },
+  playerRowDisabled: { backgroundColor: c.raised },
   playerRowWarning: { borderLeftWidth: 2, borderLeftColor: c.amber, paddingLeft: 10 },
   playerAvatar: {
     width: 40,
@@ -1370,12 +1474,12 @@ const s = StyleSheet.create({
     borderRadius: 20,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: c.raised,
+    backgroundColor: c.jerseyNeck,
   },
   avatarNumber: { fontFamily: fonts.heading, fontSize: 18 },
   playerInfo: { flex: 1, minWidth: 0 },
   playerNameButton: { minHeight: 48, justifyContent: 'center', gap: 4 },
-  playerName: { color: c.text, fontFamily: fonts.medium, fontSize: 14, lineHeight: 21 },
+  playerName: { color: c.text, fontFamily: fonts.medium, fontSize: 15, lineHeight: 21 },
   infoIcon: { color: c.muted },
   playerBadges: { flexDirection: 'row', alignItems: 'center', gap: 8 },
   positionBadge: {
@@ -1388,6 +1492,8 @@ const s = StyleSheet.create({
     borderRadius: 2,
   },
   playerMeta: { color: c.muted, fontFamily: fonts.body, fontSize: 13, lineHeight: 19 },
+  playerForm: { color: c.muted, fontFamily: fonts.body, fontSize: 11, marginTop: 3 },
+  playerFormValue: { color: c.emerald, fontFamily: fonts.medium },
   playerPrice: { gap: 6, alignItems: 'center' },
   price: { color: c.text, fontFamily: fonts.medium, fontSize: 16, fontVariant: ['tabular-nums'] },
   warningText: { color: c.amber, fontFamily: fonts.body, fontSize: 13, lineHeight: 19 },
@@ -1399,21 +1505,52 @@ const s = StyleSheet.create({
     marginBottom: 16,
     gap: 6,
   },
+  infoCard: { padding: 18, marginTop: 18, borderWidth: 1, borderColor: c.border, borderRadius: 12, backgroundColor: c.raised, gap: 14 },
+  infoCardHeader: { flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12 },
+  crown: { color: c.amber, fontSize: 26 },
+  leaderRow: { flexDirection: 'row', alignItems: 'center', gap: 10, paddingTop: 12, borderTopWidth: 1, borderTopColor: c.border },
+  leaderBadge: { width: 30, height: 30, borderRadius: 15, alignItems: 'center', justifyContent: 'center', backgroundColor: c.amber },
+  viceBadge: { backgroundColor: c.teal },
+  leaderBadgeText: { color: c.onBadge, fontFamily: fonts.heading, fontSize: 12 },
+  leaderCopy: { flex: 1, minWidth: 0, gap: 2 },
+  leaderTitle: { color: c.text, fontFamily: fonts.medium, fontSize: 14 },
+  leaderMeta: { color: c.muted, fontFamily: fonts.body, fontSize: 12 },
+  fixtureList: { gap: 8, marginTop: 2 },
+  fixtureCard: { position: 'relative', overflow: 'hidden', paddingVertical: 11, paddingLeft: 14, paddingRight: 10, borderRadius: 8, backgroundColor: c.panel, gap: 3 },
+  fixtureStripe: { position: 'absolute', left: 0, top: 0, bottom: 0, width: 4 },
+  fixtureTeams: { color: c.text, fontFamily: fonts.heading, fontSize: 15, letterSpacing: 0.6 },
+  fixtureVs: { color: c.muted, fontFamily: fonts.body, fontSize: 11 },
+  fixtureTime: { color: c.muted, fontFamily: fonts.body, fontSize: 12 },
+  scoringCard: { padding: 18, marginTop: 18, borderWidth: 1, borderColor: c.border, borderRadius: 12, backgroundColor: c.panel, gap: 0 },
+  scoringMark: { color: c.emerald, fontSize: 22 },
+  scoringRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 11, borderTopWidth: 1, borderTopColor: c.border },
+  scoringLabel: { color: c.muted, fontFamily: fonts.body, fontSize: 13 },
+  scoringValue: { color: c.text, fontFamily: fonts.medium, fontSize: 13 },
   empty: { paddingVertical: 32, gap: 12 },
   errorBox: {
     padding: 16,
     borderWidth: 1,
     borderColor: c.danger,
-    backgroundColor: '#302329',
+    backgroundColor: c.dangerSoft,
     borderRadius: 10,
     gap: 12,
     marginBottom: 16,
   },
-  successBox: { padding: 16, backgroundColor: '#203A32', borderRadius: 4, marginBottom: 16 },
-  savedBanner: {
-    backgroundColor: '#203A32',
+  dataUnavailable: {
+    padding: 18,
     borderWidth: 1,
-    borderColor: '#4A675C',
+    borderColor: c.border,
+    backgroundColor: c.raised,
+    borderRadius: 10,
+    gap: 6,
+    marginBottom: 16,
+  },
+  dataUnavailableTitle: { color: c.text, fontFamily: fonts.medium, fontSize: 15 },
+  successBox: { padding: 16, backgroundColor: c.accentSoft, borderRadius: 4, marginBottom: 16 },
+  savedBanner: {
+    backgroundColor: c.accentSoft,
+    borderWidth: 1,
+    borderColor: c.border,
     borderRadius: 10,
     padding: 16,
     marginBottom: 24,
@@ -1424,30 +1561,45 @@ const s = StyleSheet.create({
   footerBrand: { color: c.muted, fontFamily: fonts.medium, fontSize: 12, letterSpacing: 1.2 },
   modalBackdrop: {
     flex: 1,
-    backgroundColor: '#000000CC',
+    backgroundColor: c.backdrop,
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
   },
   modalCard: {
     width: '100%',
-    maxWidth: 620,
+    maxWidth: 760,
     maxHeight: '90%',
     backgroundColor: c.panel,
-    padding: 24,
-    borderRadius: 8,
+    padding: 28,
+    borderRadius: 20,
     borderWidth: 1,
     borderColor: c.border,
+    position: 'relative',
+    shadowColor: c.shadow,
+    shadowOpacity: 0.42,
+    shadowRadius: 28,
+    shadowOffset: { width: 0, height: 14 },
   },
+  modalBackdropMobile: { justifyContent: 'flex-end', alignItems: 'stretch', padding: 0 },
+  modalCardMobile: { maxWidth: '100%', maxHeight: '92%', padding: 20, borderBottomWidth: 0, borderBottomLeftRadius: 0, borderBottomRightRadius: 0, borderTopLeftRadius: 18, borderTopRightRadius: 18 },
+  profileBackdropClose: StyleSheet.absoluteFill,
   modalTitle: {
     color: c.text,
     fontFamily: fonts.heading,
-    fontSize: 28,
-    lineHeight: 36,
+    fontSize: 34,
+    lineHeight: 40,
     marginBottom: 12,
   },
+  profileHero: { flexDirection: 'row', alignItems: 'center', gap: 18, padding: 14, marginBottom: 18, borderWidth: 1, borderColor: c.border, borderRadius: 14, backgroundColor: c.lowest },
+  profileHeroCopy: { flex: 1, minWidth: 0, gap: 6 },
+  profileForm: { color: c.emerald, fontFamily: fonts.medium, fontSize: 12, letterSpacing: 1.1, marginTop: 8 },
+  profileFormMuted: { color: c.muted, fontFamily: fonts.body, fontSize: 10 },
+  profileClose: { position: 'absolute', top: 12, right: 12, zIndex: 2, width: 44, height: 44, borderRadius: 22, alignItems: 'center', justifyContent: 'center', backgroundColor: c.raised },
+  profileCloseLineA: { position: 'absolute', width: 18, height: 2, borderRadius: 1, backgroundColor: c.text, transform: [{ rotate: '45deg' }] },
+  profileCloseLineB: { position: 'absolute', width: 18, height: 2, borderRadius: 1, backgroundColor: c.text, transform: [{ rotate: '-45deg' }] },
   modalClose: { marginTop: 12 },
-  drawerBackdrop: { flex: 1, backgroundColor: '#000000CC', justifyContent: 'flex-start', alignItems: 'flex-start' },
+  drawerBackdrop: { flex: 1, backgroundColor: c.backdrop, justifyContent: 'flex-start', alignItems: 'flex-start' },
   drawerCard: {
     width: '100%',
     maxWidth: 440,
@@ -1465,7 +1617,7 @@ const s = StyleSheet.create({
   drawerAccent: { color: c.emerald, fontFamily: fonts.medium, fontSize: 12 },
   drawerRank: { color: c.muted, fontFamily: fonts.body, fontSize: 13, lineHeight: 20 },
   drawerNavRow: { minHeight: 64, padding: 12, borderWidth: 1, borderColor: c.border, borderRadius: 6, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 12 },
-  drawerNavActive: { backgroundColor: '#153A30', borderColor: c.emerald },
+  drawerNavActive: { backgroundColor: c.accentSoft, borderColor: c.emerald },
   drawerNavTitle: { color: c.text, fontFamily: fonts.heading, fontSize: 15 },
   drawerNavCopy: { color: c.muted, fontFamily: fonts.body, fontSize: 13, lineHeight: 19, marginTop: 3 },
   drawerChevron: { color: c.emerald, fontFamily: fonts.medium, fontSize: 11, letterSpacing: 0.8 },

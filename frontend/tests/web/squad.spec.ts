@@ -8,7 +8,9 @@ test.beforeEach(async ({ page }) => {
     if (message.type() === 'error') consoleErrors.push(message.text());
   });
   await page.goto('/');
-  await expect(page.getByRole('heading', { name: 'Your squad. Your call.' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Keep your XV across devices.' })).toBeVisible();
+  await page.getByRole('button', { name: 'Continue in demo mode', exact: true }).click();
+  await expect(page.getByRole('heading', { name: 'My Squad', exact: true })).toBeVisible();
 });
 
 test.afterEach(() => {
@@ -21,10 +23,10 @@ test('renders the current-screen tactical shell without introducing page overflo
     { width: 1440, height: 900 },
   ]) {
     await page.setViewportSize(viewport);
-    await expect(page.getByText('MY SQUAD', { exact: true })).toBeVisible();
-    await expect(page.getByText('MATCHES', { exact: true })).toBeVisible();
-    await expect(page.getByText('LEAGUES', { exact: true })).toBeVisible();
-    await expect(page.getByText('STATS', { exact: true })).toBeVisible();
+    await expect(page.getByRole('tab', { name: 'My Squad', exact: true })).toBeVisible();
+    await expect(page.getByRole('tab', { name: 'Match Centre', exact: true })).toBeVisible();
+    await expect(page.getByRole('tab', { name: 'Leagues', exact: true })).toBeVisible();
+    await expect(page.getByRole('tab', { name: 'Stats & Fixtures', exact: true })).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
       true,
     );
@@ -48,10 +50,13 @@ test('build a legal squad manually, confirm locally and restore it after reload'
       .click();
   }
   await expect(page.getByTestId('squad-count')).toHaveText('18 / 18');
-  await page.getByRole('button', { name: /^Edit 10 · Fly-half:/ }).click();
+  await page.getByRole('button', { name: 'List', exact: true }).click();
+  await page.getByRole('button', { name: /^Fly-half:/ }).click();
+  await page.getByRole('button', { name: 'Close player details', exact: true }).click();
   const captain = demoPlayers.find((p) => p.id === draft.captainId)!;
   await page.getByRole('button', { name: `Make ${captain.name} captain`, exact: true }).click();
-  await page.getByRole('button', { name: /^Edit 8 · Back row:/ }).click();
+  await page.getByRole('button', { name: /^Number 8:/ }).click();
+  await page.getByRole('button', { name: 'Close player details', exact: true }).click();
   const vice = demoPlayers.find((p) => p.id === draft.viceCaptainId)!;
   await page.getByRole('button', { name: `Make ${vice.name} vice-captain`, exact: true }).click();
   await page.getByRole('button', { name: 'Review squad', exact: true }).click();
@@ -66,7 +71,7 @@ test('build a legal squad manually, confirm locally and restore it after reload'
     page.getByText('Demo squad confirmed on this device.', { exact: true }),
   ).toBeVisible();
   expect(errors).toEqual([]);
-  await page.getByRole('heading', { name: 'Your squad. Your call.' }).scrollIntoViewIfNeeded();
+  await page.getByRole('heading', { name: 'My Squad', exact: true }).scrollIntoViewIfNeeded();
   await page.screenshot({ path: 'test-results/squad-desktop.png', fullPage: true });
 });
 
@@ -78,9 +83,11 @@ test('invalid draft cannot be confirmed; removing a captain clears the role', as
   ).toBeDisabled();
   await page.getByRole('button', { name: 'Continue editing', exact: true }).click();
   await page.getByRole('button', { name: 'Load example squad', exact: true }).click();
-  await page.getByRole('button', { name: /^Edit 10 · Fly-half:/ }).click();
+  await page.getByRole('button', { name: 'List', exact: true }).click();
+  await page.getByRole('button', { name: /^Fly-half:/ }).click();
+  await page.getByRole('button', { name: 'Close player details', exact: true }).click();
   const captain = demoPlayers.find((p) => p.id === exampleDraft().captainId)!;
-  await page.getByRole('button', { name: `Remove ${captain.name}`, exact: true }).click();
+  await page.getByRole('button', { name: `Remove ${captain.name}`, exact: true }).filter({ hasText: 'Remove' }).click();
   await expect(page.getByText('Choose your captain', { exact: false })).toBeVisible();
   await page.getByRole('button', { name: 'Review squad', exact: true }).click();
   await expect(page.getByText('Choose a captain from your starters.')).toBeVisible();
@@ -93,19 +100,20 @@ test('search, empty state, details and ordered reserves work on narrow web', asy
   await page.setViewportSize({ width: 390, height: 844 });
   await page.getByRole('button', { name: 'Load example squad', exact: true }).click();
   const before = await page
-    .getByRole('button', { name: /^Edit Reserve 1:/ })
+    .getByRole('button', { name: /^Reserve 1:/ })
     .getAttribute('aria-label');
   const second = await page
-    .getByRole('button', { name: /^Edit Reserve 2:/ })
+    .getByRole('button', { name: /^Reserve 2:/ })
     .getAttribute('aria-label');
   await page.getByRole('button', { name: 'Move reserve 2 earlier', exact: true }).click();
   const after = await page
-    .getByRole('button', { name: /^Edit Reserve 1:/ })
+    .getByRole('button', { name: /^Reserve 1:/ })
     .getAttribute('aria-label');
   expect(after?.split(': ')[1]).toBe(second?.split(': ')[1]);
   expect(after).not.toBe(before);
   await page.getByRole('button', { name: 'List', exact: true }).click();
-  await page.getByRole('button', { name: /^Edit 1 · Prop:/ }).click();
+  await page.getByRole('button', { name: /^Loosehead prop:/ }).click();
+  await page.getByRole('button', { name: 'Close player details', exact: true }).click();
   await page.getByRole('textbox', { name: 'Search players' }).fill('nobody-matches');
   await expect(page.getByText('No players found', { exact: true })).toBeVisible();
   await page.getByRole('button', { name: 'Clear filters', exact: true }).click();
@@ -117,12 +125,12 @@ test('search, empty state, details and ordered reserves work on narrow web', asy
       exact: true,
     })
     .click();
-  await expect(page.getByText('SYNTHETIC PLAYER PROFILE', { exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: player.name, exact: true })).toBeVisible();
   await page.getByRole('button', { name: 'Close player details', exact: true }).click();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
     true,
   );
-  await page.getByRole('heading', { name: 'Your squad. Your call.' }).scrollIntoViewIfNeeded();
+  await page.getByRole('heading', { name: 'My Squad', exact: true }).scrollIntoViewIfNeeded();
   await page.screenshot({ path: 'test-results/squad-mobile.png', fullPage: true });
 });
 

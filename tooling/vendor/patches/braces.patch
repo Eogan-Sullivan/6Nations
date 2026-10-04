@@ -1,0 +1,160 @@
+--- upstream/lib/compile.js
++++ local/lib/compile.js
+@@ -1,9 +1,12 @@
+ 'use strict';
++
++const { validate } = require('./validate');
+ 
+ const fill = require('fill-range');
+ const utils = require('./utils');
+ 
+ const compile = (ast, options = {}) => {
++  validate(ast);
+   const walk = (node, parent = {}) => {
+     const invalidBlock = utils.isInvalidBrace(parent);
+     const invalidNode = node.invalid === true && options.escapeInvalid === true;
+--- upstream/lib/expand.js
++++ local/lib/expand.js
+@@ -1,4 +1,6 @@
+ 'use strict';
++
++const { MAX_DEPTH, validate } = require('./validate');
+ 
+ const fill = require('fill-range');
+ const stringify = require('./stringify');
+@@ -31,6 +33,7 @@
+ };
+ 
+ const expand = (ast, options = {}) => {
++  validate(ast);
+   const rangeLimit = options.rangeLimit === undefined ? 1000 : options.rangeLimit;
+ 
+   const walk = (node, parent = {}) => {
+@@ -39,7 +42,11 @@
+     let p = parent;
+     let q = parent.queue;
+ 
++    const parents = new Set();
+     while (p.type !== 'brace' && p.type !== 'root' && p.parent) {
++      if (parents.has(p)) throw new TypeError('cyclic braces AST parent chain');
++      if (parents.size >= MAX_DEPTH) throw new RangeError('braces nesting depth exceeds 128');
++      parents.add(p);
+       p = p.parent;
+       q = p.queue;
+     }
+@@ -75,7 +82,11 @@
+     let queue = node.queue;
+     let block = node;
+ 
++    const blocks = new Set();
+     while (block.type !== 'brace' && block.type !== 'root' && block.parent) {
++      if (blocks.has(block)) throw new TypeError('cyclic braces AST parent chain');
++      if (blocks.size >= MAX_DEPTH) throw new RangeError('braces nesting depth exceeds 128');
++      blocks.add(block);
+       block = block.parent;
+       queue = block.queue;
+     }
+--- upstream/lib/parse.js
++++ local/lib/parse.js
+@@ -1,6 +1,7 @@
+ 'use strict';
+ 
+ const stringify = require('./stringify');
++const { MAX_DEPTH } = require('./validate');
+ 
+ /**
+  * Constants
+@@ -143,6 +144,9 @@
+      */
+ 
+     if (value === CHAR_LEFT_PARENTHESES) {
++      if (stack.length > MAX_DEPTH) {
++        throw new RangeError('braces nesting depth exceeds 128');
++      }
+       block = push({ type: 'paren', nodes: [] });
+       stack.push(block);
+       push({ type: 'text', value });
+@@ -195,6 +199,9 @@
+      */
+ 
+     if (value === CHAR_LEFT_CURLY_BRACE) {
++      if (stack.length > MAX_DEPTH) {
++        throw new RangeError('braces nesting depth exceeds 128');
++      }
+       depth++;
+ 
+       const dollar = prev.value && prev.value.slice(-1) === '$' || block.dollar === true;
+--- upstream/lib/stringify.js
++++ local/lib/stringify.js
+@@ -1,8 +1,11 @@
+ 'use strict';
++
++const { validate } = require('./validate');
+ 
+ const utils = require('./utils');
+ 
+ module.exports = (ast, options = {}) => {
++  validate(ast);
+   const stringify = (node, parent = {}) => {
+     const invalidBlock = options.escapeInvalid && utils.isInvalidBrace(parent);
+     const invalidNode = node.invalid === true && options.escapeInvalid === true;
+--- upstream/lib/validate.js
++++ local/lib/validate.js
+@@ -0,0 +1,27 @@
++'use strict';
++
++// Follow only child edges: parser ASTs legitimately contain parent/prev links.
++// A path-local set rejects cycles while allowing shared subtrees (DAGs).
++const MAX_DEPTH = 128;
++const validate = ast => {
++  const ancestors = new Set();
++  const stack = [{ node: ast, depth: 0, exit: false, root: true }];
++  while (stack.length) {
++    const frame = stack.pop();
++    const node = frame.node;
++    if (!node || typeof node !== 'object') continue;
++    if (frame.exit) { ancestors.delete(node); continue; }
++    if (ancestors.has(node)) throw new TypeError('cyclic braces AST');
++    const children = node.nodes;
++    const depth = frame.depth + (children && !frame.root ? 1 : 0);
++    if (depth > MAX_DEPTH) throw new RangeError('braces nesting depth exceeds 128');
++    if (!children) continue;
++    ancestors.add(node);
++    stack.push({ node, depth, exit: true });
++    for (let i = children.length - 1; i >= 0; i--) {
++      stack.push({ node: children[i], depth, exit: false });
++    }
++  }
++};
++
++module.exports = { MAX_DEPTH, validate };
+--- upstream/package.json
++++ local/package.json
+@@ -1,7 +1,7 @@
+ {
+   "name": "braces",
+   "description": "Bash-like brace expansion, implemented in JavaScript. Safer than other brace expansion libs, with complete support for the Bash 4.3 braces specification, without sacrificing speed.",
+-  "version": "3.0.3",
++  "version": "3.0.4+sixnations.1",
+   "homepage": "https://github.com/micromatch/braces",
+   "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
+   "contributors": [
+@@ -24,18 +24,8 @@
+   "engines": {
+     "node": ">=8"
+   },
+-  "scripts": {
+-    "test": "mocha",
+-    "benchmark": "node benchmark"
+-  },
+   "dependencies": {
+     "fill-range": "^7.1.1"
+-  },
+-  "devDependencies": {
+-    "ansi-colors": "^3.2.4",
+-    "bash-path": "^2.0.1",
+-    "gulp-format-md": "^2.0.0",
+-    "mocha": "^6.1.1"
+   },
+   "keywords": [
+     "alpha",

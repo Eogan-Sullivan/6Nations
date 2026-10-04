@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { emptyDraft, validateDraft, type Draft, type Player } from './model';
-import { demoRepository, type SavedSquad, type SquadRepository } from './repository';
+import { defaultRepository, type SavedSquad, type SquadRepository } from './repository';
 
-export function useSquad(repository: SquadRepository = demoRepository) {
+export function useSquad(repository: SquadRepository = defaultRepository) {
   const [players, setPlayers] = useState<Player[]>([]);
   const [saved, setSaved] = useState<SavedSquad>({
     draft: emptyDraft(),
@@ -15,7 +15,7 @@ export function useSquad(repository: SquadRepository = demoRepository) {
   const [loading, setLoading] = useState(true);
   const [storageReady, setStorageReady] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [status, setStatus] = useState('Loading demo');
+  const [status, setStatus] = useState(repository.source === 'api' ? 'Waiting for game data' : 'Loading demo');
   const [saving, setSaving] = useState(false);
   const queue = useRef<Promise<void>>(Promise.resolve());
   const mounted = useRef(true);
@@ -33,12 +33,14 @@ export function useSquad(repository: SquadRepository = demoRepository) {
       if (!mounted.current) return;
       setSaved(previous ?? { draft: emptyDraft(), confirmed: null, confirmedAt: null, locked: false, lockedAt: null, transfersRemaining: 2 });
       setStorageReady(true);
-      setStatus(previous ? 'Draft restored on this device' : 'Local demo · ready');
+      setStatus(previous
+        ? repository.source === 'api' ? 'Squad restored from the game server' : 'Draft restored on this device'
+        : repository.source === 'api' ? 'Player data unavailable' : 'Local demo · ready');
     } catch {
       if (mounted.current) {
-        setError(
-          'Could not restore the local draft. Retry, or start a new draft to replace the saved demo.',
-        );
+        setError(repository.source === 'api'
+          ? 'The game data API is not ready yet. Your account is connected, but no player catalog is available.'
+          : 'Could not restore the local draft. Retry, or start a new draft to replace the saved demo.');
         setStatus('Storage unavailable');
       }
     } finally {
@@ -147,6 +149,7 @@ export function useSquad(repository: SquadRepository = demoRepository) {
   };
   return {
     ...saved,
+    source: repository.source,
     players,
     loading,
     storageReady,

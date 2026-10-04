@@ -1,3 +1,25 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+html, body, #root { background-color: var(--bg, #07111A); }
+html { color-scheme: dark; scrollbar-color: var(--text-muted, #8297A7) var(--bg, #07111A); }
+html[data-theme='light'] { color-scheme: light; }
+html[data-theme='dark'] { color-scheme: dark; }
+body { color: var(--text-primary, #F5F7FA); }
+input, textarea { caret-color: var(--accent, #45E0A1); accent-color: var(--accent, #45E0A1); }
+input, textarea, select { font-size: 16px; }
+button, a { -webkit-tap-highlight-color: transparent; }
+body { overscroll-behavior-y: none; }
+::selection { background: var(--accent-soft, #153A30); color: var(--text-primary, #F5F7FA); }
+:focus-visible { outline: 2px solid var(--accent, #45E0A1); outline-offset: 3px; }
+/* React Native Web renders semantic token values as inline styles. */
+[data-theme] button, [data-theme] input, [data-theme] textarea, [data-theme] a {
+  transition: background-color 200ms ease, color 200ms ease, border-color 200ms ease;
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-theme] div, [data-theme] button, [data-theme] input, [data-theme] textarea, [data-theme] a {
+    transition: none;
+  }
+  html { scroll-behavior: auto; }
+}

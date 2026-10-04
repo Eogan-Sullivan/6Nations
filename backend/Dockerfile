@@ -2,10 +2,12 @@ FROM node:22.20.0-bookworm-slim AS build
 WORKDIR /app
 COPY package.json package-lock.json tsconfig.base.json ./
 COPY backend/package.json backend/tsconfig.json ./backend/
-RUN npm ci
+COPY tooling/vendor ./tooling/vendor
+RUN npm install --global npm@11.21.0
+RUN npm ci --workspace backend
 COPY backend/src ./backend/src
 RUN npm run build --workspace backend
-RUN npm prune --omit=dev
+RUN npm prune --omit=dev --workspace backend
 
 FROM node:22.20.0-bookworm-slim AS runtime
 ENV NODE_ENV=production

@@ -1,0 +1,7 @@
+# Local-only override for testing Expo Go on a physical device.
+# Do not use this binding for production; compose.yaml intentionally exposes
+# the API on host loopback for the external HTTPS ingress.
+services:
+  api:
+    ports: !override
+      - '0.0.0.0:3000:3000'

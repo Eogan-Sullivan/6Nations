@@ -1,0 +1,13 @@
+{
+  "name": "@six-nations/api-types",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "generate": "openapi-typescript ../../backend/contracts/openapi.json --output ../../backend/contracts/client-types.d.ts",
+    "check": "openapi-typescript ../../backend/contracts/openapi.json --output ../../backend/contracts/client-types.d.ts --check"
+  },
+  "devDependencies": {
+    "openapi-typescript": "7.13.0",
+    "typescript": "5.9.3"
+  }
+}

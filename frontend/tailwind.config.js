@@ -6,16 +6,9 @@ module.exports = {
     extend: {
       colors: {
         '6nations': {
-          bg: '#0e141b',
-          panel: '#161c23',
-          raised: '#1a2027',
-          active: '#252a32',
-          border: '#3c4a42',
-          emerald: '#4edea3',
-          gold: '#ffb95f',
-          teal: '#6bd8cb',
-          text: '#dde3ed',
-          muted: '#bbcabf',
+          bg: 'var(--bg)', panel: 'var(--panel)', raised: 'var(--raised)', active: 'var(--active)',
+          border: 'var(--border)', emerald: 'var(--emerald)', gold: 'var(--gold)', teal: 'var(--teal)',
+          text: 'var(--text)', muted: 'var(--muted)',
         },
       },
       fontFamily: {
