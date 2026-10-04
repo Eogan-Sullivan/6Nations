@@ -14,6 +14,16 @@ npm run dev:web
 
 Open the URL printed by Expo, normally **http://localhost:8081**. If another server uses that port, Expo will offer another port; use its printed URL. Stop the server with Ctrl+C. Existing backend containers can stay running.
 
+## Current app screenshots
+
+These captures show the current demo build at desktop and mobile widths:
+
+![Desktop squad builder](docs/screenshots/squad-desktop.png)
+
+![Mobile squad builder](docs/screenshots/squad-mobile.png)
+
+They were captured from the local Expo demo build with Playwright at 1440px and 390px widths.
+
 ### Connect a physical phone with Expo Go
 
 Use the LAN-specific frontend command from the repository root:

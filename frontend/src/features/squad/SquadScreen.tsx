@@ -298,7 +298,7 @@ export default function SquadScreen() {
         <View style={s.hero}>
           <View style={s.heroText}>
               <Text style={s.eyebrow}>Round 1 · Men's Six Nations 2027</Text>
-            <Text accessibilityRole="header" accessibilityLabel="Your squad. Your call." style={s.title}>
+            <Text accessibilityRole="header" style={s.title}>
               My Squad
             </Text>
             <Label muted>
@@ -319,7 +319,7 @@ export default function SquadScreen() {
 
         <View accessibilityLabel="Squad progress" style={s.workflowSummary}>
           <View style={s.workflowStat}>
-            <Text style={s.workflowValue} testID="squad-count">{picked.length}/18</Text>
+            <Text style={s.workflowValue} testID="squad-count">{picked.length} / 18</Text>
             <Text style={s.workflowLabel}>PLAYERS</Text>
           </View>
           <View style={s.workflowRule} />
@@ -711,11 +711,18 @@ export default function SquadScreen() {
       {mobile && (
         <View style={s.mobileActionBar}>
           <View style={s.mobileActionCopy}>
-            <Text style={s.mobileActionTitle}>{picked.length}/18 selected</Text>
+            <Text style={s.mobileActionTitle}>{picked.length} / 18 selected</Text>
             <Text style={s.mobileActionMeta}>{issues.length ? `${issues.length} checks to fix` : 'Ready to review and lock'}</Text>
           </View>
-          <Button variant="primary" disabled={squad.saving || squad.locked} onPress={() => void lockSquad()}>
-            {squad.locked ? 'LOCKED' : squad.saving ? 'SAVING…' : 'LOCK SQUAD'}
+          <Button
+            variant="primary"
+            disabled={squad.saving || squad.locked}
+            onPress={() => {
+              if (issues.length > 0) openReview();
+              else void lockSquad();
+            }}
+          >
+            {squad.locked ? 'LOCKED' : squad.saving ? 'SAVING…' : issues.length > 0 ? 'REVIEW SQUAD' : 'LOCK SQUAD'}
           </Button>
         </View>
       )}
@@ -959,7 +966,7 @@ export default function SquadScreen() {
               </Label>
               <View style={s.reviewSummary}>
                 <Label>
-                  {picked.length}/18 players · {credits(cost)}/100.0 credits
+                  {picked.length} / 18 players · {credits(cost)} / 100.0 credits
                 </Label>
                 <Label>C · {captain?.name ?? 'Not selected'}</Label>
                 <Label>VC · {vice?.name ?? 'Not selected'}</Label>

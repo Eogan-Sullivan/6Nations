@@ -27,7 +27,7 @@ export function CommandDock({ active, alertCount = 0, onOpenHub, onOpenTactical 
   const progress = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    if (desktop) setExpanded(true);
+    setExpanded(desktop);
   }, [desktop]);
   useEffect(() => {
     let mounted = true;
@@ -90,7 +90,7 @@ export function CommandDock({ active, alertCount = 0, onOpenHub, onOpenTactical 
                   <Pressable
                     key={destination.route}
                     accessibilityRole="tab"
-                    accessibilityLabel={`Go to ${destination.label}`}
+                    accessibilityLabel={destination.label}
                     accessibilityHint={selected ? 'Current section' : `Open ${destination.label}`}
                     accessibilityState={{ selected }}
                     onPress={() => navigate(destination.route)}
